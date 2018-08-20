@@ -10,8 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shoppay.trt.BalanceActivity;
+import com.shoppay.trt.BalanceTActivity;
 import com.shoppay.trt.R;
 import com.shoppay.trt.bean.ShopClass;
+import com.shoppay.trt.tools.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +70,8 @@ public class LeftAdapter extends BaseAdapter {
 //		} else {
 //			vh = (ViewHolder) convertView.getTag();
 //		}
-		if (position == BalanceActivity.mPosition) {
+
+		if (position == BalanceTActivity.mPosition) {
 			vh.rl_item.setBackgroundResource(R.drawable.tongcheng_all_bg01);
 		} else {
 			vh.rl_item.setBackgroundColor(Color.parseColor("#f4f4f4"));
