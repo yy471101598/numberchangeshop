@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "shoppay";
-	public static final int DATABASE_VERSION = 8;
+	public static final int DATABASE_VERSION = 9;
 	public static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
 	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
 
@@ -36,6 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String shop_goodsType= "goodsType";//商品类型
     public static final String shop_handler= "account";//商品类型
     public static final String shop_classid= "goodsclassid";//商品类型
+    public static final String shop_pihao= "batchnumber";//商品类型
     public static final String numhop_CountDetailGoodsID= "CountDetailGoodsID";//商品类型
     public static final String numshop_count= "count";//商品类型
     public static final String numshop_account= "account";//商品类型
@@ -81,6 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sb.append(shop_goodsType).append(" varchar(32),");
         sb.append(shop_point).append(" varchar(32),");
         sb.append(shop_classid).append(" varchar(32),");
+        sb.append(shop_pihao).append(" varchar(32),");
         sb.append(shop_pointPercent).append(" varchar(32),");
         sb.append(shop_handler).append(" varchar(32),");
         sb.append(shop_price).append(" varchar(32)");

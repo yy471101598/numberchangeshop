@@ -406,7 +406,7 @@
             android:layout_toRightOf="@id/img_gwcar"
             android:text="共"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="15dp"
             />
         <TextView
             android:id="@+id/balance_tv_num"
@@ -437,7 +437,7 @@
             android:layout_centerVertical="true"
             android:orientation="horizontal"
             android:layout_toRightOf="@id/balance_tv_m"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:visibility="gone"
             >
 
@@ -458,7 +458,7 @@
                 android:textColor="@color/theme_red"
                 android:text="0"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="3dp"
                 />
         </LinearLayout>
 
@@ -471,7 +471,7 @@
             android:textColor="@color/text_30"
             android:text="总价："
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             />
         <TextView
             android:id="@+id/balance_tv_money"

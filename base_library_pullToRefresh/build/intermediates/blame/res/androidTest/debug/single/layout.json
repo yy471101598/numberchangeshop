@@ -16,8 +16,16 @@
         "source": "F:\\shop\\app\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header.xml"
     },
     {
+        "merged": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_horizontal.xml",
+        "source": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_horizontal.xml"
+    },
+    {
         "merged": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_vertical.xml",
         "source": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_vertical.xml"
+    },
+    {
+        "merged": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_vertical.xml",
+        "source": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header_vertical.xml"
     },
     {
         "merged": "F:\\shenzhenvipsystemnewzh\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header_vertical.xml",
@@ -34,5 +42,9 @@
     {
         "merged": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header.xml",
         "source": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header.xml"
+    },
+    {
+        "merged": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\pull_to_refresh_header.xml",
+        "source": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\layout\\pull_to_refresh_header.xml"
     }
 ]

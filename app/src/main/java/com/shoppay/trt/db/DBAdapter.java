@@ -92,6 +92,7 @@ public class DBAdapter {
         initialValues.put(DBHelper.shop_shopname, shopcar.shopname);
         initialValues.put(DBHelper.shop_classid, shopcar.goodsclassid);
         initialValues.put(DBHelper.shop_goodsType, shopcar.goodsType);
+        initialValues.put(DBHelper.shop_pihao, shopcar.batchnumber);
         initialValues.put(DBHelper.shop_point, shopcar.point);
         initialValues.put(DBHelper.shop_pointPercent, shopcar.pointPercent);
         initialValues.put(DBHelper.shop_price, shopcar.price);
@@ -121,6 +122,8 @@ public class DBAdapter {
                         .getColumnIndex(DBHelper.shop_discountmoney));
                 shopcar.goodsid = cursor.getString(cursor
                         .getColumnIndex(DBHelper.shop_goodsid));
+                shopcar.batchnumber = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.shop_pihao));
                 shopcar.goodspoint = cursor.getInt(cursor
                         .getColumnIndex(DBHelper.shop_goodspoint));
                 shopcar.goodsType = cursor.getString(cursor
@@ -210,6 +213,8 @@ public class DBAdapter {
                         .getColumnIndex(DBHelper.shop_goodsid));
                 shopcar.goodspoint = cursor.getInt(cursor
                         .getColumnIndex(DBHelper.shop_goodspoint));
+                shopcar.batchnumber = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.shop_pihao));
                 shopcar.goodsType = cursor.getString(cursor
                         .getColumnIndex(DBHelper.shop_goodsType));
                 shopcar.goodsclassid = cursor.getString(cursor
@@ -254,6 +259,7 @@ public class DBAdapter {
                     initialValues.put(DBHelper.shop_shopname, shopcar.shopname);
                     initialValues.put(DBHelper.shop_goodspoint, shopcar.goodspoint);
                     initialValues.put(DBHelper.shop_goodsType, shopcar.goodsType);
+                    initialValues.put(DBHelper.shop_pihao, shopcar.batchnumber);
                     initialValues.put(DBHelper.shop_classid, shopcar.goodsclassid);
                     initialValues.put(DBHelper.shop_point, shopcar.point);
                     initialValues.put(DBHelper.shop_pointPercent, shopcar.pointPercent);
@@ -287,6 +293,7 @@ public class DBAdapter {
                 initialValues.put(DBHelper.shop_shopname, shopcar.shopname);
                 initialValues.put(DBHelper.shop_goodspoint, shopcar.goodspoint);
                 initialValues.put(DBHelper.shop_goodsType, shopcar.goodsType);
+                initialValues.put(DBHelper.shop_pihao, shopcar.batchnumber);
                 initialValues.put(DBHelper.shop_classid, shopcar.goodsclassid);
                 initialValues.put(DBHelper.shop_point, shopcar.point);
                 initialValues.put(DBHelper.shop_pointPercent, shopcar.pointPercent);

@@ -27,4 +27,5 @@ public class SystemQuanxian implements Serializable{
     public int isqita;
     public int iswxpay;
     public int iszfbpay;
+    public int isjiesuan;
 }

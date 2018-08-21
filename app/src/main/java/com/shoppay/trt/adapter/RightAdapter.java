@@ -22,12 +22,10 @@ import com.shoppay.trt.bean.Shop;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.bean.Zhekou;
 import com.shoppay.trt.db.DBAdapter;
-import com.shoppay.trt.http.InterfaceBack;
 import com.shoppay.trt.tools.CommonUtils;
 import com.shoppay.trt.tools.DialogUtil;
 import com.shoppay.trt.tools.LogUtils;
 import com.shoppay.trt.tools.PreferenceHelper;
-import com.shoppay.trt.tools.ShopNumChoseDialog;
 import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
 
@@ -107,31 +105,31 @@ public class RightAdapter extends BaseAdapter {
                 vh.tv_num.setText(dbshop.count + "");
             }
         }
-        vh.tv_num.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ShopNumChoseDialog.numchoseDialog(context, 1, Integer.parseInt(vh.tv_num.getText().toString()), Integer.parseInt(home.Number), home.GoodsType,new InterfaceBack() {
-                    @Override
-                    public void onResponse(Object response) {
-                        vh.tv_num.setText((String)response);
-                        if(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
-                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, Integer.parseInt((String) response));
-                        }else{
-                            Zhekou zk = new Zhekou();
-                            ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
-                            zk.DiscountPrice = shopCar.discount;
-                            zk.GoodsPoint = shopCar.pointPercent;
-                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, Integer.parseInt((String) response));
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(Object msg) {
-
-                    }
-                });
-            }
-        });
+//        vh.tv_num.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ShopNumChoseDialog.numchoseDialog(context, 1, Integer.parseInt(vh.tv_num.getText().toString()), Integer.parseInt(home.Number), home.GoodsType,new InterfaceBack() {
+//                    @Override
+//                    public void onResponse(Object response) {
+//                        vh.tv_num.setText((String)response);
+//                        if(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
+//                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, Integer.parseInt((String) response));
+//                        }else{
+//                            Zhekou zk = new Zhekou();
+//                            ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
+//                            zk.DiscountPrice = shopCar.discount;
+//                            zk.GoodsPoint = shopCar.pointPercent;
+//                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, Integer.parseInt((String) response));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onErrorResponse(Object msg) {
+//
+//                    }
+//                });
+//            }
+//        });
         vh.img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -228,31 +226,31 @@ public class RightAdapter extends BaseAdapter {
                 }
             }
         });
-        vh.img_del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int num = Integer.parseInt(vh.tv_num.getText().toString());
-                num = num - 1;
-                if (num == 0) {
-                    vh.img_del.setVisibility(View.GONE);
-                    vh.tv_num.setVisibility(View.GONE);
-                }
-                vh.tv_num.setText(num + "");
-                if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
-                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
-                    Zhekou zk = new Zhekou();
-                    zk.DiscountPrice = shopCar.discount;
-                    zk.GoodsPoint = shopCar.pointPercent;
-                    insertShopCar(true, zk, home, num);
-                } else {
-                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
-                    Zhekou zk = new Zhekou();
-                    zk.DiscountPrice = shopCar.discount;
-                    zk.GoodsPoint = shopCar.pointPercent;
-                    insertShopCar(false, zk, home, num);
-                }
-            }
-        });
+//        vh.img_del.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int num = Integer.parseInt(vh.tv_num.getText().toString());
+//                num = num - 1;
+//                if (num == 0) {
+//                    vh.img_del.setVisibility(View.GONE);
+//                    vh.tv_num.setVisibility(View.GONE);
+//                }
+//                vh.tv_num.setText(num + "");
+//                if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
+//                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
+//                    Zhekou zk = new Zhekou();
+//                    zk.DiscountPrice = shopCar.discount;
+//                    zk.GoodsPoint = shopCar.pointPercent;
+//                    insertShopCar(true, zk, home, num);
+//                } else {
+//                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
+//                    Zhekou zk = new Zhekou();
+//                    zk.DiscountPrice = shopCar.discount;
+//                    zk.GoodsPoint = shopCar.pointPercent;
+//                    insertShopCar(false, zk, home, num);
+//                }
+//            }
+//        });
         return convertView;
     }
 

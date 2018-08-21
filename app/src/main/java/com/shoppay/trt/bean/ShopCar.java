@@ -17,4 +17,5 @@ public class ShopCar {
     public String account;//个人账号
     public String goodsclassid;//商品分类id
     public String shopname;
+    public String batchnumber;
 }
