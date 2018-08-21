@@ -2,7 +2,9 @@ package com.shoppay.trt.tools;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.shoppay.trt.R;
+import com.shoppay.trt.adapter.ShopCarAdapter;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.http.InterfaceBack;
 
@@ -22,9 +25,10 @@ import java.util.List;
  */
 
 public class ShopCarDialog {
-    public static  int shopnum=0;
+
     public static Dialog numchoseDialog(final Context context,
-                                        int showingLocation, List<ShopCar> carlist, final InterfaceBack handler) {
+                                        int showingLocation, List<ShopCar> carlist) {
+
         final Dialog dialog;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_shopcar, null);
@@ -37,6 +41,8 @@ public class ShopCarDialog {
                 .getWidth();
         dialog.setContentView(view, new LinearLayout.LayoutParams(
                 screenWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
+        ShopCarAdapter adapter = new ShopCarAdapter(context, carlist);
+        listview.setAdapter(adapter);
         dialog.show();
         Window window = dialog.getWindow();
         switch (showingLocation) {
@@ -59,6 +65,17 @@ public class ShopCarDialog {
                 window.setGravity(Gravity.TOP);
                 window.setAttributes(params);
                 break;
+            case 4:
+                //设置Dialog从窗体底部弹出
+                window.setGravity(Gravity.BOTTOM);
+
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.y = dip2px(context, 51);//设置Dialog距离底部的距离
+                //宽度填满
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                //将属性设置给窗体
+                window.setAttributes(lp);
+                break;
             default:
                 window.setGravity(Gravity.CENTER);
                 break;
@@ -69,7 +86,7 @@ public class ShopCarDialog {
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-  }
-
-
     }
+
+
+}

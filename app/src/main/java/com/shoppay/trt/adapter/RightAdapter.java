@@ -129,103 +129,103 @@ public class RightAdapter extends BaseAdapter {
 //                    }
 //                });
 //            }
+//        });/9/0
+//        vh.img_add.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
+//
+//                    int num = Integer.parseInt(vh.tv_num.getText().toString());
+//                    if (num == 0) {
+//                        vh.tv_num.setVisibility(View.VISIBLE);
+//                        vh.img_del.setVisibility(View.VISIBLE);
+//                    }
+//                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
+//                    if (shopCar == null) {
+//                        if (Integer.parseInt(home.Number) < 1) {
+//                            if(home.GoodsType.equals("1")){
+//                                num = 1;
+//                                vh.tv_num.setText(num + "");
+//                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
+//                            }else {
+//                                num = 0;
+//                                Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
+//                                vh.tv_num.setVisibility(View.GONE);
+//                                vh.img_del.setVisibility(View.GONE);
+//                            }
+//                        }else {
+//                            num = 1;
+//                            vh.tv_num.setText(num + "");
+//                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
+//                        }
+//                    } else {
+//                        num = num + 1;
+//                        if (Integer.parseInt(home.Number) < num) {
+//                            if(home.GoodsType.equals("1")){
+//                                vh.tv_num.setText(num + "");
+//                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
+//                            }else {
+//                                num = num - 1;
+//                                Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
+//                            }
+//                        }else {
+//                            vh.tv_num.setText(num + "");
+//                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
+//                        }
+//                    }
+//                } else {
+//                    if (PreferenceHelper.readString(context, "shoppay", "memid", "").equals("")) {
+//                        Toast.makeText(context, PreferenceHelper.readString(context, "shoppay", "viptoast", "未查询到会员"), Toast.LENGTH_SHORT).show();
+//
+//                    } else {
+//                        int num = Integer.parseInt(vh.tv_num.getText().toString());
+//                        if (num == 0) {
+//                            vh.tv_num.setVisibility(View.VISIBLE);
+//                            vh.img_del.setVisibility(View.VISIBLE);
+//                        }
+//                        ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
+//                        if (shopCar == null) {
+//                            if (Integer.parseInt(home.Number) < 1) {
+//                                if(home.GoodsType.equals("1")) {
+//                                    num = 1;
+//                                    vh.tv_num.setText(num + "");
+//                                    obtainShopZhekou(home);
+//                                }else {
+//                                    num = 0;
+//                                    Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
+//                                    vh.tv_num.setVisibility(View.GONE);
+//                                    vh.img_del.setVisibility(View.GONE);
+//                                }
+//                            }else {
+//                                num = 1;
+//                                vh.tv_num.setText(num + "");
+//                                obtainShopZhekou(home);
+//                            }
+//                        } else {
+//                            num = num + 1;
+//                            if (Integer.parseInt(home.Number) < num) {
+//                                if(home.GoodsType.equals("1")) {
+//                                    vh.tv_num.setText(num + "");
+//                                    Zhekou zk = new Zhekou();
+//                                    zk.DiscountPrice = shopCar.discount;
+//                                    zk.GoodsPoint = shopCar.pointPercent;
+//                                    insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num);
+//                                }else {
+//                                    num = num - 1;
+//                                    Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
+//                                }
+//                            }else {
+//                                vh.tv_num.setText(num + "");
+//                                Zhekou zk = new Zhekou();
+//                                zk.DiscountPrice = shopCar.discount;
+//                                zk.GoodsPoint = shopCar.pointPercent;
+//                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
 //        });
-        vh.img_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
-
-                    int num = Integer.parseInt(vh.tv_num.getText().toString());
-                    if (num == 0) {
-                        vh.tv_num.setVisibility(View.VISIBLE);
-                        vh.img_del.setVisibility(View.VISIBLE);
-                    }
-                    ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
-                    if (shopCar == null) {
-                        if (Integer.parseInt(home.Number) < 1) {
-                            if(home.GoodsType.equals("1")){
-                                num = 1;
-                                vh.tv_num.setText(num + "");
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
-                            }else {
-                                num = 0;
-                                Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
-                                vh.tv_num.setVisibility(View.GONE);
-                                vh.img_del.setVisibility(View.GONE);
-                            }
-                        }else {
-                            num = 1;
-                            vh.tv_num.setText(num + "");
-                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
-                        }
-                    } else {
-                        num = num + 1;
-                        if (Integer.parseInt(home.Number) < num) {
-                            if(home.GoodsType.equals("1")){
-                                vh.tv_num.setText(num + "");
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
-                            }else {
-                                num = num - 1;
-                                Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            vh.tv_num.setText(num + "");
-                            insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num);
-                        }
-                    }
-                } else {
-                    if (PreferenceHelper.readString(context, "shoppay", "memid", "").equals("")) {
-                        Toast.makeText(context, PreferenceHelper.readString(context, "shoppay", "viptoast", "未查询到会员"), Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        int num = Integer.parseInt(vh.tv_num.getText().toString());
-                        if (num == 0) {
-                            vh.tv_num.setVisibility(View.VISIBLE);
-                            vh.img_del.setVisibility(View.VISIBLE);
-                        }
-                        ShopCar shopCar = dbAdapter.getShopCar(home.GoodsID);
-                        if (shopCar == null) {
-                            if (Integer.parseInt(home.Number) < 1) {
-                                if(home.GoodsType.equals("1")) {
-                                    num = 1;
-                                    vh.tv_num.setText(num + "");
-                                    obtainShopZhekou(home);
-                                }else {
-                                    num = 0;
-                                    Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
-                                    vh.tv_num.setVisibility(View.GONE);
-                                    vh.img_del.setVisibility(View.GONE);
-                                }
-                            }else {
-                                num = 1;
-                                vh.tv_num.setText(num + "");
-                                obtainShopZhekou(home);
-                            }
-                        } else {
-                            num = num + 1;
-                            if (Integer.parseInt(home.Number) < num) {
-                                if(home.GoodsType.equals("1")) {
-                                    vh.tv_num.setText(num + "");
-                                    Zhekou zk = new Zhekou();
-                                    zk.DiscountPrice = shopCar.discount;
-                                    zk.GoodsPoint = shopCar.pointPercent;
-                                    insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num);
-                                }else {
-                                    num = num - 1;
-                                    Toast.makeText(context, "该商品的最大库存量为" + home.Number, Toast.LENGTH_SHORT).show();
-                                }
-                            }else {
-                                vh.tv_num.setText(num + "");
-                                Zhekou zk = new Zhekou();
-                                zk.DiscountPrice = shopCar.discount;
-                                zk.GoodsPoint = shopCar.pointPercent;
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num);
-                            }
-                        }
-                    }
-                }
-            }
-        });
 //        vh.img_del.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

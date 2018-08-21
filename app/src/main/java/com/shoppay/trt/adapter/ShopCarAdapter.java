@@ -45,15 +45,14 @@ public class ShopCarAdapter extends BaseAdapter {
     private Intent intent;
     private Dialog dialog;
     private DBAdapter dbAdapter;
-    private  int maxnum;
-    public ShopCarAdapter(Context context, List<ShopCar> list,int maxnum) {
+
+    public ShopCarAdapter(Context context, List<ShopCar> list) {
         this.context = context;
         if (list == null) {
             this.list = new ArrayList<ShopCar>();
         } else {
             this.list = list;
         }
-        this.maxnum=maxnum;
         inflater = LayoutInflater.from(context);
         intent = new Intent("com.shoppay.wy.numberchange");
         dialog = DialogUtil.loadingDialog(context, 1);
@@ -81,7 +80,7 @@ public class ShopCarAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-     final ViewHolder vh;
+        final ViewHolder vh;
 //		if (convertView == null) {
         convertView = inflater.inflate(R.layout.item_gwcar, null);
         vh = new ViewHolder();
@@ -96,10 +95,10 @@ public class ShopCarAdapter extends BaseAdapter {
 //			vh = (ViewHolder) convertView.getTag();
 //		}
         final ShopCar home = list.get(position);
-        vh.tv_money.setText("￥"+home.discountmoney);
-        vh.tv_name.setText("品名："+home.shopname);
-        vh.item_tv_numph.setText(home.count+"");
-        if(!home.batchnumber.equals("")){
+        vh.tv_money.setText("￥" + home.discountmoney);
+        vh.tv_name.setText("品名：" + home.shopname);
+        vh.item_tv_numph.setText(home.count + "");
+        if (!home.batchnumber.equals("")) {
             vh.et_pihao.setText(home.batchnumber);
         }
         vh.item_iv_del.setOnClickListener(new View.OnClickListener() {
@@ -120,6 +119,7 @@ public class ShopCarAdapter extends BaseAdapter {
                 if (home.goodsType.equals("1")) {
                     vh.item_tv_numph.setText(shopnum + "");
                 } else {
+                    int maxnum = Integer.parseInt(home.maxnum);
                     if (shopnum > maxnum) {
                         shopnum = maxnum;
                         vh.item_tv_numph.setText(shopnum + "");
@@ -137,10 +137,8 @@ public class ShopCarAdapter extends BaseAdapter {
     class ViewHolder {
         TextView tv_name, tv_money;
         ImageView item_iv_del, item_iv_add;
-        EditText et_pihao,item_tv_numph;
+        EditText et_pihao, item_tv_numph;
     }
-
-
 
 
     private void obtainShopZhekou(final Shop shop) {
@@ -197,16 +195,16 @@ public class ShopCarAdapter extends BaseAdapter {
         shopCar.account = PreferenceHelper.readString(context, "shoppay", "account", "123");
         shopCar.count = num;
         if (isSan) {
-            shopCar.discount =shop.GoodsPrice;
+            shopCar.discount = shop.GoodsPrice;
             shopCar.discountmoney = StringUtil.twoNum(Double.parseDouble(shop.GoodsPrice) * num + "");
             shopCar.point = 0;
             shopCar.pointPercent = "0";
-            shopCar.goodspoint =0;
+            shopCar.goodspoint = 0;
         } else {
             double dimoney = num * Double.parseDouble(zk.DiscountPrice);
             shopCar.discount = zk.DiscountPrice;
             shopCar.discountmoney = StringUtil.twoNum(dimoney + "");
-            shopCar.point = Double.parseDouble(CommonUtils.multiply(zk.GoodsPoint,num+""));
+            shopCar.point = Double.parseDouble(CommonUtils.multiply(zk.GoodsPoint, num + ""));
             shopCar.pointPercent = zk.GoodsPoint;
             shopCar.goodspoint = Integer.parseInt(zk.GoodsPoint);
         }

@@ -42,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/tv_pm"
-                android:text="品名"
+                android:text=""
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -59,14 +59,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@+id/item_iv_addpm"
                 android:inputType="number"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="0"
                 android:textColor="@color/theme_red"
-                android:textSize="14sp"
-                 />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/item_iv_delpm"
@@ -74,8 +73,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/item_tv_numpm"
-                android:background="@drawable/del"
-                />
+                android:background="@drawable/del" />
 
             <View
                 android:layout_width="match_parent"
@@ -108,10 +106,11 @@
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@id/tv_ph"
                 android:background="@null"
-                android:text=""
                 android:hint="请输入批号"
+                android:text=""
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -123,8 +122,8 @@
             android:id="@+id/rl_confirm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
             android:layout_marginBottom="30dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="50dp"
             android:background="@drawable/kuang_red_red">

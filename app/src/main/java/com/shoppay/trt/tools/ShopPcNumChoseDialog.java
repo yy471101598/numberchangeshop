@@ -12,9 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shoppay.trt.R;
+import com.shoppay.trt.bean.ShopChose;
 import com.shoppay.trt.http.InterfaceBack;
 
 /**
@@ -25,13 +27,14 @@ public class ShopPcNumChoseDialog {
     public static int shopnum = 0;
 
     public static Dialog numchoseDialog(final Context context,
-                                        int showingLocation, final int num, final int maxnum, final String type, final String pihao, final InterfaceBack handler) {
+                                        int showingLocation, final String name, final int num, final int maxnum, final String type, final String pihao, final InterfaceBack handler) {
         final Dialog dialog;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_addshop, null);
         final ImageView iv_del = (ImageView) view.findViewById(R.id.item_iv_delpm);
         final ImageView iv_add = (ImageView) view.findViewById(R.id.item_iv_addpm);
         final EditText et_num = (EditText) view.findViewById(R.id.item_tv_numpm);
+        final TextView tv_name = (TextView) view.findViewById(R.id.tv_pinming);
         final EditText et_pihao = (EditText) view.findViewById(R.id.et_pihao);
         final ImageView rl_cancle = (ImageView) view.findViewById(R.id.img_delete);
         final RelativeLayout rl_confirm = (RelativeLayout) view.findViewById(R.id.rl_confirm);
@@ -45,7 +48,9 @@ public class ShopPcNumChoseDialog {
                 screenWidth - 60, LinearLayout.LayoutParams.WRAP_CONTENT));
         dialog.show();
         shopnum = num;
+        tv_name.setText(name);
         et_num.setText(num + "");
+        et_num.setSelection(String.valueOf(num).length());
         if (!pihao.equals("")) {
             et_pihao.setText(pihao);
         }
@@ -93,11 +98,17 @@ public class ShopPcNumChoseDialog {
                         Toast.makeText(context, "该商品的最大库存量为" + maxnum, Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();
-                        handler.onResponse(et_num.getText().toString());
+                        ShopChose chose = new ShopChose();
+                        chose.num = et_num.getText().toString();
+                        chose.pihao = et_pihao.getText().toString();
+                        handler.onResponse(chose);
                     }
                 } else {
                     dialog.dismiss();
-                    handler.onResponse(et_num.getText().toString() + ";" + et_pihao.getText().toString());
+                    ShopChose chose = new ShopChose();
+                    chose.num = et_num.getText().toString();
+                    chose.pihao = et_pihao.getText().toString();
+                    handler.onResponse(chose);
                 }
             }
         });

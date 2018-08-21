@@ -22,6 +22,7 @@ import com.loopj.android.http.RequestParams;
 import com.shoppay.trt.adapter.RightAdapter;
 import com.shoppay.trt.bean.Shop;
 import com.shoppay.trt.bean.ShopCar;
+import com.shoppay.trt.bean.ShopChose;
 import com.shoppay.trt.bean.Zhekou;
 import com.shoppay.trt.db.DBAdapter;
 import com.shoppay.trt.http.InterfaceBack;
@@ -88,62 +89,122 @@ public class BalanceTFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Shop home = (Shop) adapterView.getItemAtPosition(i);
-                final ShopCar dbshop = dbAdapter.getShopCar(home.GoodsID);
-                if (dbshop == null) {
-                    ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, 0, Integer.parseInt(home.Number), home.GoodsType,"", new InterfaceBack() {
-                        @Override
-                        public void onResponse(Object response) {
-                            String[] ss= response.toString().split(";");
-                            int num = Integer.parseInt(ss[0]);
-                            String pihao=ss[1];
-                            if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num,pihao);
+                if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
 
-                            } else {
-                                obtainShopZhekou(home, num,pihao);
+                    final Shop home = (Shop) adapterView.getItemAtPosition(i);
+                    final ShopCar dbshop = dbAdapter.getShopCar(home.GoodsID);
+                    if (dbshop == null) {
+                        ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, home.GoodsName, 0, Integer.parseInt(home.Number), home.GoodsType, "", new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                LogUtils.d("xxre", new Gson().toJson(response));
+                                ShopChose chose = (ShopChose) response;
+                                int num = Integer.parseInt(chose.num);
+                                String pihao = chose.pihao;
+                                if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
+                                    insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num, pihao);
+
+                                } else {
+                                    obtainShopZhekou(home, num, pihao);
+
+                                }
 
                             }
 
-                        }
+                            @Override
+                            public void onErrorResponse(Object msg) {
 
-                        @Override
-                        public void onErrorResponse(Object msg) {
+                            }
+                        });
+                    } else {
+                        ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, home.GoodsName, dbshop.count, Integer.parseInt(home.Number), home.GoodsType, dbshop.batchnumber, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                ShopChose chose = (ShopChose) response;
+                                int num = Integer.parseInt(chose.num);
+                                String pihao = chose.pihao;
+                                if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
+                                    insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num, pihao);
 
-                        }
-                    });
+                                } else {
+                                    Zhekou zk = new Zhekou();
+                                    zk.DiscountPrice = dbshop.discount;
+                                    zk.GoodsPoint = dbshop.pointPercent;
+                                    insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num, pihao);
+
+                                }
+
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
+                    }
                 } else {
-                    ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, dbshop.count, Integer.parseInt(home.Number), home.GoodsType,dbshop.batchnumber, new InterfaceBack() {
-                        @Override
-                        public void onResponse(Object response) {
-                           String[] ss= response.toString().split(";");
-                            int num = Integer.parseInt(ss[0]);
-                            String pihao=ss[1];
-                            if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num,pihao);
+                    if (PreferenceHelper.readString(context, "shoppay", "memid", "").equals("")) {
+                        Toast.makeText(context, "请输入正确的会员信息", Toast.LENGTH_SHORT).show();
+                    } else {
+                        final Shop home = (Shop) adapterView.getItemAtPosition(i);
+                        final ShopCar dbshop = dbAdapter.getShopCar(home.GoodsID);
+                        if (dbshop == null) {
+                            ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, home.GoodsName, 0, Integer.parseInt(home.Number), home.GoodsType, "", new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    LogUtils.d("xxre", new Gson().toJson(response));
+                                    ShopChose chose = (ShopChose) response;
+                                    int num = Integer.parseInt(chose.num);
+                                    String pihao = chose.pihao;
+                                    if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
+                                        insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num, pihao);
 
-                            } else {
-                                Zhekou zk = new Zhekou();
-                                zk.DiscountPrice = dbshop.discount;
-                                zk.GoodsPoint = dbshop.pointPercent;
-                                insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num,pihao);
+                                    } else {
+                                        obtainShopZhekou(home, num, pihao);
 
-                            }
+                                    }
 
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+
+                                }
+                            });
+                        } else {
+                            ShopPcNumChoseDialog.numchoseDialog(getActivity(), 1, home.GoodsName, dbshop.count, Integer.parseInt(home.Number), home.GoodsType, dbshop.batchnumber, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    ShopChose chose = (ShopChose) response;
+                                    int num = Integer.parseInt(chose.num);
+                                    String pihao = chose.pihao;
+                                    if (PreferenceHelper.readBoolean(getActivity(), "shoppay", "isSan", true)) {
+                                        insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), null, home, num, pihao);
+
+                                    } else {
+                                        Zhekou zk = new Zhekou();
+                                        zk.DiscountPrice = dbshop.discount;
+                                        zk.GoodsPoint = dbshop.pointPercent;
+                                        insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zk, home, num, pihao);
+
+                                    }
+
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+
+                                }
+                            });
                         }
-
-                        @Override
-                        public void onErrorResponse(Object msg) {
-
-                        }
-                    });
+                    }
                 }
             }
         });
         return view;
     }
 
-    private void obtainShopZhekou(final Shop shop, final int num,final String pihao) {
+    private void obtainShopZhekou(final Shop shop, final int num, final String pihao) {
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
@@ -171,7 +232,7 @@ public class BalanceTFragment extends Fragment {
                         }.getType();
                         List<Zhekou> zhekoulist = gson.fromJson(jso.getString("vdata"), listType);
                         //加入购物车
-                        insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zhekoulist.get(0), shop, num,pihao);
+                        insertShopCar(PreferenceHelper.readBoolean(context, "shoppay", "isSan", true), zhekoulist.get(0), shop, num, pihao);
 
                     } else {
                         Toast.makeText(context, "获取商品折扣失败", Toast.LENGTH_SHORT).show();
@@ -190,7 +251,7 @@ public class BalanceTFragment extends Fragment {
         });
     }
 
-    private void insertShopCar(Boolean isSan, Zhekou zk, Shop shop, int num,String pihao) {
+    private void insertShopCar(Boolean isSan, Zhekou zk, Shop shop, int num, String pihao) {
         //加入购物车
         List<ShopCar> li = new ArrayList<ShopCar>();
         ShopCar shopCar = new ShopCar();
@@ -215,9 +276,11 @@ public class BalanceTFragment extends Fragment {
         shopCar.goodsType = shop.GoodsType;
         shopCar.price = shop.GoodsPrice;
         shopCar.shopname = shop.GoodsName;
-        shopCar.batchnumber=pihao;
+        shopCar.batchnumber = pihao;
+        shopCar.maxnum = shop.Number;
         li.add(shopCar);
         dbAdapter.insertShopCar(li);
+        adapter.notifyDataSetChanged();
 //		intent.putExtra("shopclass",shop.GoodsClassID);
 //		intent.putExtra("num",num+"");
         getActivity().sendBroadcast(intent);

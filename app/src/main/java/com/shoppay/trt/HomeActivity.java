@@ -57,6 +57,10 @@ public class HomeActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Home home = (Home) adapterView.getItemAtPosition(i);
                 switch (home.name) {
+                    case "挂单列表":
+                        Intent guadan = new Intent(ac, GuadanListActivity.class);
+                        startActivity(guadan);
+                        break;
                     case "会员查询":
                         Intent chaxun = new Intent(ac, VipChaxunActivity.class);
                         startActivity(chaxun);

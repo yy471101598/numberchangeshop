@@ -18,4 +18,5 @@ public class ShopCar {
     public String goodsclassid;//商品分类id
     public String shopname;
     public String batchnumber;
+    public String maxnum;
 }

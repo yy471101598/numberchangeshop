@@ -54,6 +54,7 @@ import com.shoppay.trt.tools.LogUtils;
 import com.shoppay.trt.tools.MergeLinearArraysUtil;
 import com.shoppay.trt.tools.NoDoubleClickListener;
 import com.shoppay.trt.tools.PreferenceHelper;
+import com.shoppay.trt.tools.ShopCarDialog;
 import com.shoppay.trt.tools.ShopXiaofeiDialog;
 import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
@@ -103,6 +104,8 @@ public class BalanceTActivity extends FragmentActivity implements
     private RelativeLayout rl_right;
     private LinearLayout li_vipmsg;
     private Boolean isSuccess = false;
+    private Dialog shopcarDialog;
+    private boolean isshopcarshow = false;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -151,12 +154,6 @@ public class BalanceTActivity extends FragmentActivity implements
         ac = context;
         app = (MyApplication) getApplication();
         sysquanxian = app.getSysquanxian();
-        if (sysquanxian.isjiesuan == 0) {
-            //1开启0关闭
-            rl_jiesuan.setBackgroundColor(getResources().getColor(R.color.gray_cc));
-        } else {
-            rl_jiesuan.setBackgroundColor(getResources().getColor(R.color.theme_red));
-        }
         dialog = DialogUtil.loadingDialog(BalanceTActivity.this, 1);
         paydialog = DialogUtil.payloadingDialog(BalanceTActivity.this, 1);
         dbAdapter = DBAdapter.getInstance(ac);
@@ -168,6 +165,12 @@ public class BalanceTActivity extends FragmentActivity implements
         mPosition = 0;
         dbAdapter.deleteShopCar();
         initView();
+        if (sysquanxian.isjiesuan == 0) {
+            //1开启0关闭
+            rl_jiesuan.setBackgroundColor(getResources().getColor(R.color.gray_cc));
+        } else {
+            rl_jiesuan.setBackgroundColor(getResources().getColor(R.color.theme_red));
+        }
         // 注册广播
         shopchangeReceiver = new ShopChangeReceiver();
         IntentFilter iiiff = new IntentFilter();
@@ -432,7 +435,7 @@ public class BalanceTActivity extends FragmentActivity implements
         et_card = (EditText) findViewById(R.id.balance_et_card);
         et_shopcode = (EditText) findViewById(R.id.balance_et_shopcode);
         listView = (ListView) findViewById(R.id.listview);
-        img_shopcar= (ImageView) findViewById(R.id.img_gwcar);
+        img_shopcar = (ImageView) findViewById(R.id.img_gwcar);
         rl_left.setOnClickListener(this);
         rl_yes.setOnClickListener(this);
         rl_guadan.setOnClickListener(this);
@@ -442,9 +445,23 @@ public class BalanceTActivity extends FragmentActivity implements
         img_shopcar.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-
-
-
+//                List<ShopCar> listss = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+//                if (isshopcarshow) {
+//                    isshopcarshow = false;
+//                    shopcarDialog.cancel();
+//                } else {
+//                    if (listss.size() > 0) {
+//                        List<ShopCar> shoplist = new ArrayList<>();
+//                        for (ShopCar numShop : listss) {
+//                            if (numShop.count == 0) {
+//                            } else {
+//                                shoplist.add(numShop);
+//                            }
+//                        }
+//                        isshopcarshow = true;
+//                        shopcarDialog = ShopCarDialog.numchoseDialog(BalanceTActivity.this, 4, shoplist);
+//                    }
+//                }
             }
         });
 
@@ -461,9 +478,11 @@ public class BalanceTActivity extends FragmentActivity implements
                                 Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
                             } else {
                                 //会员挂单
+                                guadan();
                             }
                         } else {
                             //散客挂单
+                            guadan();
                         }
                     } else {
                         //无网络
