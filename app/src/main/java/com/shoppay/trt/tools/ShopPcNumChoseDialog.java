@@ -61,6 +61,7 @@ public class ShopPcNumChoseDialog {
                 if (shopnum > 0) {
                     shopnum = shopnum - 1;
                     et_num.setText(shopnum + "");
+                    et_num.setSelection(String.valueOf(shopnum).length());
                 }
             }
         });
@@ -70,13 +71,16 @@ public class ShopPcNumChoseDialog {
                 shopnum = shopnum + 1;
                 if (type.equals("1")) {
                     et_num.setText(shopnum + "");
+                    et_num.setSelection(String.valueOf(shopnum).length());
                 } else {
                     if (shopnum > maxnum) {
                         shopnum = maxnum;
                         et_num.setText(shopnum + "");
+                        et_num.setSelection(String.valueOf(shopnum).length());
                         Toast.makeText(context, "该商品的最大库存量为" + maxnum, Toast.LENGTH_SHORT).show();
                     } else {
                         et_num.setText(shopnum + "");
+                        et_num.setSelection(String.valueOf(shopnum).length());
                     }
                 }
             }
@@ -95,6 +99,7 @@ public class ShopPcNumChoseDialog {
                 if (!type.equals("1")) {
                     if (Integer.parseInt(et_num.getText().toString()) > maxnum) {
                         et_num.setText(maxnum + "");
+                        et_num.setSelection(String.valueOf(shopnum).length());
                         Toast.makeText(context, "该商品的最大库存量为" + maxnum, Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();

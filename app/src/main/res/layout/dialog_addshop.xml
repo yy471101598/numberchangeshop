@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/delete" />
+            android:background="@drawable/delete"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:layout_centerVertical="true"
                 android:text="品名："
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/tv_pinming"
@@ -44,7 +44,7 @@
                 android:layout_toRightOf="@id/tv_pm"
                 android:text=""
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <ImageView
                 android:id="@+id/item_iv_addpm"
@@ -52,7 +52,7 @@
                 android:layout_height="20dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/add" />
+                android:background="@drawable/add"/>
 
             <EditText
                 android:id="@+id/item_tv_numpm"
@@ -60,12 +60,13 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/item_iv_addpm"
+                android:background="@null"
                 android:inputType="number"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:text="0"
                 android:textColor="@color/theme_red"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <ImageView
                 android:id="@+id/item_iv_delpm"
@@ -73,7 +74,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/item_tv_numpm"
-                android:background="@drawable/del" />
+                android:background="@drawable/del"/>
 
             <View
                 android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                 android:layout_centerVertical="true"
                 android:text="批号："
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <EditText
                 android:id="@+id/et_pihao"
@@ -109,7 +110,7 @@
                 android:hint="请输入批号"
                 android:text=""
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -134,7 +135,7 @@
                 android:layout_centerInParent="true"
                 android:text="确定"
                 android:textColor="#ffffff"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

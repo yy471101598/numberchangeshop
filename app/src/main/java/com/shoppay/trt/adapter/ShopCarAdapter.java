@@ -87,8 +87,8 @@ public class ShopCarAdapter extends BaseAdapter {
         vh.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
         vh.tv_money = (TextView) convertView.findViewById(R.id.tv_money);
         vh.item_tv_numph = (EditText) convertView.findViewById(R.id.item_tv_numph);
-        vh.item_iv_del = (ImageView) convertView.findViewById(R.id.item_iv_del);
-        vh.item_iv_add = (ImageView) convertView.findViewById(R.id.item_iv_add);
+        vh.img_del = (ImageView) convertView.findViewById(R.id.item_iv_del);
+        vh.img_add = (ImageView) convertView.findViewById(R.id.item_iv_add);
         vh.et_pihao = (EditText) convertView.findViewById(R.id.et_pihao);
         convertView.setTag(vh);
 //		} else {
@@ -101,23 +101,30 @@ public class ShopCarAdapter extends BaseAdapter {
         if (!home.batchnumber.equals("")) {
             vh.et_pihao.setText(home.batchnumber);
         }
-        vh.item_iv_del.setOnClickListener(new View.OnClickListener() {
+        vh.img_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int shopnum = Integer.parseInt(vh.item_tv_numph.getText().toString());
-                if (shopnum > 0) {
-                    shopnum = shopnum - 1;
-                    vh.item_tv_numph.setText(shopnum + "");
+                int num = Integer.parseInt(vh.item_tv_numph.getText().toString());
+                if (num > 0) {
+                    num = num - 1;
+                    vh.item_tv_numph.setText(num + "");
+                    home.count = num;
+                    home.batchnumber = vh.et_pihao.getText().toString();
+                    insertShopCar(home);
                 }
+
             }
         });
-        vh.item_iv_add.setOnClickListener(new View.OnClickListener() {
+        vh.img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int shopnum = Integer.parseInt(vh.item_tv_numph.getText().toString());
                 shopnum = shopnum + 1;
                 if (home.goodsType.equals("1")) {
                     vh.item_tv_numph.setText(shopnum + "");
+                    home.count = shopnum;
+                    home.batchnumber = vh.et_pihao.getText().toString();
+                    insertShopCar(home);
                 } else {
                     int maxnum = Integer.parseInt(home.maxnum);
                     if (shopnum > maxnum) {
@@ -126,6 +133,9 @@ public class ShopCarAdapter extends BaseAdapter {
                         Toast.makeText(context, "该商品的最大库存量为" + maxnum, Toast.LENGTH_SHORT).show();
                     } else {
                         vh.item_tv_numph.setText(shopnum + "");
+                        home.count = shopnum;
+                        home.batchnumber = vh.et_pihao.getText().toString();
+                        insertShopCar(home);
                     }
                 }
             }
@@ -136,7 +146,7 @@ public class ShopCarAdapter extends BaseAdapter {
 
     class ViewHolder {
         TextView tv_name, tv_money;
-        ImageView item_iv_del, item_iv_add;
+        ImageView img_del, img_add;
         EditText et_pihao, item_tv_numph;
     }
 
@@ -186,6 +196,13 @@ public class ShopCarAdapter extends BaseAdapter {
                 Toast.makeText(context, "获取商品折扣失败", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void insertShopCar(ShopCar shopCar) {
+        List<ShopCar> li = new ArrayList<ShopCar>();
+        li.add(shopCar);
+        dbAdapter.insertShopCar(li);
+        context.sendBroadcast(intent);
     }
 
     private void insertShopCar(Boolean isSan, Zhekou zk, Shop shop, int num) {

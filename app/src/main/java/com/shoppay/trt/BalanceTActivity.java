@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.shoppay.trt.adapter.LeftAdapter;
+import com.shoppay.trt.adapter.ShopCarAdapter;
 import com.shoppay.trt.bean.Shop;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.bean.ShopClass;
@@ -54,7 +58,6 @@ import com.shoppay.trt.tools.LogUtils;
 import com.shoppay.trt.tools.MergeLinearArraysUtil;
 import com.shoppay.trt.tools.NoDoubleClickListener;
 import com.shoppay.trt.tools.PreferenceHelper;
-import com.shoppay.trt.tools.ShopCarDialog;
 import com.shoppay.trt.tools.ShopXiaofeiDialog;
 import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
@@ -104,7 +107,6 @@ public class BalanceTActivity extends FragmentActivity implements
     private RelativeLayout rl_right;
     private LinearLayout li_vipmsg;
     private Boolean isSuccess = false;
-    private Dialog shopcarDialog;
     private boolean isshopcarshow = false;
     private Handler handler = new Handler() {
         @Override
@@ -146,12 +148,13 @@ public class BalanceTActivity extends FragmentActivity implements
     private SystemQuanxian sysquanxian;
     private RelativeLayout rl_guadan;
     private ImageView img_shopcar;
+    private PopupWindow pw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_balance);
-        ac = context;
+        ac = this;
         app = (MyApplication) getApplication();
         sysquanxian = app.getSysquanxian();
         dialog = DialogUtil.loadingDialog(BalanceTActivity.this, 1);
@@ -443,161 +446,202 @@ public class BalanceTActivity extends FragmentActivity implements
         tv_search.setOnClickListener(this);
         img_shopcar.setOnClickListener(this);
         img_shopcar.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            protected void onNoDoubleClick(View view) {
-//                List<ShopCar> listss = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
-//                if (isshopcarshow) {
-//                    isshopcarshow = false;
-//                    shopcarDialog.cancel();
-//                } else {
-//                    if (listss.size() > 0) {
-//                        List<ShopCar> shoplist = new ArrayList<>();
-//                        for (ShopCar numShop : listss) {
-//                            if (numShop.count == 0) {
-//                            } else {
-//                                shoplist.add(numShop);
-//                            }
-//                        }
-//                        isshopcarshow = true;
-//                        shopcarDialog = ShopCarDialog.numchoseDialog(BalanceTActivity.this, 4, shoplist);
-//                    }
-//                }
-            }
-        });
+                                           @Override
+                                           protected void onNoDoubleClick(View view) {
+                                               LogUtils.d("xxclick", isshopcarshow + "");
+                                               if (isshopcarshow) {
+                                                   isshopcarshow = false;
+                                                   pw.dismiss();
+                                               } else {
+                                                   isshopcarshow = true;
+                                                   showpopupwindow();
+                                               }
+                                           }
+                                       }
+
+        );
 
         rl_guadan.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            protected void onNoDoubleClick(View view) {
-                if (tv_num.getText().toString().equals("0")) {
-                    Toast.makeText(getApplicationContext(), "请选择商品",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    if (CommonUtils.checkNet(getApplicationContext())) {
-                        if (type.equals("否")) {
-                            if (tv_vipjifen.getText().toString().equals("") || tv_vipjifen.getText().toString().equals("获取中")) {
-                                Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
-                            } else {
-                                //会员挂单
-                                guadan();
-                            }
-                        } else {
-                            //散客挂单
-                            guadan();
-                        }
-                    } else {
-                        //无网络
-                        Toast.makeText(getApplicationContext(), "请检查网络是否可用",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
+                                         @Override
+                                         protected void onNoDoubleClick(View view) {
+                                             if (tv_num.getText().toString().equals("0")) {
+                                                 Toast.makeText(getApplicationContext(), "请选择商品",
+                                                         Toast.LENGTH_SHORT).show();
+                                             } else {
+                                                 if (CommonUtils.checkNet(getApplicationContext())) {
+                                                     if (type.equals("否")) {
+                                                         if (tv_vipjifen.getText().toString().equals("") || tv_vipjifen.getText().toString().equals("获取中")) {
+                                                             Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
+                                                         } else {
+                                                             //会员挂单
+                                                             guadan();
+                                                         }
+                                                     } else {
+                                                         //散客挂单
+                                                         guadan();
+                                                     }
+                                                 } else {
+                                                     //无网络
+                                                     Toast.makeText(getApplicationContext(), "请检查网络是否可用",
+                                                             Toast.LENGTH_SHORT).show();
+                                                 }
+                                             }
+                                         }
+                                     }
+
+        );
 
         rl_jiesuan.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            protected void onNoDoubleClick(View view) {
+                                          @Override
+                                          protected void onNoDoubleClick(View view) {
 
-                if (sysquanxian.isjiesuan == 1) {
+                                              if (sysquanxian.isjiesuan == 1) {
 
-                    if (tv_num.getText().toString().equals("0")) {
-                        Toast.makeText(getApplicationContext(), "请选择商品",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (CommonUtils.checkNet(getApplicationContext())) {
-                            if (type.equals("否")) {
-                                if (tv_vipjifen.getText().toString().equals("") || tv_vipjifen.getText().toString().equals("获取中")) {
-                                    Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    //会员结算
+                                                  if (tv_num.getText().toString().equals("0")) {
+                                                      Toast.makeText(getApplicationContext(), "请选择商品",
+                                                              Toast.LENGTH_SHORT).show();
+                                                  } else {
+                                                      if (CommonUtils.checkNet(getApplicationContext())) {
+                                                          if (type.equals("否")) {
+                                                              if (tv_vipjifen.getText().toString().equals("") || tv_vipjifen.getText().toString().equals("获取中")) {
+                                                                  Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
+                                                              } else {
+                                                                  //会员结算
 //
-                                    ShopXiaofeiDialog.jiesuanDialog(app, true, dialog, BalanceTActivity.this, 1, "shop", Double.parseDouble(tv_money.getText().toString()), new InterfaceBack() {
-                                        @Override
-                                        public void onResponse(Object response) {
-                                            if (response.toString().equals("wxpay")) {
-                                                paytype = "wx";
-                                                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                startActivityForResult(mipca, 333);
-                                            } else if (response.toString().equals("zfbpay")) {
-                                                paytype = "zfb";
-                                                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                startActivityForResult(mipca, 333);
-                                            } else {
-                                                finish();
+                                                                  ShopXiaofeiDialog.jiesuanDialog(app, true, dialog, BalanceTActivity.this, 1, "shop", Double.parseDouble(tv_money.getText().toString()), new InterfaceBack() {
+                                                                      @Override
+                                                                      public void onResponse(Object response) {
+                                                                          if (response.toString().equals("wxpay")) {
+                                                                              paytype = "wx";
+                                                                              Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                              startActivityForResult(mipca, 333);
+                                                                          } else if (response.toString().equals("zfbpay")) {
+                                                                              paytype = "zfb";
+                                                                              Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                              startActivityForResult(mipca, 333);
+                                                                          } else {
+                                                                              finish();
+                                                                          }
+                                                                      }
+
+                                                                      @Override
+                                                                      public void onErrorResponse(Object msg) {
+
+                                                                      }
+                                                                  });
+                                                              }
+                                                          } else {//散客结算
+                                                              ShopXiaofeiDialog.jiesuanDialog(app, false, dialog, BalanceTActivity.this, 1, "shop", Double.parseDouble(tv_money.getText().toString()), new InterfaceBack() {
+                                                                  @Override
+                                                                  public void onResponse(Object response) {
+                                                                      if (response.toString().equals("wxpay")) {
+                                                                          paytype = "wx";
+                                                                          Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                          startActivityForResult(mipca, 333);
+                                                                      } else if (response.toString().equals("zfbpay")) {
+                                                                          paytype = "zfb";
+                                                                          Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                          startActivityForResult(mipca, 333);
+                                                                      } else {
+                                                                          finish();
+                                                                      }
+                                                                  }
+
+                                                                  @Override
+                                                                  public void onErrorResponse(Object msg) {
+
+                                                                  }
+                                                              });
+                                                          }
+                                                      } else {
+                                                          Toast.makeText(getApplicationContext(), "请检查网络是否可用",
+                                                                  Toast.LENGTH_SHORT).show();
+                                                      }
+                                                  }
+                                              } else {
+                                                  Toast.makeText(getApplicationContext(), "暂无结算权限",
+                                                          Toast.LENGTH_SHORT).show();
+                                              }
+                                          }
+                                      }
+
+        );
+        tv_dingwei.setOnClickListener(new
+
+                                              NoDoubleClickListener() {
+                                                  @Override
+                                                  protected void onNoDoubleClick(View view) {
+                                                      Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
+                                                      startActivityForResult(duihuan, 222);
+                                                  }
+                                              }
+
+        );
+        rl_right.setOnClickListener(new
+
+                                            NoDoubleClickListener() {
+                                                @Override
+                                                protected void onNoDoubleClick(View view) {
+                                                    Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                    startActivityForResult(mipca, 111);
+                                                }
                                             }
-                                        }
 
-                                        @Override
-                                        public void onErrorResponse(Object msg) {
+        );
+        tv_search.setOnClickListener(new View.OnClickListener()
 
-                                        }
-                                    });
-                                }
-                            } else {//散客结算
-                                ShopXiaofeiDialog.jiesuanDialog(app, false, dialog, BalanceTActivity.this, 1, "shop", Double.parseDouble(tv_money.getText().toString()), new InterfaceBack() {
-                                    @Override
-                                    public void onResponse(Object response) {
-                                        if (response.toString().equals("wxpay")) {
-                                            paytype = "wx";
-                                            Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                            startActivityForResult(mipca, 333);
-                                        } else if (response.toString().equals("zfbpay")) {
-                                            paytype = "zfb";
-                                            Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                            startActivityForResult(mipca, 333);
-                                        } else {
-                                            finish();
-                                        }
-                                    }
+                                     {
+                                         @Override
+                                         public void onClick(View view) {
+                                             if (et_shopcode.getText().toString().equals("")) {
+                                                 Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
+                                             } else {
+                                                 obtainSearchShopMsg();
+                                             }
+                                         }
+                                     }
 
-                                    @Override
-                                    public void onErrorResponse(Object msg) {
-
-                                    }
-                                });
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "请检查网络是否可用",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "暂无结算权限",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        tv_dingwei.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            protected void onNoDoubleClick(View view) {
-                Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(duihuan, 222);
-            }
-        });
-        rl_right.setOnClickListener(new NoDoubleClickListener() {
-            @Override
-            protected void onNoDoubleClick(View view) {
-                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(mipca, 111);
-            }
-        });
-        tv_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (et_shopcode.getText().toString().equals("")) {
-                    Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
-                } else {
-                    obtainSearchShopMsg();
-                }
-            }
-        });
+        );
 
         listView.setOnItemClickListener(this);
 
 
-        rl_yes.setBackgroundColor(getResources().getColor(R.color.white));
-        rl_no.setBackgroundColor(getResources().getColor(R.color.theme_red));
-        tv_yes.setTextColor(getResources().getColor(R.color.text_30));
-        tv_no.setTextColor(getResources().getColor(R.color.white));
+        rl_yes.setBackgroundColor(
+
+                getResources()
+
+                        .
+
+                                getColor(R.color.white)
+
+        );
+        rl_no.setBackgroundColor(
+
+                getResources()
+
+                        .
+
+                                getColor(R.color.theme_red)
+
+        );
+        tv_yes.setTextColor(
+
+                getResources()
+
+                        .
+
+                                getColor(R.color.text_30)
+
+        );
+        tv_no.setTextColor(
+
+                getResources()
+
+                        .
+
+                                getColor(R.color.white)
+
+        );
         type = "否";
         PreferenceHelper.write(ac, "shoppay", "isSan", false);
         li_vipmsg.setVisibility(View.VISIBLE);
@@ -661,6 +705,33 @@ public class BalanceTActivity extends FragmentActivity implements
                 }
                 break;
         }
+    }
+
+    public void showpopupwindow() {
+        LayoutInflater inflater = LayoutInflater.from(BalanceTActivity.this);
+        View view = inflater.inflate(R.layout.dialog_shopcar, null);
+        final ListView listview = (ListView) view.findViewById(R.id.listview);
+        List<ShopCar> listss = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        List<ShopCar> shoplist = new ArrayList<>();
+        for (ShopCar numShop : listss) {
+            if (numShop.count == 0) {
+            } else {
+                shoplist.add(numShop);
+            }
+        }
+        ShopCarAdapter adapter = new ShopCarAdapter(context, shoplist);
+        listview.setAdapter(adapter);
+        if (shoplist.size() < 3) {
+            pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, dip2px(ac, 70 * shoplist.size()));
+        } else {
+            pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, dip2px(ac, 210));
+        }
+        pw.showAtLocation(view, Gravity.BOTTOM, 0, dip2px(ac, 50));
+    }
+
+    public int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 
     private void pay(String codedata) {
@@ -1032,14 +1103,11 @@ public class BalanceTActivity extends FragmentActivity implements
                 } else {
                     num = num + shopCar.count;
                     money = money + Double.parseDouble(shopCar.discountmoney);
-                    LogUtils.d("xxJifen", shopCar.point + "");
+                    LogUtils.d("xxJifen", money + "----" + shopCar.discountmoney);
                     jifen = jifen + shopCar.point;
                     xfmoney = xfmoney + shopCar.count * Double.parseDouble(shopCar.price);
                 }
             }
-//          if(shopClass.ClassID.equals(shopCar.goodsclassid)){
-//              classnum=classnum+shopCar.count;
-//          }
             for (ShopClass c : list) {
                 int classnum = 0;
                 for (ShopCar shopCar : listss) {
@@ -1049,6 +1117,7 @@ public class BalanceTActivity extends FragmentActivity implements
                 }
                 c.shopnum = classnum + "";
             }
+            LogUtils.d("xxall", new Gson().toJson(listss));
             adapter.notifyDataSetChanged();
             tv_jifen.setText((int) jifen + "");
             tv_num.setText((int) num + "");
