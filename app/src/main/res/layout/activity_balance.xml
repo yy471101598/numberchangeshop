@@ -389,14 +389,19 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         >
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/shopcar"
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:id="@+id/img_gwcar"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp"
-            />
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/shopcar"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                />
+        </RelativeLayout>
         <TextView
             android:id="@+id/balance_tv_n"
             android:layout_width="wrap_content"

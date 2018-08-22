@@ -54,7 +54,7 @@ public class ShopCarAdapter extends BaseAdapter {
             this.list = list;
         }
         inflater = LayoutInflater.from(context);
-        intent = new Intent("com.shoppay.wy.numberchange");
+        intent = new Intent("com.shoppay.wy.shopcarchange");
         dialog = DialogUtil.loadingDialog(context, 1);
         dbAdapter = DBAdapter.getInstance(context);
     }
@@ -109,7 +109,10 @@ public class ShopCarAdapter extends BaseAdapter {
                     num = num - 1;
                     vh.item_tv_numph.setText(num + "");
                     home.count = num;
+                    double dimoney = num * Double.parseDouble(home.discount);
+                    home.discountmoney = StringUtil.twoNum(dimoney + "");
                     home.batchnumber = vh.et_pihao.getText().toString();
+                    vh.tv_money.setText("￥" + home.discountmoney);
                     insertShopCar(home);
                 }
 
@@ -123,7 +126,10 @@ public class ShopCarAdapter extends BaseAdapter {
                 if (home.goodsType.equals("1")) {
                     vh.item_tv_numph.setText(shopnum + "");
                     home.count = shopnum;
+                    double dimoney = shopnum * Double.parseDouble(home.discount);
+                    home.discountmoney = StringUtil.twoNum(dimoney + "");
                     home.batchnumber = vh.et_pihao.getText().toString();
+                    vh.tv_money.setText("￥" + home.discountmoney);
                     insertShopCar(home);
                 } else {
                     int maxnum = Integer.parseInt(home.maxnum);
@@ -134,7 +140,10 @@ public class ShopCarAdapter extends BaseAdapter {
                     } else {
                         vh.item_tv_numph.setText(shopnum + "");
                         home.count = shopnum;
+                        double dimoney = shopnum * Double.parseDouble(home.discount);
+                        home.discountmoney = StringUtil.twoNum(dimoney + "");
                         home.batchnumber = vh.et_pihao.getText().toString();
+                        vh.tv_money.setText("￥" + home.discountmoney);
                         insertShopCar(home);
                     }
                 }

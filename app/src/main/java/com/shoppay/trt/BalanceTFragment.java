@@ -1,8 +1,10 @@
 package com.shoppay.trt;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import com.shoppay.trt.adapter.RightAdapter;
 import com.shoppay.trt.bean.Shop;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.bean.ShopChose;
+import com.shoppay.trt.bean.ShopClass;
 import com.shoppay.trt.bean.Zhekou;
 import com.shoppay.trt.db.DBAdapter;
 import com.shoppay.trt.http.InterfaceBack;
@@ -58,6 +61,7 @@ public class BalanceTFragment extends Fragment {
     private DBAdapter dbAdapter;
     private Intent intent;
     private Context context;
+    private ShopChangeReceiver shopchangeReceiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +89,12 @@ public class BalanceTFragment extends Fragment {
             obtainShop();
         }
 //        obtainShop();
+
+        // 注册广播
+        shopchangeReceiver = new ShopChangeReceiver();
+        IntentFilter iiiff = new IntentFilter();
+        iiiff.addAction("com.shoppay.wy.shopcarchange");
+        getActivity().registerReceiver(shopchangeReceiver, iiiff);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -204,6 +214,19 @@ public class BalanceTFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(shopchangeReceiver);
+    }
+
+    private class ShopChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter.notifyDataSetChanged();
+        }
+    }
     private void obtainShopZhekou(final Shop shop, final int num, final String pihao) {
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();

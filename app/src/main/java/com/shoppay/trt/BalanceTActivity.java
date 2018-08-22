@@ -147,8 +147,9 @@ public class BalanceTActivity extends FragmentActivity implements
     private TextView tv_search;
     private SystemQuanxian sysquanxian;
     private RelativeLayout rl_guadan;
-    private ImageView img_shopcar;
+    private RelativeLayout img_shopcar;
     private PopupWindow pw;
+    private Intent shopcarchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +169,7 @@ public class BalanceTActivity extends FragmentActivity implements
         mPosition = 0;
         dbAdapter.deleteShopCar();
         initView();
+        shopcarchange = new Intent("com.shoppay.wy.shopcarchange");
         if (sysquanxian.isjiesuan == 0) {
             //1开启0关闭
             rl_jiesuan.setBackgroundColor(getResources().getColor(R.color.gray_cc));
@@ -182,11 +184,11 @@ public class BalanceTActivity extends FragmentActivity implements
 
 
 //        PreferenceHelper.write(getApplicationContext(), "PayOk", "time", "false");
-//        //动态注册广播接收器
-//        msgReceiver = new MsgReceiver();
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction("com.example.communication.RECEIVER");
-//        registerReceiver(msgReceiver, intentFilter);
+        //动态注册广播接收器
+        msgReceiver = new MsgReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.shoppay.wy.shopcarchange");
+        registerReceiver(msgReceiver, intentFilter);
         obtainShopClass();
 
         et_card.addTextChangedListener(new TextWatcher() {
@@ -438,7 +440,7 @@ public class BalanceTActivity extends FragmentActivity implements
         et_card = (EditText) findViewById(R.id.balance_et_card);
         et_shopcode = (EditText) findViewById(R.id.balance_et_shopcode);
         listView = (ListView) findViewById(R.id.listview);
-        img_shopcar = (ImageView) findViewById(R.id.img_gwcar);
+        img_shopcar = (RelativeLayout) findViewById(R.id.img_gwcar);
         rl_left.setOnClickListener(this);
         rl_yes.setOnClickListener(this);
         rl_guadan.setOnClickListener(this);
@@ -449,12 +451,16 @@ public class BalanceTActivity extends FragmentActivity implements
                                            @Override
                                            protected void onNoDoubleClick(View view) {
                                                LogUtils.d("xxclick", isshopcarshow + "");
-                                               if (isshopcarshow) {
-                                                   isshopcarshow = false;
-                                                   pw.dismiss();
-                                               } else {
-                                                   isshopcarshow = true;
+                                               if(null==pw){
                                                    showpopupwindow();
+                                               }else {
+                                                   if (pw.isShowing()) {
+                                                       isshopcarshow = false;
+                                                       pw.dismiss();
+                                                   } else {
+                                                       isshopcarshow = true;
+                                                       showpopupwindow();
+                                                   }
                                                }
                                            }
                                        }
@@ -726,7 +732,8 @@ public class BalanceTActivity extends FragmentActivity implements
         } else {
             pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, dip2px(ac, 210));
         }
-        pw.showAtLocation(view, Gravity.BOTTOM, 0, dip2px(ac, 50));
+        pw.setFocusable(true);
+        pw.showAtLocation(view, Gravity.BOTTOM, 0, dip2px(ac, 100));
     }
 
     public int dip2px(Context context, float dipValue) {
@@ -1122,7 +1129,6 @@ public class BalanceTActivity extends FragmentActivity implements
             tv_jifen.setText((int) jifen + "");
             tv_num.setText((int) num + "");
             tv_money.setText(StringUtil.twoNum(money + ""));
-
         }
     }
 
@@ -1136,23 +1142,36 @@ public class BalanceTActivity extends FragmentActivity implements
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            //拿到进度，更新UI
-//            String state = intent.getStringExtra("success");
-//            Log.d("MsgReceiver", "MsgReceiver" + state);
-//            if (state == null || state.equals("")) {
-//
-//            } else {
-//                if (state.equals("success")) {
-//
-//                    weixinDialog.dismiss();
-//                    jiesuanDialog.dismiss();
-//                jiesuan(MyApplication.context,vipPayMsg);
-//                } else {
-//                    String msg = intent.getStringExtra("msg");
-//                    Toast.makeText(ac,msg,Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
+            List<ShopCar> listss = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+            num = 0;
+            money = 0;
+            jifen = 0;
+            xfmoney = 0;
+            for (ShopCar shopCar : listss) {
+                if (shopCar.count == 0) {
+
+                } else {
+                    num = num + shopCar.count;
+                    money = money + Double.parseDouble(shopCar.discountmoney);
+                    LogUtils.d("xxJifen", money + "----" + shopCar.discountmoney);
+                    jifen = jifen + shopCar.point;
+                    xfmoney = xfmoney + shopCar.count * Double.parseDouble(shopCar.price);
+                }
+            }
+            for (ShopClass c : list) {
+                int classnum = 0;
+                for (ShopCar shopCar : listss) {
+                    if (shopCar.goodsclassid.equals(c.ClassID)) {
+                        classnum = classnum + shopCar.count;
+                    }
+                }
+                c.shopnum = classnum + "";
+            }
+            LogUtils.d("xxall", new Gson().toJson(listss));
+            adapter.notifyDataSetChanged();
+            tv_jifen.setText((int) jifen + "");
+            tv_num.setText((int) num + "");
+            tv_money.setText(StringUtil.twoNum(money + ""));
         }
 
     }
@@ -1174,7 +1193,7 @@ public class BalanceTActivity extends FragmentActivity implements
 //        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
 //        manager.cancel(pi);
 //        //注销广播
-//        unregisterReceiver(msgReceiver);
+        unregisterReceiver(msgReceiver);
         unregisterReceiver(shopchangeReceiver);
     }
 
