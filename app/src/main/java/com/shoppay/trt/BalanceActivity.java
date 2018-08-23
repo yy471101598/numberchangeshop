@@ -767,7 +767,6 @@ public class BalanceActivity extends FragmentActivity implements
                 rl_no.setBackgroundColor(getResources().getColor(R.color.white));
                 tv_yes.setTextColor(getResources().getColor(R.color.white));
                 tv_no.setTextColor(getResources().getColor(R.color.text_30));
-                type = "是";
                 li_jifen.setVisibility(View.GONE);
                 rl_card.setVisibility(View.GONE);
                 rl_vipname.setVisibility(View.GONE);
@@ -775,6 +774,7 @@ public class BalanceActivity extends FragmentActivity implements
                 rl_vipdengji.setVisibility(View.GONE);
                 rl_vipyue.setVisibility(View.GONE);
                 dbAdapter.deleteShopCar();
+                type = "是";
                 tv_money.setText("0");
                 tv_jifen.setText("0");
                 tv_vipdengji.setText("0");

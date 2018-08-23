@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.shoppay.YinpianXiaofeiActivity;
 import com.shoppay.trt.adapter.HomeAdapter;
 import com.shoppay.trt.bean.Home;
 import com.shoppay.trt.bean.QuanxianManage;
@@ -57,6 +58,10 @@ public class HomeActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Home home = (Home) adapterView.getItemAtPosition(i);
                 switch (home.name) {
+                    case "饮片消费":
+                        Intent yin = new Intent(ac, YinpianXiaofeiActivity.class);
+                        startActivity(yin);
+                        break;
                     case "挂单列表":
                         Intent guadan = new Intent(ac, GuadanListActivity.class);
                         startActivity(guadan);
