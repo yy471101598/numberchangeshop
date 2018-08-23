@@ -25,4 +25,8 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowFrame">@null</item>
     </style>
+    <style name="dropDownAnim" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/dropdown_unfold</item>
+        <item name="android:windowExitAnimation">@anim/dropdown_retract</item>
+    </style>
 </resources>

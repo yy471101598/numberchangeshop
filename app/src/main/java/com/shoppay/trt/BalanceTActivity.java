@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,7 +24,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -451,9 +452,9 @@ public class BalanceTActivity extends FragmentActivity implements
                                            @Override
                                            protected void onNoDoubleClick(View view) {
                                                LogUtils.d("xxclick", isshopcarshow + "");
-                                               if(null==pw){
+                                               if (null == pw) {
                                                    showpopupwindow();
-                                               }else {
+                                               } else {
                                                    if (pw.isShowing()) {
                                                        isshopcarshow = false;
                                                        pw.dismiss();
@@ -733,6 +734,18 @@ public class BalanceTActivity extends FragmentActivity implements
             pw = new PopupWindow(view, LinearLayout.LayoutParams.MATCH_PARENT, dip2px(ac, 210));
         }
         pw.setFocusable(true);
+        pw.setTouchable(true);
+        pw.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        LinearLayout llPopw = (LinearLayout) view.findViewById(R.id.ll_popw);
+        llPopw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pw != null && pw.isShowing()) {
+                    pw.dismiss();
+                }
+            }
+        });
+//        pw.setAnimationStyle(R.style.dropDownAnim);
         pw.showAtLocation(view, Gravity.BOTTOM, 0, dip2px(ac, 100));
     }
 
