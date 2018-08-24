@@ -1,4 +1,4 @@
-package com.shoppay;
+package com.shoppay.trt;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,17 +30,14 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.trt.BalanceActivity;
-import com.shoppay.trt.BalanceFragment;
-import com.shoppay.trt.BalanceTActivity;
-import com.shoppay.trt.BalanceTFragment;
-import com.shoppay.trt.MyApplication;
-import com.shoppay.trt.R;
+import com.shoppay.trt.adapter.YinpianXiaofeiLeftAdapter;
+import com.shoppay.trt.adapter.YinpianXiaofeiRightAdapter;
 import com.shoppay.trt.bean.Shop;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.bean.SystemQuanxian;
 import com.shoppay.trt.bean.VipInfo;
 import com.shoppay.trt.bean.VipInfoMsg;
+import com.shoppay.trt.bean.YinpianMsg;
 import com.shoppay.trt.bean.Zhekou;
 import com.shoppay.trt.card.ReadCardOpt;
 import com.shoppay.trt.db.DBAdapter;
@@ -54,12 +51,12 @@ import com.shoppay.trt.tools.LogUtils;
 import com.shoppay.trt.tools.NoDoubleClickListener;
 import com.shoppay.trt.tools.PreferenceHelper;
 import com.shoppay.trt.tools.ShopXiaofeiDialog;
+import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
 import com.shoppay.trt.wxcode.MipcaActivityCapture;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -188,23 +185,75 @@ public class YinpianXiaofeiActivity extends Activity {
                 case 4:
                     Toast.makeText(context, "获取商品信息失败", Toast.LENGTH_SHORT).show();
                     break;
+                case 22:
+                    //饮片money修改
+                    YinpianMsg ypmsg= (YinpianMsg) msg.obj;
+                    for(int i=0;i<carlist.size();i++){
+                        if(ypmsg.GoodsID.equals(carlist.get(i).GoodsID)){
+                            //已存在
+                            if(ypmsg.money.equals("")||Double.parseDouble(ypmsg.money)==0){
+                                //money为空
+                                carlist.remove(carlist.get(i));
+                            }else{
+                                carlist.get(i).money=ypmsg.money;
+                            }
+                        }else{
+                            //不存在
+                            if(ypmsg.money.equals("")||Double.parseDouble(ypmsg.money)==0){
+                                //money为空
+                            }else{
+                                carlist.add(ypmsg);
+                            }
+                        }
+                    }
+                   double money=0;
+                    //底部导航数据修改
+                     for(int j=0;j<carlist.size();j++){
+                         money=money+Double.parseDouble(carlist.get(j).money);
+                     }
+                    balanceTvNum.setText(carlist.size()+"");
+                    balanceTvMoney.setText(StringUtil.twoNum(money+""));
+
+                    break;
+                case 33:
+                    //饮片删除
+                    YinpianMsg yp= (YinpianMsg) msg.obj;
+                    for(int i=0;i<carlist.size();i++){
+                        if(yp.GoodsID.equals(carlist.get(i).GoodsID)){
+                            carlist.remove(carlist.get(i));
+                            //底部导航数据修改
+                            double money1=0;
+                            for(int j=0;j<carlist.size();j++){
+                                money1=money1+Double.parseDouble(carlist.get(j).money);
+                            }
+                            balanceTvNum.setText(carlist.size()+"");
+                            balanceTvMoney.setText(StringUtil.twoNum(money1+""));
+                        }
+                    }
+                    break;
             }
         }
     };
-    private String orderAccount="";
+    private String orderAccount = "";
     private SystemQuanxian sysquanxian;
     private String paytype;
-
+    private List<YinpianMsg> leftlist = new ArrayList<>();
+    private YinpianXiaofeiLeftAdapter leftAdapter;
+    private List<YinpianMsg> rightlist = new ArrayList<>();
+    private YinpianXiaofeiRightAdapter rightAdapter;
+    private List<YinpianMsg> carlist = new ArrayList<>();
     private void handlerShopMsg(Zhekou zhekou) {
     }
+
     private void handlerShopMsg(List<Shop> zhekou) {
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yinpianxiaofei);
         ButterKnife.bind(this);
-        ac=this;
+        ac = this;
         inintView();
         app = (MyApplication) getApplication();
         sysquanxian = app.getSysquanxian();
@@ -216,6 +265,24 @@ public class YinpianXiaofeiActivity extends Activity {
         PreferenceHelper.write(ac, "shoppay", "vipname", "散客");
         PreferenceHelper.write(context, "shoppay", "viptoast", "未查询到会员");
 
+
+        leftAdapter = new YinpianXiaofeiLeftAdapter(ac, leftlist);
+        listview.setAdapter(leftAdapter);
+        rightAdapter = new YinpianXiaofeiRightAdapter(ac, rightlist, handler);
+        listviewRight.setAdapter(rightAdapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                     YinpianMsg yp= (YinpianMsg) adapterView.getItemAtPosition(i);
+                     for(int j=0;j<rightlist.size();j++){
+                         if(!yp.GoodsID.contains(rightlist.get(j).GoodsID)){
+                             rightlist.add(yp);
+                             rightAdapter.notifyDataSetChanged();
+                         }
+                     }
+            }
+        });
+        obtainYinpianList();
         balanceEtCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -313,6 +380,48 @@ public class YinpianXiaofeiActivity extends Activity {
         });
     }
 
+    private void obtainYinpianList() {
+        dialog.show();
+        AsyncHttpClient client = new AsyncHttpClient();
+        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
+        client.setCookieStore(myCookieStore);
+        RequestParams map = new RequestParams();
+        map.put("UserID", PreferenceHelper.readString(ac, "shoppay", "UserID", ""));
+        map.put("UserShopID", PreferenceHelper.readString(ac, "shoppay", "ShopID", ""));
+        LogUtils.d("xxparams", map.toString());
+        String url = UrlTools.obtainUrl(ac, "?Source=3", "GetFujia");
+        LogUtils.d("xxurl", url);
+        client.post(url, map, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                dialog.dismiss();
+                try {
+                    LogUtils.d("xxyinpianS", new String(responseBody, "UTF-8"));
+                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
+                    if (jso.getInt("flag") == 1) {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<YinpianMsg>>() {
+                        }.getType();
+                        List<YinpianMsg> yplist = gson.fromJson(jso.getString("vdata"), listType);
+                        leftlist.clear();
+                        leftlist.addAll(yplist);
+                        leftAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(ac, jso.getString("msg"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(ac, "获取饮片失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+
     private void obtainShopMsg() {
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -383,134 +492,134 @@ public class YinpianXiaofeiActivity extends Activity {
         matrix.postTranslate(offset, 0);
         tabBottomLine.setImageMatrix(matrix);// 设置动画初始位置
         balanceRlGuadan.setOnClickListener(new NoDoubleClickListener() {
-                                         @Override
-                                         protected void onNoDoubleClick(View view) {
-                                             if (balanceTvNum.getText().toString().equals("0")) {
-                                                 Toast.makeText(getApplicationContext(), "请选择商品",
-                                                         Toast.LENGTH_SHORT).show();
-                                             } else {
-                                                 if (CommonUtils.checkNet(getApplicationContext())) {
-                                                     if (type.equals("否")) {
-                                                         if (!isSuccess) {
-                                                             Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
-                                                         } else {
-                                                             //会员挂单
-                                                             guadan();
-                                                         }
-                                                     } else {
-                                                         //散客挂单
-                                                         guadan();
-                                                     }
-                                                 } else {
-                                                     //无网络
-                                                     Toast.makeText(getApplicationContext(), "请检查网络是否可用",
-                                                             Toast.LENGTH_SHORT).show();
-                                                 }
-                                             }
-                                         }
-                                     }
+                                               @Override
+                                               protected void onNoDoubleClick(View view) {
+                                                   if (balanceTvNum.getText().toString().equals("0")) {
+                                                       Toast.makeText(getApplicationContext(), "请选择商品",
+                                                               Toast.LENGTH_SHORT).show();
+                                                   } else {
+                                                       if (CommonUtils.checkNet(getApplicationContext())) {
+                                                           if (type.equals("否")) {
+                                                               if (!isSuccess) {
+                                                                   Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
+                                                               } else {
+                                                                   //会员挂单
+                                                                   guadan();
+                                                               }
+                                                           } else {
+                                                               //散客挂单
+                                                               guadan();
+                                                           }
+                                                       } else {
+                                                           //无网络
+                                                           Toast.makeText(getApplicationContext(), "请检查网络是否可用",
+                                                                   Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   }
+                                               }
+                                           }
 
         );
         balanceRlJiesan.setOnClickListener(new NoDoubleClickListener() {
-                                          @Override
-                                          protected void onNoDoubleClick(View view) {
+                                               @Override
+                                               protected void onNoDoubleClick(View view) {
 
-                                              if (sysquanxian.isjiesuan == 1) {
+                                                   if (sysquanxian.isjiesuan == 1) {
 
-                                                  if (balanceTvNum.getText().toString().equals("0")) {
-                                                      Toast.makeText(getApplicationContext(), "请选择商品",
-                                                              Toast.LENGTH_SHORT).show();
-                                                  } else {
-                                                      if (CommonUtils.checkNet(getApplicationContext())) {
-                                                          if (type.equals("否")) {
-                                                              if (!isSuccess) {
-                                                                  Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
-                                                              } else {
-                                                                  //会员结算
+                                                       if (balanceTvNum.getText().toString().equals("0")) {
+                                                           Toast.makeText(getApplicationContext(), "请选择商品",
+                                                                   Toast.LENGTH_SHORT).show();
+                                                       } else {
+                                                           if (CommonUtils.checkNet(getApplicationContext())) {
+                                                               if (type.equals("否")) {
+                                                                   if (!isSuccess) {
+                                                                       Toast.makeText(ac, "您选择的是会员结算，请确认会员信息是否正确", Toast.LENGTH_SHORT).show();
+                                                                   } else {
+                                                                       //会员结算
 //
-                                                                  ShopXiaofeiDialog.jiesuanDialog(app, true, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
-                                                                      @Override
-                                                                      public void onResponse(Object response) {
-                                                                          if (response.toString().equals("wxpay")) {
-                                                                              paytype = "wx";
-                                                                              Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                                              startActivityForResult(mipca, 333);
-                                                                          } else if (response.toString().equals("zfbpay")) {
-                                                                              paytype = "zfb";
-                                                                              Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                                              startActivityForResult(mipca, 333);
-                                                                          } else {
-                                                                              finish();
-                                                                          }
-                                                                      }
+                                                                       ShopXiaofeiDialog.jiesuanDialog(app, true, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
+                                                                           @Override
+                                                                           public void onResponse(Object response) {
+                                                                               if (response.toString().equals("wxpay")) {
+                                                                                   paytype = "wx";
+                                                                                   Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                                   startActivityForResult(mipca, 333);
+                                                                               } else if (response.toString().equals("zfbpay")) {
+                                                                                   paytype = "zfb";
+                                                                                   Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                                   startActivityForResult(mipca, 333);
+                                                                               } else {
+                                                                                   finish();
+                                                                               }
+                                                                           }
 
-                                                                      @Override
-                                                                      public void onErrorResponse(Object msg) {
+                                                                           @Override
+                                                                           public void onErrorResponse(Object msg) {
 
-                                                                      }
-                                                                  });
-                                                              }
-                                                          } else {//散客结算
-                                                              ShopXiaofeiDialog.jiesuanDialog(app, false, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
-                                                                  @Override
-                                                                  public void onResponse(Object response) {
-                                                                      if (response.toString().equals("wxpay")) {
-                                                                          paytype = "wx";
-                                                                          Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                                          startActivityForResult(mipca, 333);
-                                                                      } else if (response.toString().equals("zfbpay")) {
-                                                                          paytype = "zfb";
-                                                                          Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                                                                          startActivityForResult(mipca, 333);
-                                                                      } else {
-                                                                          finish();
-                                                                      }
-                                                                  }
+                                                                           }
+                                                                       });
+                                                                   }
+                                                               } else {//散客结算
+                                                                   ShopXiaofeiDialog.jiesuanDialog(app, false, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
+                                                                       @Override
+                                                                       public void onResponse(Object response) {
+                                                                           if (response.toString().equals("wxpay")) {
+                                                                               paytype = "wx";
+                                                                               Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                               startActivityForResult(mipca, 333);
+                                                                           } else if (response.toString().equals("zfbpay")) {
+                                                                               paytype = "zfb";
+                                                                               Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                                                                               startActivityForResult(mipca, 333);
+                                                                           } else {
+                                                                               finish();
+                                                                           }
+                                                                       }
 
-                                                                  @Override
-                                                                  public void onErrorResponse(Object msg) {
+                                                                       @Override
+                                                                       public void onErrorResponse(Object msg) {
 
-                                                                  }
-                                                              });
-                                                          }
-                                                      } else {
-                                                          Toast.makeText(getApplicationContext(), "请检查网络是否可用",
-                                                                  Toast.LENGTH_SHORT).show();
-                                                      }
-                                                  }
-                                              } else {
-                                                  Toast.makeText(getApplicationContext(), "暂无结算权限",
-                                                          Toast.LENGTH_SHORT).show();
-                                              }
-                                          }
-                                      }
+                                                                       }
+                                                                   });
+                                                               }
+                                                           } else {
+                                                               Toast.makeText(getApplicationContext(), "请检查网络是否可用",
+                                                                       Toast.LENGTH_SHORT).show();
+                                                           }
+                                                       }
+                                                   } else {
+                                                       Toast.makeText(getApplicationContext(), "暂无结算权限",
+                                                               Toast.LENGTH_SHORT).show();
+                                                   }
+                                               }
+                                           }
 
         );
 
 
         vipTvDingwei.setOnClickListener(new
 
-                                              NoDoubleClickListener() {
-                                                  @Override
-                                                  protected void onNoDoubleClick(View view) {
-                                                      Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
-                                                      startActivityForResult(duihuan, 222);
-                                                  }
-                                              }
+                                                NoDoubleClickListener() {
+                                                    @Override
+                                                    protected void onNoDoubleClick(View view) {
+                                                        Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
+                                                        startActivityForResult(duihuan, 222);
+                                                    }
+                                                }
 
         );
         vipTvSearch.setOnClickListener(new View.OnClickListener()
 
-                                     {
-                                         @Override
-                                         public void onClick(View view) {
-                                             if (balanceEtShopcode.getText().toString().equals("")) {
-                                                 Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
-                                             } else {
-                                                 obtainSearchShopMsg();
-                                             }
-                                         }
-                                     }
+                                       {
+                                           @Override
+                                           public void onClick(View view) {
+                                               if (balanceEtShopcode.getText().toString().equals("")) {
+                                                   Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
+                                               } else {
+                                                   obtainSearchShopMsg();
+                                               }
+                                           }
+                                       }
 
         );
     }
@@ -563,6 +672,7 @@ public class YinpianXiaofeiActivity extends Activity {
             }
         });
     }
+
     @OnClick({R.id.rl_left, R.id.rl_right, R.id.li_vip, R.id.li_san})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -605,6 +715,7 @@ public class YinpianXiaofeiActivity extends Activity {
                 break;
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -868,6 +979,7 @@ public class YinpianXiaofeiActivity extends Activity {
             }
         });
     }
+
     // 切换tab选项
     private void changeTabItem(int index) {
         Animation animation = new TranslateAnimation(curTabIndex * tabWidth,

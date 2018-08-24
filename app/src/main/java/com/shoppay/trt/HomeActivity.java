@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.shoppay.YinpianXiaofeiActivity;
 import com.shoppay.trt.adapter.HomeAdapter;
 import com.shoppay.trt.bean.Home;
 import com.shoppay.trt.bean.QuanxianManage;

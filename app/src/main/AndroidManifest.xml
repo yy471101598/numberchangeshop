@@ -47,17 +47,17 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name="com.shoppay.YinpianXiaofeiActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            />
-        <activity
             android:name="com.shoppay.trt.wxcode.MipcaActivityCapture"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             />
         <activity
             android:name="com.shoppay.trt.PersonalActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name="com.shoppay.trt.YinpianXiaofeiActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             />
