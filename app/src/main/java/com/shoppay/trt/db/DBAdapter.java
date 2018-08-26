@@ -10,6 +10,7 @@ import android.util.Log;
 import com.shoppay.trt.bean.JifenDuihuan;
 import com.shoppay.trt.bean.NumShop;
 import com.shoppay.trt.bean.ShopCar;
+import com.shoppay.trt.bean.YinpianMsg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -513,6 +514,218 @@ public class DBAdapter {
     }
 
 
+    /**
+     * 更新购物车信息
+     */
+    public void updateYinpShopCar(YinpianMsg shopcar, String shopid) {
+        ContentValues initialValues = getYinpShopCarValues(shopcar);
+
+        int id = db.update(DBHelper.YINPIAN_TABLE_NAME, initialValues,
+                DBHelper.yp_goodid + " =?", new String[]{shopid});
+    }
+
+
+    public ContentValues getYinpShopCarValues(YinpianMsg shopcar) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(DBHelper.yp_classid, shopcar.GoodsClassID);
+        initialValues.put(DBHelper.yp_goodcode, shopcar.GoodsCode);
+        initialValues.put(DBHelper.yp_goodid, shopcar.GoodsID);
+        initialValues.put(DBHelper.yp_goodname, shopcar.GoodsName);
+        initialValues.put(DBHelper.yp_money, shopcar.money);
+        initialValues.put(DBHelper.yp_account, shopcar.account);
+        return initialValues;
+    }
+
+    /**
+     * 根据账号获取商品信息
+     *
+     * @return
+     */
+    public List<YinpianMsg> getLiYinpShopCar(Cursor cursor) {
+        List<YinpianMsg> list = null;
+        if (cursor != null) {
+            list = new ArrayList<YinpianMsg>();
+            while (cursor.moveToNext()) {
+                YinpianMsg shopcar = new YinpianMsg();
+
+                shopcar.money = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_money));
+                shopcar.GoodsClassID = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_classid));
+                shopcar.GoodsCode = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodcode));
+                shopcar.GoodsID = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodid));
+                shopcar.GoodsName = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodname));
+                shopcar.account = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_account));
+                list.add(shopcar);
+            }
+
+            if (!cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 根据账号获取商品信息
+     *
+     * @return
+     */
+    public List<YinpianMsg> getListYinpShopCar(String account) {
+        Cursor cursor = null;
+        cursor = db.query(DBHelper.YINPIAN_TABLE_NAME, null,
+                DBHelper.yp_account + " =?", new String[]{account.trim()},
+                null, null, null);
+
+        return getLiYinpShopCar(cursor);
+    }
+    //
+    //
+    // public List<ShopCar> getListJpushMessage(String num, String CommunityId,
+    // String type, int pageID, int PageSize) {
+    // Cursor cursor = null;
+    // StringBuffer sb = new StringBuffer();
+    // sb.append(type);
+    // sb.append(" AND ");
+    //
+    // sb.append(DBHelper.jpush_phone + "=").append("'").append(num +
+    // "' order by " + DBHelper.jpush_time + " desc ");
+    // // sb.append(" AND ");
+    // // sb.append(DBHelper.jpush_comcode +
+    // "=").append("'").append(CommunityCode + "' order by " +
+    // DBHelper.jpush_time + " desc ");
+    // sb.append("Limit").append("'").append(String.valueOf(PageSize) +
+    // "' ").append("Offset").append("'").append(String.valueOf(pageID *
+    // PageSize) + "' ");
+    // cursor = db.rawQuery("SELECT * FROM " + DBHelper.ShopCar_TABLE_NAME +
+    // " WHERE " + sb
+    // .toString().trim(), null);
+    //
+    // return getListJpushMessage(cursor);
+    // }
+    //
+
+    /**
+     * 根据商品id获取购物车商品信息
+     *
+     * @return
+     */
+    public YinpianMsg getYinpShop(String goodid) {
+        YinpianMsg shopcar = null;
+        Cursor cursor = null;
+        if (!"".equals(goodid)) {
+            cursor = db.query(DBHelper.YINPIAN_TABLE_NAME, null,
+                    DBHelper.yp_goodid + "=?", new String[]{goodid}, null,
+                    null, null);
+            Log.d("find", goodid);
+            if (cursor.moveToFirst()) {
+                shopcar = new YinpianMsg();
+                shopcar.money = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_money));
+                shopcar.GoodsClassID = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_classid));
+                shopcar.GoodsCode = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodcode));
+                shopcar.GoodsID = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodid));
+                shopcar.GoodsName = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_goodname));
+                shopcar.account = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.yp_account));
+            }
+        }
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+        return shopcar;
+    }
+    //
+
+    /**
+     * 将所有获取到的卷烟信息保存到数据库中
+     *
+     * @return
+     */
+    public long insertYinpShopCar(List<YinpianMsg> list) {
+        // deleteLABEL_TABLE_NAME();
+        int count = 0;
+        if (null != list && list.size() > 0) {
+            db.beginTransaction();
+            ContentValues initialValues = null;
+            for (YinpianMsg shopcar : list) {
+                if (hasYinpShopCar(shopcar.GoodsID)) {
+                    if(!shopcar.money.equals("")) {
+                        updateYinpShopCar(shopcar, shopcar.GoodsID);
+                    }
+                } else {
+                    initialValues = new ContentValues();
+                    initialValues.put(DBHelper.yp_classid, shopcar.GoodsClassID);
+                    initialValues.put(DBHelper.yp_goodcode, shopcar.GoodsCode);
+                    initialValues.put(DBHelper.yp_goodid, shopcar.GoodsID);
+                    initialValues.put(DBHelper.yp_goodname, shopcar.GoodsName);
+                    initialValues.put(DBHelper.yp_money, shopcar.money);
+                    initialValues.put(DBHelper.yp_account, shopcar.account);
+                    db.insert(DBHelper.YINPIAN_TABLE_NAME, null, initialValues);
+                }
+            }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+        Log.i("tag", list.size() + "=总共成度。. :");
+        return count;
+    }
+
+    public long insertYinpShopCar(YinpianMsg shopcar) {
+        // deleteLABEL_TABLE_NAME();
+        int count = 0;
+        if (null != shopcar) {
+            db.beginTransaction();
+            ContentValues initialValues = null;
+            if (hasYinpShopCar(shopcar.GoodsID)) {
+                updateYinpShopCar(shopcar, shopcar.GoodsID);
+            } else {
+                initialValues = new ContentValues();
+                initialValues.put(DBHelper.yp_classid, shopcar.GoodsClassID);
+                initialValues.put(DBHelper.yp_goodcode, shopcar.GoodsCode);
+                initialValues.put(DBHelper.yp_goodid, shopcar.GoodsID);
+                initialValues.put(DBHelper.yp_goodname, shopcar.GoodsName);
+                initialValues.put(DBHelper.yp_money, shopcar.money);
+                initialValues.put(DBHelper.yp_account, shopcar.account);
+                db.insert(DBHelper.YINPIAN_TABLE_NAME, null, initialValues);
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+        return count;
+    }
+
+    public Boolean hasYinpShopCar(String number) {
+        Boolean b = false;
+        Cursor cursor = null;
+        if (!"".equals(number)) {
+            cursor = db.query(DBHelper.YINPIAN_TABLE_NAME, null,
+                    DBHelper.yp_goodid + "=?", new String[]{number},
+                    null, null, null);
+            b = cursor.moveToFirst();
+        }
+        if (!cursor.isClosed()) {
+            cursor.close();
+        }
+        return b;
+    }
+
+    public boolean deleteYinpShopCar(String goodid) {
+        return db.delete(DBHelper.YINPIAN_TABLE_NAME,DBHelper.yp_goodid + "=?", new String[]{goodid}) > 0;
+    }
+
+    public boolean deleteYinpShopCar() {
+        return db.delete(DBHelper.YINPIAN_TABLE_NAME,null,null) > 0;
+    }
     /**
      * 更新购物车信息
      */

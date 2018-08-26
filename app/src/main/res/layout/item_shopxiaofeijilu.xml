@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="165dp"
-            android:text="数量：3"
+            android:text="数量："
             android:textColor="@color/theme_red"
             android:textSize="15sp"/>
     </RelativeLayout>
@@ -45,7 +45,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="￥111"
+            android:text="￥n      "
             android:paddingLeft="40dp"
             android:textColor="@color/text_30"
             android:textSize="15sp"/>

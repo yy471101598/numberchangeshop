@@ -115,14 +115,17 @@ public class GuadanListAdapter extends BaseAdapter {
                         if (response.toString().equals("wxpay")) {
                             pay.type = "wx";
                             msg.obj = pay;
+                            msg.what=222;
                             handler.sendMessage(msg);
                         } else if (response.toString().equals("zfbpay")) {
                             pay.type = "zfb";
                             msg.obj = pay;
+                            msg.what=222;
                             handler.sendMessage(msg);
                         } else {
                             pay.type = "";
                             msg.obj = pay;
+                            msg.what=222;
                             handler.sendMessage(msg);
                         }
                     }
@@ -137,7 +140,10 @@ public class GuadanListAdapter extends BaseAdapter {
         vh.tvDetail.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-
+                Message message=handler.obtainMessage();
+                message.what=111;
+                message.obj=home;
+                handler.sendMessage(message);
             }
         });
         vh.vipTvDayin.setOnClickListener(new NoDoubleClickListener() {

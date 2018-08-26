@@ -35,14 +35,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="1dp"
                 android:layout_toRightOf="@id/tv_shopname"
                 android:background="@null"
                 android:hint="输入商品名称"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
             <View
@@ -85,9 +84,9 @@
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@id/tv_cardnum"
                 android:background="@null"
-                android:hint=""
+                android:hint="请输入会员卡"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
             <View
@@ -98,11 +97,6 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/viewcolor"
-        ></View>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -133,24 +127,31 @@
             android:id="@+id/tv_starttime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
             android:gravity="center_vertical"
             android:text="1111111111"
             android:textColor="@color/text_30"
-            android:textSize="15sp"
+            android:textSize="13sp"
             />
-
         <TextView
-            android:id="@+id/tv_endtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:gravity="center_vertical"
-            android:text="1111111111"
+            android:text="-"
             android:textColor="@color/text_30"
             android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/tv_endtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:gravity="center_vertical"
+            android:text="1111111111"
+            android:textColor="@color/text_30"
+            android:textSize="13sp"
             />
     </LinearLayout>
 
@@ -191,13 +192,13 @@
                 ></View>
 
            <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
+               android:layout_width="wrap_content"
+               android:layout_height="22dp"
                android:layout_gravity="center_vertical"
                android:id="@+id/rl_typechose"
                android:background="@color/theme_red"
-               android:layout_marginRight="15dp"
-               android:layout_marginLeft="15dp"
+               android:layout_marginRight="5dp"
+               android:layout_marginLeft="5dp"
                >
                <TextView
                    android:id="@+id/tv_type"
@@ -253,15 +254,10 @@
                 android:paddingTop="3dp"
                 android:background="@color/theme_red"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/tv_detail"
                 android:layout_marginRight="5dp"
                 />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/viewcolor"></View>
+
         </RelativeLayout>
     </LinearLayout>
 

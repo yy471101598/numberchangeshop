@@ -24,7 +24,11 @@ import com.shoppay.trt.adapter.GuadanListAdapter;
 import com.shoppay.trt.adapter.LeftAdapter;
 import com.shoppay.trt.bean.GuadanListMsg;
 import com.shoppay.trt.bean.GuadanPay;
+import com.shoppay.trt.bean.OrderDetailMsg;
 import com.shoppay.trt.bean.ShopClass;
+import com.shoppay.trt.bean.XiaofeiRecordNew;
+import com.shoppay.trt.dialog.ShopDetailDialog;
+import com.shoppay.trt.dialog.YinpianDetailDialog;
 import com.shoppay.trt.http.InterfaceBack;
 import com.shoppay.trt.tools.BluetoothUtil;
 import com.shoppay.trt.tools.DateUtils;
@@ -69,12 +73,21 @@ public class GuadanListActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            pay = (GuadanPay) msg.obj;
-            if (pay.type.equals("")) {
-                obtainGuadanlistClass();
-            } else {
-                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(mipca, 333);
+            switch (msg.what) {
+                case 222:
+                pay = (GuadanPay) msg.obj;
+                if (pay.type.equals("")) {
+                    obtainGuadanlistClass();
+                } else {
+                    Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                    startActivityForResult(mipca, 333);
+                }
+                    break;
+                case 111:
+                    GuadanListMsg record = (GuadanListMsg) msg.obj;
+                    obtainDetailClass(record.OrderID,record.Typetext);
+
+                    break;
             }
         }
     };
@@ -109,6 +122,50 @@ public class GuadanListActivity extends Activity {
                 }
                 break;
         }
+    }
+    private void obtainDetailClass(String orderid, final String type) {
+        dialog.show();
+        AsyncHttpClient client = new AsyncHttpClient();
+        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
+        client.setCookieStore(myCookieStore);
+        RequestParams map = new RequestParams();
+        map.put("UserID", PreferenceHelper.readString(ac, "shoppay", "UserID", ""));
+        map.put("UserShopID", PreferenceHelper.readString(ac, "shoppay", "ShopID", ""));
+        map.put("OrderID", orderid);
+        LogUtils.d("xxparams", map.toString());
+        String url = UrlTools.obtainUrl(ac, "?Source=3", "OrderLogDetail");
+        LogUtils.d("xxurl", url);
+        client.post(url, map, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                dialog.dismiss();
+                try {
+                    LogUtils.d("xxdetailS", new String(responseBody, "UTF-8"));
+                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
+                    if (jso.getInt("flag") == 1) {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<OrderDetailMsg>>() {
+                        }.getType();
+                        List<OrderDetailMsg> slist = gson.fromJson(jso.getString("vdata"), listType);
+                 if(type.equals("商品消费")){
+                     ShopDetailDialog.shopDetailDialog(GuadanListActivity.this,slist,1);
+                 }else{
+                     YinpianDetailDialog.yinpianDetailDialog(GuadanListActivity.this,slist,1);
+                 }
+                    } else {
+                        Toast.makeText(ac, jso.getString("msg"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(ac, "获取详情失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                dialog.dismiss();
+                Toast.makeText(ac, "获取详情失败", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void pay(String codedata) {

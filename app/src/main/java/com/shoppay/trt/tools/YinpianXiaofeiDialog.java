@@ -25,6 +25,7 @@ import com.shoppay.trt.MyApplication;
 import com.shoppay.trt.R;
 import com.shoppay.trt.bean.ShopCar;
 import com.shoppay.trt.bean.SystemQuanxian;
+import com.shoppay.trt.bean.YinpianMsg;
 import com.shoppay.trt.db.DBAdapter;
 import com.shoppay.trt.http.InterfaceBack;
 
@@ -35,16 +36,18 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.shoppay.trt.MyApplication.context;
+
 /**
  * Created by Administrator on 2018/1/21 0021.
  */
 
-public class GuadanCompleteDialog {
+public class YinpianXiaofeiDialog {
     public static boolean isMoney = true, isYue = false, isZhifubao = false, isYinlian = false, isQita = false, isWx = false;
     public static Dialog dialog;
 
-    public static Dialog jiesuanDialog(MyApplication app, final boolean isVip, final Dialog loading, final Context context,
-                                       int showingLocation, final double yfmoney, final String orderid, final InterfaceBack handler) {
+    public static Dialog jiesuanDialog(MyApplication app,final  boolean isVip,final Dialog loading,final Context context,
+                                       int showingLocation,final double yfmoney, final InterfaceBack handler) {
         final Dialog dialog;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_shoppay, null);
@@ -55,39 +58,39 @@ public class GuadanCompleteDialog {
         final RelativeLayout rl_jiesuan = (RelativeLayout) view.findViewById(R.id.shoppay_rl_jiesuan);
         final RelativeLayout rl_password = (RelativeLayout) view.findViewById(R.id.vip_rl_password);
         final RadioGroup mRadiogroup = (RadioGroup) view.findViewById(R.id.radiogroup);
-        final SystemQuanxian sysquanxian = app.getSysquanxian();
-        RadioButton rb_isYinlian = (RadioButton) view.findViewById(R.id.rb_yinlian);
-        RadioButton rb_money = (RadioButton) view.findViewById(R.id.rb_money);
-        RadioButton rb_zhifubao = (RadioButton) view.findViewById(R.id.rb_zhifubao);
-        RadioButton rb_wx = (RadioButton) view.findViewById(R.id.rb_wx);
-        RadioButton rb_yue = (RadioButton) view.findViewById(R.id.rb_yue);
-        RadioButton rb_qita = (RadioButton) view.findViewById(R.id.rb_qita);
-        if (sysquanxian.isweixin == 0) {
+        final SystemQuanxian sysquanxian=app.getSysquanxian();
+       RadioButton rb_isYinlian= (RadioButton) view.findViewById(R.id.rb_yinlian);
+        RadioButton rb_money= (RadioButton) view.findViewById(R.id.rb_money);
+        RadioButton rb_zhifubao= (RadioButton)view. findViewById(R.id.rb_zhifubao);
+        RadioButton rb_wx= (RadioButton)view. findViewById(R.id.rb_wx);
+        RadioButton rb_yue= (RadioButton)view. findViewById(R.id.rb_yue);
+        RadioButton rb_qita= (RadioButton)view. findViewById(R.id.rb_qita);
+        if(sysquanxian.isweixin==0){
             rb_wx.setVisibility(View.GONE);
         }
-        if (sysquanxian.iszhifubao == 0) {
+        if(sysquanxian.iszhifubao==0){
             rb_zhifubao.setVisibility(View.GONE);
         }
-        if (sysquanxian.isyinlian == 0) {
+        if(sysquanxian.isyinlian==0){
             rb_isYinlian.setVisibility(View.GONE);
         }
-        if (sysquanxian.isxianjin == 0) {
+        if(sysquanxian.isxianjin==0){
             rb_money.setVisibility(View.GONE);
         }
-        if (sysquanxian.isqita == 0) {
+        if(sysquanxian.isqita==0){
             rb_qita.setVisibility(View.GONE);
         }
-        if (sysquanxian.isyue == 0) {
+        if(sysquanxian.isyue==0){
             rb_yue.setVisibility(View.GONE);
         }
-        if (isVip) {
+        if(isVip){
             isMoney = false;
             isYue = true;
             isYinlian = false;
             isWx = false;
             isZhifubao = false;
             isQita = false;
-        } else {
+        }else {
             isMoney = true;
             isYue = false;
             rb_yue.setVisibility(View.GONE);
@@ -168,15 +171,21 @@ public class GuadanCompleteDialog {
             @Override
             protected void onNoDoubleClick(View view) {
                 if (CommonUtils.checkNet(context)) {
-                    if(isYue&&Double.parseDouble(tv_yfmoney.getText().toString())-Double.parseDouble(  PreferenceHelper.readString(context, "shoppay", "MemMoney","0"))>0){
+                    if (Double.parseDouble(tv_yfmoney.getText().toString()) - Double.parseDouble(et_zfmoney.getText().toString()) < 0) {
+                        Toast.makeText(context, "超过应付金额，请检查输入信息",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (Double.parseDouble(tv_yfmoney.getText().toString()) - Double.parseDouble(et_zfmoney.getText().toString()) > 0) {
+                        Toast.makeText(context, "少于应付金额，请检查输入信息",
+                                Toast.LENGTH_SHORT).show();
+                    }  else if(isYue&&Double.parseDouble(tv_yfmoney.getText().toString())-Double.parseDouble(  PreferenceHelper.readString(context, "shoppay", "MemMoney","0"))>0){
                         Toast.makeText(MyApplication.context, "余额不足",
                                 Toast.LENGTH_SHORT).show();
                     }else {
-                        if (isYue && sysquanxian.ispassword == 1) {
-                            DialogUtil.pwdDialog(context, 1, new InterfaceBack() {
+                        if (isYue&&sysquanxian.ispassword==1) {
+                            DialogUtil.pwdDialog( context, 1, new InterfaceBack() {
                                 @Override
                                 public void onResponse(Object response) {
-                                    jiesuan(loading, handler, dialog, context, response.toString(), orderid);
+                                        jiesuan(loading, handler, dialog, context, response.toString(),DateUtils.getCurrentTime("yyyyMMddHHmmss"));
                                 }
 
                                 @Override
@@ -186,22 +195,22 @@ public class GuadanCompleteDialog {
                             });
                         } else {
 
-                            if (isWx) {
-                                if (sysquanxian.iswxpay == 0) {
-                                    handler.onResponse("wxpay");
+                            if(isWx){
+                                if(sysquanxian.iswxpay==0){
+                                   handler.onResponse("wxpay");
                                     dialog.dismiss();
-                                } else {
-                                    jiesuan(loading, handler, dialog, context, "", orderid);
+                                }else {
+                                    jiesuan(loading, handler, dialog, context,"",DateUtils.getCurrentTime("yyyyMMddHHmmss"));
                                 }
-                            } else if (isZhifubao) {
-                                if (sysquanxian.iszfbpay == 0) {
+                            }else if(isZhifubao){
+                                if(sysquanxian.iszfbpay==0){
                                     handler.onResponse("zfbpay");
                                     dialog.dismiss();
-                                } else {
-                                    jiesuan(loading, handler, dialog, context, "", orderid);
+                                }else {
+                                    jiesuan(loading, handler, dialog, context,"",DateUtils.getCurrentTime("yyyyMMddHHmmss"));
                                 }
-                            } else {
-                                jiesuan(loading, handler, dialog, context, "", orderid);
+                            }else {
+                                jiesuan(loading, handler, dialog, context,"",DateUtils.getCurrentTime("yyyyMMddHHmmss"));
                             }
 
                         }
@@ -243,72 +252,95 @@ public class GuadanCompleteDialog {
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
-    }
+  }
 
 
-    public static void jiesuan(final Dialog loading, final InterfaceBack handle, final Dialog dialog, final Context context, final String pwd, String orderNum) {
-        loading.show();
-        AsyncHttpClient client = new AsyncHttpClient();
-        final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
-        client.setCookieStore(myCookieStore);
-        RequestParams params = new RequestParams();
-        params.put("OrderID", orderNum);
-        if (isMoney) {
-            params.put("payType", 0);
-        } else if (isWx) {
-            params.put("payType", 2);
-        } else if (isYinlian) {
-            params.put("payType", 1);
-        } else if (isYue) {
-            params.put("payType", 5);
-        } else if (isZhifubao) {
-            params.put("payType", 3);
-        } else {
-            params.put("payType", 4);
+    public static void jiesuan(final  Dialog loading, final InterfaceBack handle, final Dialog dialog, final Context context, final String pwd,String orderNum) {
+       loading.show();
+            AsyncHttpClient client = new AsyncHttpClient();
+            final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+            client.setCookieStore(myCookieStore);
+            final DBAdapter dbAdapter = DBAdapter.getInstance(context);
+        List<YinpianMsg> list = dbAdapter.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        List<YinpianMsg> shoplist = new ArrayList<>();
+        double yfmoney = 0.0;
+        for (YinpianMsg numShop : list) {
+            if (numShop.money.equals("")) {
+            } else {
+                shoplist.add(numShop);
+                yfmoney = CommonUtils.add(yfmoney, Double.parseDouble(numShop.money));
+            }
         }
-        params.put("UserPwd", pwd);
+            RequestParams params = new RequestParams();
+        params.put("UserID", PreferenceHelper.readString(context, "shoppay", "UserID", ""));
+        params.put("UserShopID", PreferenceHelper.readString(context, "shoppay", "ShopID", ""));
+            params.put("MemID", PreferenceHelper.readString(context, "shoppay", "memid", ""));
+            params.put("OrderAccount",orderNum);
+            params.put("TotalMoney", yfmoney);
+            if (isMoney) {
+                params.put("payType", 0);
+            } else if (isWx) {
+                params.put("payType", 2);
+            } else if (isYinlian) {
+                params.put("payType", 1);
+            } else if (isYue) {
+                params.put("payType", 5);
+            } else if (isZhifubao) {
+                params.put("payType", 3);
+            } else {
+                params.put("payType", 4);
+            }
+            params.put("UserPwd", pwd);
+            params.put("GlistCount", shoplist.size());
 
-        LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(context, "?Source=3", "StaySettle");
-        LogUtils.d("xxurl", url);
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    loading.dismiss();
-                    LogUtils.d("xxjiesuanS", new String(responseBody, "UTF-8"));
-                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if (jso.getInt("flag") == 1) {
-                        dialog.dismiss();
-                        Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
-                        JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
-                        if (jsonObject.getInt("printNumber") == 0) {
-                            handle.onResponse("");
-                        } else {
-                            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                            if (bluetoothAdapter.isEnabled()) {
-                                BluetoothUtil.connectBlueTooth(MyApplication.context);
-                                BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
+            for (int i = 0; i < shoplist.size(); i++) {
+                params.put("Glist[" + i + "][GoodsID]", shoplist.get(i).GoodsID);
+                params.put("Glist[" + i + "][GoodsPrice]", shoplist.get(i).money);
+            }
+            LogUtils.d("xxparams", params.toString());
+            String url = UrlTools.obtainUrl(context, "?Source=3", "FujiaGoodsExpense");
+            LogUtils.d("xxurl", url);
+            client.post(url, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    try {
+                        loading.dismiss();
+                        LogUtils.d("xxjiesuanS", new String(responseBody, "UTF-8"));
+                        JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
+                        if (jso.getInt("flag") == 1) {
+                            dialog.dismiss();
+                            Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
+                            JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
+                            if (jsonObject.getInt("printNumber") == 0) {
+                                dbAdapter.deleteYinpShopCar();
                                 handle.onResponse("");
                             } else {
-                                handle.onResponse("");
+                                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                                if (bluetoothAdapter.isEnabled()) {
+                                    BluetoothUtil.connectBlueTooth(MyApplication.context);
+                                    BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
+                                    dbAdapter.deleteYinpShopCar();
+                                    handle.onResponse("");
+                                } else {
+                                    dbAdapter.deleteYinpShopCar();
+                                    handle.onResponse("");
+                                }
                             }
+                        }else{
+                            Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
                         }
-                    } else {
-                        Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        loading.dismiss();
                     }
-                } catch (Exception e) {
-                    loading.dismiss();
-                }
 //				printReceipt_BlueTooth(context,xfmoney,yfmoney,jf,et_zfmoney,et_yuemoney,tv_dkmoney,et_jfmoney);
-            }
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                loading.dismiss();
-                Toast.makeText(context, "挂单完成失败，请重新完成",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    loading.dismiss();
+                    Toast.makeText(context, "结算失败，请重新结算",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
     }
 }

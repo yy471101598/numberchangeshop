@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.loopj.android.http.RequestParams;
 import com.shoppay.trt.MyApplication;
 import com.shoppay.trt.R;
 import com.shoppay.trt.bean.GuadanListMsg;
+import com.shoppay.trt.bean.XiaofeiRecordNew;
 import com.shoppay.trt.tools.BluetoothUtil;
 import com.shoppay.trt.tools.DayinUtils;
 import com.shoppay.trt.tools.LogUtils;
@@ -37,16 +39,16 @@ import cz.msebera.android.httpclient.Header;
 
 public class XiaofeijiluNewAdapter extends BaseAdapter {
     private Context context;
-    private List<GuadanListMsg> list;
+    private List<XiaofeiRecordNew> list;
     private LayoutInflater inflater;
     private Dialog dialog;
     private Handler handler;
     private MyApplication app;
 
-    public XiaofeijiluNewAdapter(Context context, List<GuadanListMsg> list, Dialog dialog, MyApplication app, Handler handler) {
+    public XiaofeijiluNewAdapter(Context context, List<XiaofeiRecordNew> list, Dialog dialog,Handler handler) {
         this.context = context;
         if (list == null) {
-            this.list = new ArrayList<GuadanListMsg>();
+            this.list = new ArrayList<XiaofeiRecordNew>();
         } else {
             this.list = list;
         }
@@ -85,16 +87,20 @@ public class XiaofeijiluNewAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
-        final GuadanListMsg home = list.get(position);
+        final XiaofeiRecordNew home = list.get(position);
         vh.tvCode.setText(home.OrderAccount);
         vh.tvVipcard.setText(home.MemCard);
         vh.tvVipname.setText(home.MemName);
         vh.tvOrderstate.setText(home.OrderType);
-        vh.tvOrderstyle.setText(home.Typetext);
-        vh.tvZhmoney.setText(StringUtil.twoNum(home.DiscountMoney));
+        vh.tvOrderstyle.setText(home.OrderTypeTxt);
+        vh.tvZhmoney.setText(StringUtil.twoNum(home.OrderDiscountMoney));
         vh.tvDetail.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
+                Message message=handler.obtainMessage();
+                message.what=111;
+                message.obj=home;
+                handler.sendMessage(message);
 
             }
         });

@@ -130,7 +130,7 @@ public class HomeActivity extends Activity {
                         }
                         break;
                     case "消费记录":
-                        Intent xiaofeirecord = new Intent(ac, XiaofeiRecordActivity.class);
+                        Intent xiaofeirecord = new Intent(ac, XiaofeiRecordNewActivity.class);
                         startActivity(xiaofeirecord);
                         break;
                     case "礼品兑换":

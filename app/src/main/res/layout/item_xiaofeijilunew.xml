@@ -124,6 +124,7 @@
         android:layout_height="35dp"
         android:orientation="horizontal"
         android:background="@color/white"
+        android:visibility="gone"
         android:gravity="center_vertical"
         >
         <TextView
@@ -156,6 +157,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:visibility="gone"
         android:background="@color/viewcolor"
         ></View>
     <LinearLayout

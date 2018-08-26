@@ -72,7 +72,10 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -299,7 +302,7 @@ public class BalanceTActivity extends FragmentActivity implements
         });
     }
 
-    private void obtainSearchShopMsg() {
+    private void obtainSearchShopMsg(String type) {
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
@@ -312,7 +315,7 @@ public class BalanceTActivity extends FragmentActivity implements
         }
         params.put("UserID", PreferenceHelper.readString(ac, "shoppay", "UserID", ""));
         params.put("UserShopID", PreferenceHelper.readString(ac, "shoppay", "ShopID", ""));
-        params.put("SType", 1);
+        params.put("SType", type);
         params.put("GoodsCode", et_shopcode.getText().toString());
         LogUtils.d("xxparams", params.toString());
         String url = UrlTools.obtainUrl(context, "?Source=3", "GetGoods");
@@ -351,6 +354,17 @@ public class BalanceTActivity extends FragmentActivity implements
     private void handlerShopMsg(List<Shop> zhekou) {
         mPosition = 0;
         alllist.addAll(zhekou);
+        for (int i = 0; i < alllist.size(); i++) {
+
+            for (int j = 0; j < i; j++) {
+                if (alllist.get(i).GoodsID.equals(alllist.get(j).GoodsID)) {
+                    alllist.remove(i);
+                    //下标会减1
+                    i = i - 1;
+                    break;
+                }
+            }
+        }
         adapter.notifyDataSetChanged();
         myFragment = new BalanceTFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -603,7 +617,7 @@ public class BalanceTActivity extends FragmentActivity implements
                                              if (et_shopcode.getText().toString().equals("")) {
                                                  Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
                                              } else {
-                                                 obtainSearchShopMsg();
+                                                 obtainSearchShopMsg("1");
                                              }
                                          }
                                      }
@@ -703,7 +717,7 @@ public class BalanceTActivity extends FragmentActivity implements
             case 222:
                 if (resultCode == RESULT_OK) {
                     et_shopcode.setText(data.getStringExtra("codedata"));
-                    obtainShopMsg();
+                    obtainSearchShopMsg("0");
                 }
                 break;
             case 333:

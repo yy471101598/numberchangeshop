@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 
 	public static final String DATABASE_NAME = "shoppay";
-	public static final int DATABASE_VERSION = 10;
+	public static final int DATABASE_VERSION = 11;
 	public static final String DROP_TABLE = "DROP TABLE IF EXISTS ";
 	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS ";
 
@@ -18,6 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SHOP_TABLE_NAME = "SHOP";
     public static final String NUMSHOP_TABLE_NAME = "NUMSHOP";
     public static final String JIFENSHOP_TABLE_NAME = "JIFENSHOP";
+    public static final String YINPIAN_TABLE_NAME = "YINPIAN";
     public static final String ID = "id";
 
     /**
@@ -61,13 +62,36 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
+    public static final String yp_goodid= "GoodsID";
+    public static final String yp_classid= "GoodsClassID";
+    public static final String yp_goodcode ="GoodsCode";
+    public static final String yp_goodname= "GoodsName";
+    public static final String yp_money= "money";
+    public static final String yp_account= "account";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createShopMsg());// 创建车辆信息表
         db.execSQL(createNumShopMsg());
         db.execSQL(createJifenShopMsg());
+        db.execSQL(createYinpianMsg());
     }
-
+    private String createYinpianMsg() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(CREATE_TABLE);
+        sb.append(YINPIAN_TABLE_NAME);
+        sb.append("(");
+        sb.append(ID).append(" integer primary key autoincrement,");
+        sb.append(yp_classid).append(" varchar(32) ,");
+        sb.append(yp_goodcode).append(" varchar(32) ,");
+        sb.append(yp_goodid).append(" varchar(32) ,");
+        sb.append(yp_goodname).append(" varchar(32) ,");
+        sb.append(yp_account).append(" varchar(32) ,");
+        sb.append(yp_money).append(" varchar(32)");
+        sb.append(")");
+        return sb.toString();
+    }
     private String createShopMsg() {
         StringBuilder sb = new StringBuilder();
         sb.append(CREATE_TABLE);
@@ -126,6 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DROP_TABLE + SHOP_TABLE_NAME);// 保存所有车辆信息
         db.execSQL(DROP_TABLE+NUMSHOP_TABLE_NAME);
         db.execSQL(DROP_TABLE+JIFENSHOP_TABLE_NAME);
+        db.execSQL(DROP_TABLE+YINPIAN_TABLE_NAME);
         onCreate(db);
     }
 

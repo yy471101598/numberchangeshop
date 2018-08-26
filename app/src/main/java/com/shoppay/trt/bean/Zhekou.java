@@ -14,4 +14,5 @@ public class Zhekou {
     public String DiscountPrice;//=折后价格标记C
     public String GoodsPoint;//=商品积分
     public String GoodsClassID;//=商品积分
+    public String GoodsName;
 }

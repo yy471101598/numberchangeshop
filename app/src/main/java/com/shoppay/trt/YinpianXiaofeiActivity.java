@@ -53,6 +53,7 @@ import com.shoppay.trt.tools.PreferenceHelper;
 import com.shoppay.trt.tools.ShopXiaofeiDialog;
 import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
+import com.shoppay.trt.tools.YinpianXiaofeiDialog;
 import com.shoppay.trt.wxcode.MipcaActivityCapture;
 
 import org.json.JSONObject;
@@ -153,6 +154,7 @@ public class YinpianXiaofeiActivity extends Activity {
     private boolean isSuccess = false;
     private String editString;
     private String shopString;
+    private DBAdapter dbAdaper;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -187,49 +189,44 @@ public class YinpianXiaofeiActivity extends Activity {
                     break;
                 case 22:
                     //饮片money修改
-                    YinpianMsg ypmsg= (YinpianMsg) msg.obj;
-                    for(int i=0;i<carlist.size();i++){
-                        if(ypmsg.GoodsID.equals(carlist.get(i).GoodsID)){
-                            //已存在
-                            if(ypmsg.money.equals("")||Double.parseDouble(ypmsg.money)==0){
-                                //money为空
-                                carlist.remove(carlist.get(i));
-                            }else{
-                                carlist.get(i).money=ypmsg.money;
-                            }
-                        }else{
-                            //不存在
-                            if(ypmsg.money.equals("")||Double.parseDouble(ypmsg.money)==0){
-                                //money为空
-                            }else{
-                                carlist.add(ypmsg);
-                            }
+                    YinpianMsg ypmsg = (YinpianMsg) msg.obj;
+                    ypmsg.account = PreferenceHelper.readString(context, "shoppay", "account", "123");
+                    dbAdaper.insertYinpShopCar(ypmsg);
+                    List<YinpianMsg> dblist = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+                    rightlist.clear();
+                    rightlist.addAll(dblist);
+                    double money = 0;
+                    int num = 0;
+                    //底部导航数据修改
+                    for (int j = 0; j < rightlist.size(); j++) {
+                        if (!rightlist.get(j).money.equals("")) {
+                            money = money + Double.parseDouble(rightlist.get(j).money);
+                            num = num + 1;
                         }
                     }
-                   double money=0;
-                    //底部导航数据修改
-                     for(int j=0;j<carlist.size();j++){
-                         money=money+Double.parseDouble(carlist.get(j).money);
-                     }
-                    balanceTvNum.setText(carlist.size()+"");
-                    balanceTvMoney.setText(StringUtil.twoNum(money+""));
+                    balanceTvNum.setText(num + "");
+                    balanceTvMoney.setText(StringUtil.twoNum(money + ""));
 
                     break;
                 case 33:
                     //饮片删除
-                    YinpianMsg yp= (YinpianMsg) msg.obj;
-                    for(int i=0;i<carlist.size();i++){
-                        if(yp.GoodsID.equals(carlist.get(i).GoodsID)){
-                            carlist.remove(carlist.get(i));
-                            //底部导航数据修改
-                            double money1=0;
-                            for(int j=0;j<carlist.size();j++){
-                                money1=money1+Double.parseDouble(carlist.get(j).money);
-                            }
-                            balanceTvNum.setText(carlist.size()+"");
-                            balanceTvMoney.setText(StringUtil.twoNum(money1+""));
+                    YinpianMsg yp = (YinpianMsg) msg.obj;
+                    dbAdaper.deleteYinpShopCar(yp.GoodsID);
+                    List<YinpianMsg> dbdlist = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+                    rightlist.clear();
+                    rightlist.addAll(dbdlist);
+                    rightAdapter.notifyDataSetChanged();
+                    double moneyd = 0;
+                    int numd = 0;
+                    //底部导航数据修改
+                    for (int j = 0; j < rightlist.size(); j++) {
+                        if (!rightlist.get(j).money.equals("")) {
+                            moneyd = moneyd + Double.parseDouble(rightlist.get(j).money);
+                            numd = numd + 1;
                         }
                     }
+                    balanceTvNum.setText(numd + "");
+                    balanceTvMoney.setText(StringUtil.twoNum(moneyd + ""));
                     break;
             }
         }
@@ -241,11 +238,44 @@ public class YinpianXiaofeiActivity extends Activity {
     private YinpianXiaofeiLeftAdapter leftAdapter;
     private List<YinpianMsg> rightlist = new ArrayList<>();
     private YinpianXiaofeiRightAdapter rightAdapter;
-    private List<YinpianMsg> carlist = new ArrayList<>();
+
     private void handlerShopMsg(Zhekou zhekou) {
+        YinpianMsg ym = new YinpianMsg();
+        ym.GoodsName = zhekou.GoodsName;
+        ym.GoodsID = zhekou.GoodsID;
+        ym.GoodsCode = zhekou.GoodsCode;
+        ym.GoodsClassID = zhekou.GoodsClassID;
+        ym.money = "";
+        ym.account = PreferenceHelper.readString(context, "shoppay", "account", "123");
+        dbAdaper.insertYinpShopCar(ym);
+        List<YinpianMsg> dblist = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        rightlist.clear();
+        rightlist.addAll(dblist);
+        rightAdapter.notifyDataSetChanged();
+
     }
 
-    private void handlerShopMsg(List<Shop> zhekou) {
+    private void handlerShopMsg(List<YinpianMsg> zhekou) {
+        for (int i = 0; i < zhekou.size(); i++) {
+            zhekou.get(i).account = PreferenceHelper.readString(context, "shoppay", "account", "123");
+        }
+        dbAdaper.insertYinpShopCar(zhekou);
+        List<YinpianMsg> dblist = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        rightlist.clear();
+        rightlist.addAll(dblist);
+        rightAdapter.notifyDataSetChanged();
+
+        double moneyd = 0;
+        int numd = 0;
+        //底部导航数据修改
+        for (int j = 0; j < rightlist.size(); j++) {
+            if (!rightlist.get(j).money.equals("")) {
+                moneyd = moneyd + Double.parseDouble(rightlist.get(j).money);
+                numd = numd + 1;
+            }
+        }
+        balanceTvNum.setText(numd + "");
+        balanceTvMoney.setText(StringUtil.twoNum(moneyd + ""));
     }
 
     @Override
@@ -255,8 +285,16 @@ public class YinpianXiaofeiActivity extends Activity {
         ButterKnife.bind(this);
         ac = this;
         inintView();
+        tvTitle.setText("饮片消费");
         app = (MyApplication) getApplication();
         sysquanxian = app.getSysquanxian();
+        if (sysquanxian.isjiesuan == 0) {
+            //1开启0关闭
+            balanceRlJiesan.setBackgroundColor(getResources().getColor(R.color.gray_cc));
+        } else {
+            balanceRlJiesan.setBackgroundColor(getResources().getColor(R.color.theme_red));
+        }
+        dbAdaper = DBAdapter.getInstance(ac);
         dialog = DialogUtil.loadingDialog(YinpianXiaofeiActivity.this, 1);
         paydialog = DialogUtil.payloadingDialog(YinpianXiaofeiActivity.this, 1);
         PreferenceHelper.write(ac, "shoppay", "memid", "");
@@ -268,18 +306,21 @@ public class YinpianXiaofeiActivity extends Activity {
 
         leftAdapter = new YinpianXiaofeiLeftAdapter(ac, leftlist);
         listview.setAdapter(leftAdapter);
+        dbAdaper.deleteYinpShopCar();
         rightAdapter = new YinpianXiaofeiRightAdapter(ac, rightlist, handler);
         listviewRight.setAdapter(rightAdapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                     YinpianMsg yp= (YinpianMsg) adapterView.getItemAtPosition(i);
-                     for(int j=0;j<rightlist.size();j++){
-                         if(!yp.GoodsID.contains(rightlist.get(j).GoodsID)){
-                             rightlist.add(yp);
-                             rightAdapter.notifyDataSetChanged();
-                         }
-                     }
+                YinpianMsg yp = (YinpianMsg) adapterView.getItemAtPosition(i);
+                yp.account = PreferenceHelper.readString(context, "shoppay", "account", "123");
+                LogUtils.d("xxitem", new Gson().toJson(yp));
+                dbAdaper.insertYinpShopCar(yp);
+                List<YinpianMsg> dblist = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+                rightlist.clear();
+                rightlist.addAll(dblist);
+                rightAdapter.notifyDataSetChanged();
+
             }
         });
         obtainYinpianList();
@@ -403,6 +444,10 @@ public class YinpianXiaofeiActivity extends Activity {
                         Type listType = new TypeToken<List<YinpianMsg>>() {
                         }.getType();
                         List<YinpianMsg> yplist = gson.fromJson(jso.getString("vdata"), listType);
+                        for (int i = 0; i < yplist.size(); i++) {
+                            yplist.get(i).money = "";
+                        }
+
                         leftlist.clear();
                         leftlist.addAll(yplist);
                         leftAdapter.notifyDataSetChanged();
@@ -495,7 +540,7 @@ public class YinpianXiaofeiActivity extends Activity {
                                                @Override
                                                protected void onNoDoubleClick(View view) {
                                                    if (balanceTvNum.getText().toString().equals("0")) {
-                                                       Toast.makeText(getApplicationContext(), "请选择商品",
+                                                       Toast.makeText(getApplicationContext(), "请输入价格",
                                                                Toast.LENGTH_SHORT).show();
                                                    } else {
                                                        if (CommonUtils.checkNet(getApplicationContext())) {
@@ -537,7 +582,7 @@ public class YinpianXiaofeiActivity extends Activity {
                                                                    } else {
                                                                        //会员结算
 //
-                                                                       ShopXiaofeiDialog.jiesuanDialog(app, true, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
+                                                                       YinpianXiaofeiDialog.jiesuanDialog(app, true, dialog, YinpianXiaofeiActivity.this, 1, Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
                                                                            @Override
                                                                            public void onResponse(Object response) {
                                                                                if (response.toString().equals("wxpay")) {
@@ -560,7 +605,7 @@ public class YinpianXiaofeiActivity extends Activity {
                                                                        });
                                                                    }
                                                                } else {//散客结算
-                                                                   ShopXiaofeiDialog.jiesuanDialog(app, false, dialog, YinpianXiaofeiActivity.this, 1, "shop", Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
+                                                                   YinpianXiaofeiDialog.jiesuanDialog(app, false, dialog, YinpianXiaofeiActivity.this, 1, Double.parseDouble(balanceTvMoney.getText().toString()), new InterfaceBack() {
                                                                        @Override
                                                                        public void onResponse(Object response) {
                                                                            if (response.toString().equals("wxpay")) {
@@ -616,7 +661,7 @@ public class YinpianXiaofeiActivity extends Activity {
                                                if (balanceEtShopcode.getText().toString().equals("")) {
                                                    Toast.makeText(ac, "请输入搜索条件", Toast.LENGTH_SHORT).show();
                                                } else {
-                                                   obtainSearchShopMsg();
+                                                   obtainSearchShopMsg("1");
                                                }
                                            }
                                        }
@@ -624,23 +669,18 @@ public class YinpianXiaofeiActivity extends Activity {
         );
     }
 
-    private void obtainSearchShopMsg() {
+    private void obtainSearchShopMsg(String type) {
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
         client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
-        if (PreferenceHelper.readBoolean(context, "shoppay", "isSan", true)) {
-            params.put("MemID", "");
-        } else {
-            params.put("MemID", PreferenceHelper.readString(context, "shoppay", "memid", ""));
-        }
         params.put("UserID", PreferenceHelper.readString(ac, "shoppay", "UserID", ""));
         params.put("UserShopID", PreferenceHelper.readString(ac, "shoppay", "ShopID", ""));
-        params.put("SType", 1);
+        params.put("SType", type);
         params.put("GoodsCode", balanceEtShopcode.getText().toString());
         LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(context, "?Source=3", "GetGoods");
+        String url = UrlTools.obtainUrl(context, "?Source=3", "GetFujiabysearch");
         LogUtils.d("xxurl", url);
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
@@ -651,9 +691,12 @@ public class YinpianXiaofeiActivity extends Activity {
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
                     if (jso.getInt("flag") == 1) {
                         Gson gson = new Gson();
-                        Type listType = new TypeToken<List<Shop>>() {
+                        Type listType = new TypeToken<List<YinpianMsg>>() {
                         }.getType();
-                        List<Shop> zhekoulist = gson.fromJson(jso.getString("vdata"), listType);
+                        List<YinpianMsg> zhekoulist = gson.fromJson(jso.getString("vdata"), listType);
+                        for (int i = 0; i < zhekoulist.size(); i++) {
+                            zhekoulist.get(i).money = "";
+                        }
                         handlerShopMsg(zhekoulist);
 
 
@@ -661,14 +704,14 @@ public class YinpianXiaofeiActivity extends Activity {
                         Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(context, "获取商品信息失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "获取饮片信息失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(context, "获取商品信息失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "获取饮片信息失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -696,6 +739,9 @@ public class YinpianXiaofeiActivity extends Activity {
                 balanceTvVipname.setText("");
                 balanceTvNum.setText("0");
                 balanceTvMoney.setText("0");
+                dbAdaper.deleteYinpShopCar();
+                rightlist.clear();
+                rightAdapter.notifyDataSetChanged();
                 break;
             case R.id.li_san:
                 changeTabItem(1);
@@ -712,6 +758,9 @@ public class YinpianXiaofeiActivity extends Activity {
                 PreferenceHelper.write(ac, "shoppay", "memid", "");
                 PreferenceHelper.write(ac, "shoppay", "vipcar", "无");
                 PreferenceHelper.write(ac, "shoppay", "vipname", "散客");
+                dbAdaper.deleteYinpShopCar();
+                rightlist.clear();
+                rightAdapter.notifyDataSetChanged();
                 break;
         }
     }
@@ -728,7 +777,8 @@ public class YinpianXiaofeiActivity extends Activity {
             case 222:
                 if (resultCode == RESULT_OK) {
                     balanceEtShopcode.setText(data.getStringExtra("codedata"));
-                    obtainShopMsg();
+//                    obtainShopMsg();
+                    obtainSearchShopMsg("0");
                 }
                 break;
             case 333:
@@ -809,28 +859,22 @@ public class YinpianXiaofeiActivity extends Activity {
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
         client.setCookieStore(myCookieStore);
         final DBAdapter dbAdapter = DBAdapter.getInstance(context);
-        List<ShopCar> list = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
-        List<ShopCar> shoplist = new ArrayList<>();
+        List<YinpianMsg> list = dbAdapter.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        List<YinpianMsg> shoplist = new ArrayList<>();
         double yfmoney = 0.0;
-        double zfmoney = 0.0;
-        int point = 0;
-        int num = 0;
-        for (ShopCar numShop : list) {
-            if (numShop.count == 0) {
+        for (YinpianMsg numShop : list) {
+            if (numShop.money.equals("")) {
             } else {
                 shoplist.add(numShop);
-                zfmoney = CommonUtils.add(zfmoney, Double.parseDouble(numShop.discountmoney));
-                yfmoney = CommonUtils.add(yfmoney, Double.parseDouble(CommonUtils.multiply(numShop.count + "", numShop.price)));
-                num = num + numShop.count;
-                point = point + (int) numShop.point;
+                yfmoney = CommonUtils.add(yfmoney, Double.parseDouble(numShop.money));
             }
         }
         RequestParams params = new RequestParams();
+        params.put("UserID", PreferenceHelper.readString(context, "shoppay", "UserID", ""));
+        params.put("UserShopID", PreferenceHelper.readString(context, "shoppay", "ShopID", ""));
         params.put("MemID", PreferenceHelper.readString(context, "shoppay", "memid", ""));
         params.put("OrderAccount", orderNum);
         params.put("TotalMoney", yfmoney);
-        params.put("DiscountMoney", zfmoney);
-        params.put("OrderPoint", point);
         switch (paytype) {
             case "wx":
                 params.put("payType", 2);
@@ -842,18 +886,13 @@ public class YinpianXiaofeiActivity extends Activity {
         params.put("UserPwd", "");
         params.put("GlistCount", shoplist.size());
         LogUtils.d("xxparams", shoplist.size() + "");
+
         for (int i = 0; i < shoplist.size(); i++) {
-            LogUtils.d("xxparams", shoplist.get(i).discount);
-            params.put("Glist[" + i + "][GoodsID]", shoplist.get(i).goodsid);
-            params.put("Glist[" + i + "][number]", shoplist.get(i).count);
-            params.put("Glist[" + i + "][GoodsPoint]", point);
-            params.put("Glist[" + i + "][discountedprice]", shoplist.get(i).discount);
-            params.put("Glist[" + i + "][Price]", shoplist.get(i).discountmoney);
-            params.put("Glist[" + i + "][GoodsPrice]", shoplist.get(i).price);
-            params.put("Glist[" + i + "][batchnumber]", shoplist.get(i).batchnumber);
+            params.put("Glist[" + i + "][GoodsID]", shoplist.get(i).GoodsID);
+            params.put("Glist[" + i + "][GoodsPrice]", shoplist.get(i).money);
         }
         LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(context, "?Source=3", "GoodsExpense");
+        String url = UrlTools.obtainUrl(context, "?Source=3", "FujiaGoodsExpense");
         LogUtils.d("xxurl", url);
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
@@ -866,15 +905,15 @@ public class YinpianXiaofeiActivity extends Activity {
                         Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
                         if (jsonObject.getInt("printNumber") == 0) {
-                            dbAdapter.deleteShopCar();
+                            dbAdapter.deleteYinpShopCar();
                         } else {
                             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                             if (bluetoothAdapter.isEnabled()) {
                                 BluetoothUtil.connectBlueTooth(MyApplication.context);
                                 BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
-                                dbAdapter.deleteShopCar();
+                                dbAdapter.deleteYinpShopCar();
                             } else {
-                                dbAdapter.deleteShopCar();
+                                dbAdapter.deleteYinpShopCar();
                             }
                         }
                         finish();
@@ -902,42 +941,30 @@ public class YinpianXiaofeiActivity extends Activity {
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
         client.setCookieStore(myCookieStore);
-        final DBAdapter dbAdapter = DBAdapter.getInstance(context);
-        List<ShopCar> list = dbAdapter.getListShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
-        List<ShopCar> shoplist = new ArrayList<>();
+        List<YinpianMsg> list = dbAdaper.getListYinpShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+        List<YinpianMsg> shoplist = new ArrayList<>();
         double yfmoney = 0.0;
-        double zfmoney = 0.0;
-        int point = 0;
-        int num = 0;
-        for (ShopCar numShop : list) {
-            if (numShop.count == 0) {
+        for (YinpianMsg numShop : list) {
+            if (numShop.money.equals("")) {
             } else {
                 shoplist.add(numShop);
-                zfmoney = CommonUtils.add(zfmoney, Double.parseDouble(numShop.discountmoney));
-                yfmoney = CommonUtils.add(yfmoney, Double.parseDouble(CommonUtils.multiply(numShop.count + "", numShop.price)));
-                num = num + numShop.count;
-                point = point + (int) numShop.point;
+                yfmoney = CommonUtils.add(yfmoney, Double.parseDouble(numShop.money));
             }
         }
         RequestParams params = new RequestParams();
+        params.put("UserID", PreferenceHelper.readString(ac, "shoppay", "UserID", ""));
+        params.put("UserShopID", PreferenceHelper.readString(ac, "shoppay", "ShopID", ""));
         params.put("MemID", PreferenceHelper.readString(context, "shoppay", "memid", ""));
         params.put("OrderAccount", DateUtils.getCurrentTime("yyyyMMddHHmmss"));
         params.put("TotalMoney", yfmoney);
-        params.put("DiscountMoney", zfmoney);
         params.put("GlistCount", shoplist.size());
         LogUtils.d("xxparams", shoplist.size() + "");
         for (int i = 0; i < shoplist.size(); i++) {
-            LogUtils.d("xxparams", shoplist.get(i).discount);
-            params.put("Glist[" + i + "][GoodsID]", shoplist.get(i).goodsid);
-            params.put("Glist[" + i + "][number]", shoplist.get(i).count);
-            params.put("Glist[" + i + "][GoodsPoint]", point);
-            params.put("Glist[" + i + "][batchnumber]", shoplist.get(i).batchnumber);
-            params.put("Glist[" + i + "][discountedprice]", shoplist.get(i).discount);
-            params.put("Glist[" + i + "][goodstype]", shoplist.get(i).goodsType);
-            params.put("Glist[" + i + "][GoodsPrice]", shoplist.get(i).price);
+            params.put("Glist[" + i + "][GoodsID]", shoplist.get(i).GoodsID);
+            params.put("Glist[" + i + "][GoodsPrice]", shoplist.get(i).money);
         }
         LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(context, "?Source=3", "Stay");
+        String url = UrlTools.obtainUrl(context, "?Source=3", "FujiaStay");
         LogUtils.d("xxurl", url);
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
@@ -950,15 +977,15 @@ public class YinpianXiaofeiActivity extends Activity {
                         Toast.makeText(context, jso.getString("msg"), Toast.LENGTH_LONG).show();
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
                         if (jsonObject.getInt("printNumber") == 0) {
-                            dbAdapter.deleteShopCar();
+                            dbAdaper.deleteYinpShopCar();
                         } else {
                             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                             if (bluetoothAdapter.isEnabled()) {
                                 BluetoothUtil.connectBlueTooth(MyApplication.context);
                                 BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
-                                dbAdapter.deleteShopCar();
+                                dbAdaper.deleteYinpShopCar();
                             } else {
-                                dbAdapter.deleteShopCar();
+                                dbAdaper.deleteYinpShopCar();
                             }
                         }
                         finish();

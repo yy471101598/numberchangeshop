@@ -1,34 +1,10 @@
 [
     {
-        "merged": "F:\\shop\\app\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_rotate.png",
-        "source": "F:\\shop\\app\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_rotate.png"
+        "merged": "F:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_rotate.png",
+        "source": "F:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_rotate.png"
     },
     {
-        "merged": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_rotate.png",
-        "source": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_rotate.png"
-    },
-    {
-        "merged": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_arrow.png",
-        "source": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_arrow.png"
-    },
-    {
-        "merged": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_arrow.png",
-        "source": "E:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_arrow.png"
-    },
-    {
-        "merged": "F:\\shop\\app\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_arrow.png",
-        "source": "F:\\shop\\app\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_arrow.png"
-    },
-    {
-        "merged": "F:\\shenzhenvipsystemnewzh\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_rotate.png",
-        "source": "F:\\shenzhenvipsystemnewzh\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_rotate.png"
-    },
-    {
-        "merged": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_rotate.png",
-        "source": "F:\\shenzhenvipsystemnew\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_rotate.png"
-    },
-    {
-        "merged": "F:\\shenzhenvipsystemnewzh\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_arrow.png",
-        "source": "F:\\shenzhenvipsystemnewzh\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_arrow.png"
+        "merged": "F:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-hdpi-v4\\default_indicator_arrow.png",
+        "source": "F:\\mayun\\tongrentang\\base_library_pullToRefresh\\build\\intermediates\\bundles\\debug\\res\\drawable-hdpi-v4\\default_indicator_arrow.png"
     }
 ]

@@ -479,7 +479,7 @@ public class DialogUtil {
 									   int showingLocation, final InterfaceBack handler) {
 		final Dialog dialog;
 		LayoutInflater inflater = LayoutInflater.from(context);
-		View view = inflater.inflate(R.layout.dialog_datechose, null);
+		View view = inflater.inflate(R.layout.dialog_datechoseold, null);
 		wl_start_year= (WheelView) view.findViewById(R.id.wl_year);
 		wl_start_month= (WheelView) view.findViewById(R.id.wl_month);
 		wl_start_day= (WheelView) view.findViewById(R.id.wl_day);

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.shoppay.trt.R;
@@ -65,7 +66,7 @@ public class YinpianXiaofeiRightAdapter extends BaseAdapter {
                 .findViewById(R.id.tv_name);
         vh.et_money = (EditText) convertView
                 .findViewById(R.id.et_money);
-        vh.img_delete = (ImageView) convertView
+        vh.img_delete = (RelativeLayout) convertView
                 .findViewById(R.id.img_delete);
         convertView.setTag(vh);
 //        } else {
@@ -73,6 +74,9 @@ public class YinpianXiaofeiRightAdapter extends BaseAdapter {
 //        }
         final YinpianMsg home = list.get(position);
         vh.tv_name.setText(home.GoodsName);
+        if(!home.money.equals("")){
+            vh.et_money.setText(home.money);
+        }
         vh.et_money.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -109,6 +113,6 @@ public class YinpianXiaofeiRightAdapter extends BaseAdapter {
     class ViewHolder {
         TextView tv_name;
         EditText et_money;
-        ImageView img_delete;
+        RelativeLayout img_delete;
     }
 }
