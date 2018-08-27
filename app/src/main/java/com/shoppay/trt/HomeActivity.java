@@ -57,6 +57,10 @@ public class HomeActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Home home = (Home) adapterView.getItemAtPosition(i);
                 switch (home.name) {
+                    case "商品统计":
+                        Intent tj= new Intent(ac, ShopTongjiActivity.class);
+                        startActivity(tj);
+                        break;
                     case "饮片消费":
                         Intent yin = new Intent(ac, YinpianXiaofeiActivity.class);
                         startActivity(yin);
@@ -219,6 +223,10 @@ public class HomeActivity extends Activity {
         h9.name = "计次消费";
         h9.iconId = R.mipmap.vipnumxiaofei;
         list.add(h9);
+        Home h63 = new Home();
+        h63.name = "兑换记录";
+        h63.iconId = R.mipmap.duihuanjilv;
+        list.add(h63);
         Home h4 = new Home();
         h4.name = "会员充值";
         h4.iconId = R.mipmap.viprecharge;
@@ -235,14 +243,14 @@ public class HomeActivity extends Activity {
         h62.name = "消费记录";
         h62.iconId = R.mipmap.xiaofeijilv;
         list.add(h62);
+        Home hjl = new Home();
+        hjl.name = "商品统计";
+        hjl.iconId = R.mipmap.shoptj;
+        list.add(hjl);
         Home h5 = new Home();
         h5.name = "礼品兑换";
         h5.iconId = R.mipmap.lipingduihuan;
         list.add(h5);
-        Home h63 = new Home();
-        h63.name = "兑换记录";
-        h63.iconId = R.mipmap.duihuanjilv;
-        list.add(h63);
         Home h61 = new Home();
         h61.name = "营销中心";
         h61.iconId = R.mipmap.jinriyinxiao;
