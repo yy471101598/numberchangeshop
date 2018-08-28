@@ -89,11 +89,13 @@ public class RightAdapter extends BaseAdapter {
                 .findViewById(R.id.item_tv_num);
         vh.tv_money = (TextView) convertView
                 .findViewById(R.id.item_tv_money);
+        vh.tv_code=(TextView)convertView.findViewById(R.id.item_tv_shopcode);
         vh.img_add = (ImageView) convertView.findViewById(R.id.item_iv_add);
         vh.img_del = (ImageView) convertView.findViewById(R.id.item_iv_del);
         convertView.setTag(vh);
         final Shop home = list.get(position);
         vh.tv_name.setText(home.GoodsName);
+        vh.tv_code.setText("编号："+home.GoodsCode);
         vh.tv_money.setText(home.GoodsPrice);
         ShopCar dbshop = dbAdapter.getShopCar(home.GoodsID);
         if (dbshop == null) {
@@ -255,7 +257,7 @@ public class RightAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        TextView tv_name, tv_money, tv_num;
+        TextView tv_name, tv_money, tv_num,tv_code;
         ImageView img_add, img_del;
     }
 

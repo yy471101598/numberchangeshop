@@ -353,6 +353,7 @@ public class BalanceTActivity extends FragmentActivity implements
 
     private void handlerShopMsg(List<Shop> zhekou) {
         mPosition = 0;
+        alllist.clear();
         alllist.addAll(zhekou);
         for (int i = 0; i < alllist.size(); i++) {
 

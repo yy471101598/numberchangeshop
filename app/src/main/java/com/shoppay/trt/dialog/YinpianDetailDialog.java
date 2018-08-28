@@ -43,7 +43,7 @@ public class YinpianDetailDialog {
         ImageView img=(ImageView)view.findViewById(R.id.img_close);
         YinpianDetailAdapter carListAdapter = new YinpianDetailAdapter(context, list);
         listview.setAdapter(carListAdapter);
-        if (list.size() > 5) {
+        if (list.size() > 4) {
             ViewGroup.LayoutParams params = listview.getLayoutParams();
 
             params.height = dip2px(context, 250);

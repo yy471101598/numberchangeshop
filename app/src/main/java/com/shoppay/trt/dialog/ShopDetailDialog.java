@@ -41,7 +41,7 @@ public class ShopDetailDialog {
         ImageView img = (ImageView) view.findViewById(R.id.img_close);
         ShopDetailAdapter carListAdapter = new ShopDetailAdapter(context, list);
         listview.setAdapter(carListAdapter);
-        if (list.size() > 4) {
+        if (list.size() > 3) {
             ViewGroup.LayoutParams params = listview.getLayoutParams();
 
             params.height = dip2px(context, 280);

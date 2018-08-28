@@ -308,7 +308,7 @@
             android:layout_height="wrap_content"
             android:textSize="13sp"
             android:textColor="@color/white"
-            android:text="定位"
+            android:text="扫描"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="3dp"

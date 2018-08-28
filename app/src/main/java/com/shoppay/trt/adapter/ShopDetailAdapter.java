@@ -62,10 +62,10 @@ public class ShopDetailAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
         final OrderDetailMsg home = list.get(position);
-        vh.tvName.setText("品名："+home.GoodsName);
+        vh.tvName.setText(home.GoodsName);
         vh.tvMoney.setText("￥" + StringUtil.twoNum(home.OrderDetailDiscountPrice));
         vh.tvNum.setText("数量：" + home.OrderDetailNumber);
-        vh.tvPihao.setText("批号：" + home.BatchNumber);
+        vh.tvPihao.setText( home.BatchNumber);
         return convertView;
     }
 

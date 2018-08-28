@@ -244,7 +244,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="3dp"
-                android:text="定位"
+                android:text="扫描"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 

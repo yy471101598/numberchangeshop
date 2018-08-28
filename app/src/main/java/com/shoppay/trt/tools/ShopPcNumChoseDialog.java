@@ -31,8 +31,8 @@ public class ShopPcNumChoseDialog {
         final Dialog dialog;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_addshop, null);
-        final ImageView iv_del = (ImageView) view.findViewById(R.id.item_iv_delpm);
-        final ImageView iv_add = (ImageView) view.findViewById(R.id.item_iv_addpm);
+        final RelativeLayout iv_del = (RelativeLayout) view.findViewById(R.id.item_iv_delpm);
+        final RelativeLayout iv_add = (RelativeLayout) view.findViewById(R.id.item_iv_addpm);
         final EditText et_num = (EditText) view.findViewById(R.id.item_tv_numpm);
         final TextView tv_name = (TextView) view.findViewById(R.id.tv_pinming);
         final EditText et_pihao = (EditText) view.findViewById(R.id.et_pihao);
