@@ -2,14 +2,7 @@ package com.shoppay.trt;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.RemoteException;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,18 +18,10 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.shoppay.trt.adapter.ShopTjAdapter;
-import com.shoppay.trt.adapter.XiaofeijiluNewAdapter;
 import com.shoppay.trt.bean.Dengji;
-import com.shoppay.trt.bean.OrderDetailMsg;
 import com.shoppay.trt.bean.ShopTjMsg;
-import com.shoppay.trt.bean.VipInfo;
-import com.shoppay.trt.bean.VipInfoMsg;
-import com.shoppay.trt.bean.XiaofeiRecordNew;
-import com.shoppay.trt.card.ReadCardOpt;
 import com.shoppay.trt.dialog.DateHmChoseDialog;
 import com.shoppay.trt.dialog.OrderTypeDialog;
-import com.shoppay.trt.dialog.ShopDetailDialog;
-import com.shoppay.trt.dialog.YinpianDetailDialog;
 import com.shoppay.trt.http.InterfaceBack;
 import com.shoppay.trt.tools.DateUtils;
 import com.shoppay.trt.tools.DialogUtil;
@@ -45,7 +30,6 @@ import com.shoppay.trt.tools.NoDoubleClickListener;
 import com.shoppay.trt.tools.PreferenceHelper;
 import com.shoppay.trt.tools.StringUtil;
 import com.shoppay.trt.tools.UrlTools;
-import com.shoppay.trt.wxcode.MipcaActivityCapture;
 
 import org.json.JSONObject;
 
@@ -89,6 +73,8 @@ public class ShopTongjiActivity extends Activity {
     TextView tvTcmoney;
     @Bind(R.id.listview)
     ListView listview;
+    @Bind(R.id.tv_xsmoney)
+    TextView tv_xsmoney;
     private Activity ac;
     private ShopTjAdapter adapter;
     private Dialog dialog;
@@ -149,6 +135,7 @@ public class ShopTongjiActivity extends Activity {
                         JSONObject jo=jso.getJSONObject("vdata");
                         Gson gson = new Gson();
                         tvTcmoney.setText(StringUtil.twoNum(jo.getString("totalstaffmoney")));
+                        tv_xsmoney.setText(StringUtil.twoNum(jo.getString("totalsalesmoney")));
                         Type listType = new TypeToken<List<ShopTjMsg>>() {
                         }.getType();
                         List<ShopTjMsg> slist = gson.fromJson(jo.getString("GoodsSale"), listType);
