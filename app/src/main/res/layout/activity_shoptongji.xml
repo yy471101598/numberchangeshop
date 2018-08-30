@@ -268,7 +268,7 @@
                 android:layout_marginRight="5dp"
                 android:text=""
                 android:textColor="@color/text_30"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 />
         </LinearLayout>
 
@@ -291,9 +291,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="7dp"
-                android:text="商品销售金额汇总"
+                android:text="商品销售汇总"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
             <View
@@ -311,7 +311,7 @@
                 android:layout_marginRight="5dp"
                 android:text=""
                 android:textColor="@color/text_30"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 />
         </LinearLayout>
     </LinearLayout>
