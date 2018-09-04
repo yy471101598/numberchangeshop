@@ -85,65 +85,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal" >
-       <LinearLayout
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="3"
-           android:orientation="horizontal"
-           android:background="@drawable/kuang_gray_white"
-           android:gravity="center_vertical"
-           >
 
-           <ImageView
-               android:layout_width="20dp"
-               android:layout_height="20dp"
-               android:layout_marginLeft="15dp"
-               android:background="@drawable/login_psw_bg" />
-           <View
-               android:layout_width="1dp"
-               android:layout_height="match_parent"
-               android:layout_marginLeft="15dp"
-               android:background="@color/gray_cc"
-               ></View>
-           <EditText
-               android:id="@+id/login_et_yuming"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="12dp"
-               android:background="@null"
-               android:hint="请输入域名编号"
-               android:singleLine="true"
-               android:textColor="@color/text_30"
-               android:textSize="15sp" />
-       </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/login_rl_bang"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/kuang_red_red"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="绑定"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
-    </LinearLayout>
     <TextView
         android:id="@+id/login_tv_yuming"
         android:layout_width="wrap_content"

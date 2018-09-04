@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">同仁堂</string>
+    <string name="version">1.1</string>
+    <string name="scan_text">将二维码/条码放入框内, 即可自动扫描</string>
+    <string name="gitee">git</string>
+    <string name="giteettt">gitttt</string>
+    <string name="laguage">laguage</string>
+</resources>
