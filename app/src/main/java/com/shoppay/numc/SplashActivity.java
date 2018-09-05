@@ -1,7 +1,6 @@
 package com.shoppay.numc;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,14 +8,11 @@ import android.os.Message;
 import android.util.Log;
 
 import com.shoppay.numc.tools.CleanMSG;
-import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.ObtainSystemLanguage;
 import com.shoppay.numc.tools.PreferenceHelper;
-import com.shoppay.numc.ui.*;
+import com.shoppay.numc.ui.BaseActivity;
 
-import java.util.Locale;
-
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     private static final int GO_MAIN = 1000;
     private static final int GO_HOME = 2000;

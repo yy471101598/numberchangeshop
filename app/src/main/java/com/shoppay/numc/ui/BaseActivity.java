@@ -14,7 +14,6 @@ import com.shoppay.numc.http.PermissionListener;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.ObtainSystemLanguage;
-import com.shoppay.numc.tools.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,8 @@ public abstract class BaseActivity extends Activity {
         initLocaleLanguage();
         dialog = DialogUtil.loadingDialog(BaseActivity.this, 1);
         res = getResources();
-        init();
     }
 
-    protected void init() {
-    }
     private void initLocaleLanguage() {
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();

@@ -16,19 +16,19 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.HomeActivity;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
-import com.shoppay.numc.bean.QuanxianManage;
-import com.shoppay.numc.bean.SystemQuanxian;
 import com.shoppay.numc.http.ContansUtils;
+import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.modle.ImpObtainHome;
+import com.shoppay.numc.nbean.HomeMsg;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
@@ -37,15 +37,17 @@ import com.shoppay.numc.tools.MD5Util;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.SysUtil;
+import com.shoppay.numc.tools.ToastUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.Iterator;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -61,7 +63,6 @@ public class LoginActivity extends BaseActivity {
     private Dialog dialog;
     private ImageView img;
     File file;
-    private QuanxianManage menuquanxian;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,8 +189,6 @@ public class LoginActivity extends BaseActivity {
 
 
     private void login() {
-        PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
-        PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
         dialog.show();
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
@@ -206,26 +205,44 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.MD5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.MD5(jso.toString()+"bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/login.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                dialog.dismiss();
                 try {
                     LogUtils.d("xxLoginS", new String(responseBody, "UTF-8"));
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
                     if (jso.getInt("flag") == 1) {
-                        MyApplication myApplication = (MyApplication) getApplication();
                         PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
                         PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
                         PreferenceHelper.write(ac, "shoppay", "userid", jso.getString("userid"));
-                        Intent intent = new Intent(ac, HomeActivity.class);
-                        intent.putExtra("quanxian", menuquanxian);
-                        startActivity(intent);
-                        finish();
+                        ImpObtainHome home=new ImpObtainHome();
+                        home.obtainHomeMsg(LoginActivity.this, dialog, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                Gson gson=new Gson();
+                                Type listType = new TypeToken<List<HomeMsg>>() {
+                                }.getType();
+                               List<HomeMsg> sllist = gson.fromJson(response.toString(), listType);
+                                Intent intent = new Intent(ac, HomeActivity.class);
+                                intent.putExtra("list", (Serializable) sllist);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
                     } else {
-                        Toast.makeText(ac, jso.getString("msg"), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            ToastUtils.showToast(ac, jso.getString("msg"));
+                        } else {
+                            ToastUtils.showToast(ac, jso.getString("enmsg"));
+                        }
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
