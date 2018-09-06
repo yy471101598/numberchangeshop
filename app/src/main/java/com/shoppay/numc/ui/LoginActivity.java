@@ -24,11 +24,16 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.modle.ImpObtainCurrency;
 import com.shoppay.numc.modle.ImpObtainHome;
+import com.shoppay.numc.modle.ImpObtainPaytype;
+import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.HomeMsg;
+import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
@@ -63,6 +68,7 @@ public class LoginActivity extends BaseActivity {
     private Dialog dialog;
     private ImageView img;
     File file;
+    private MyApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +82,45 @@ public class LoginActivity extends BaseActivity {
             et_account.setText(PreferenceHelper.readString(ac, "shoppay", "account", "123"));
             et_pwd.setText(PreferenceHelper.readString(ac, "shoppay", "pwd", "123"));
         }
-
-
         dialog = DialogUtil.loadingDialog(ac, 1);
         setimg();
         file = new File(Environment.getExternalStorageDirectory(),
                 "error.log");
-        LogUtils.d("xxe", res.getString(R.string.laguage));
+        app = (MyApplication) getApplication();
+
+        ImpObtainCurrency currency=new ImpObtainCurrency();
+        currency.obtainCurrency(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson=new Gson();
+                Type listType = new TypeToken<List<Currency>>() {
+                }.getType();
+                List<Currency> sllist = gson.fromJson(response.toString(), listType);
+                app.setCurrency(sllist);
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+
+            }
+        });
+
+        ImpObtainPaytype paytype=new ImpObtainPaytype();
+        paytype.obtainPayType(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson=new Gson();
+                Type listType = new TypeToken<List<PayType>>() {
+                }.getType();
+                List<PayType> sllist = gson.fromJson(response.toString(), listType);
+                app.setPayType(sllist);
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+
+            }
+        });
     }
 
     public String str2HexStr(String str) {
@@ -190,6 +228,8 @@ public class LoginActivity extends BaseActivity {
 
     private void login() {
         dialog.show();
+        PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
+        PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
         client.setCookieStore(myCookieStore);
@@ -205,7 +245,7 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.MD5(jso.toString()+"bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString()+"bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/login.ashx", params, new AsyncHttpResponseHandler() {
             @Override
@@ -216,7 +256,7 @@ public class LoginActivity extends BaseActivity {
                     if (jso.getInt("flag") == 1) {
                         PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
                         PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
-                        PreferenceHelper.write(ac, "shoppay", "userid", jso.getString("userid"));
+                        PreferenceHelper.write(ac, "shoppay", "userid", jso.getInt("userid"));
                         ImpObtainHome home=new ImpObtainHome();
                         home.obtainHomeMsg(LoginActivity.this, dialog, new InterfaceBack() {
                             @Override

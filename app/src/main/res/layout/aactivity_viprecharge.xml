@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/viprecharge_rl_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/kuang_red_red">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="充值"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <include layout="@layout/title_twoicon_back"></include>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/viprecharge_tv_cardnum"
@@ -27,8 +47,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="会员卡号"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/viprecharge_et_cardnum"
@@ -43,20 +62,17 @@
                 android:hint="请输入会员卡号"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
+            android:background="@color/viewcolor"></View>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/viprecharge_tv_name"
@@ -66,8 +82,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="会员姓名"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/viprecharge_et_name"
@@ -80,20 +95,17 @@
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
+            android:background="@color/viewcolor"></View>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/viprecharge_tv_bizhong"
@@ -103,48 +115,46 @@
                 android:layout_marginLeft="10dp"
                 android:text="充值币种"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-<RelativeLayout
-    android:layout_width="100dp"
-    android:layout_height="25dp"
-    android:background="@drawable/shap_downchose"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="15dp"
-    android:layout_alignParentRight="true"
-    android:layout_centerVertical="true"
-    >
-    <TextView
-        android:id="@+id/viprecharge_et_bingzhong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textColor="@color/text_30"
-        android:text="人民币"
-        android:textSize="15sp"
-        />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:background="@mipmap/button_down"
+                android:textSize="15sp" />
 
-        />
-</RelativeLayout>
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/shap_downchose">
+
+                <TextView
+                    android:id="@+id/viprecharge_et_bingzhong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="请选择"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@mipmap/button_down"
+
+                    />
+            </RelativeLayout>
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
+            android:background="@color/viewcolor"></View>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
+            android:layout_height="40dp">
 
             <TextView
                 android:id="@+id/viprecharge_tv_yue"
@@ -154,8 +164,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="会员余额"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/viprecharge_et_yue"
@@ -168,21 +177,18 @@
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
+            android:background="@color/viewcolor"></View>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/white"
-            >
+            android:background="@color/white">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -191,8 +197,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="支付方式"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <RadioGroup
                 android:id="@+id/radiogroup"
@@ -200,74 +205,71 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="7dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rb_money"
+                    android:id="@+id/rb_1"
                     style="@style/CouldRecharge_btn_style"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/cloud_recharge_btn_select"
-                    android:checked="true"
                     android:gravity="center"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="gone"
                     android:text="现金"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <RadioButton
-                    android:id="@+id/rb_wx"
+                    android:id="@+id/rb_2"
                     style="@style/CouldRecharge_btn_style"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/cloud_recharge_btn_select"
                     android:gravity="center"
-                    android:paddingBottom="3dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="3dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="gone"
                     android:text="微信"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="15sp"/>
+                    android:textSize="13sp" />
 
                 <RadioButton
-                    android:id="@+id/rb_zhifubao"
+                    android:id="@+id/rb_3"
                     style="@style/CouldRecharge_btn_style"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/cloud_recharge_btn_select"
                     android:gravity="center"
-                    android:paddingBottom="3dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="3dp"
+                    android:paddingLeft="8dp"
+                    android:visibility="gone"
+                    android:paddingRight="8dp"
                     android:text="支付宝"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
-.
+                .
 
                 <RadioButton
-                    android:id="@+id/rb_yinlian"
+                    android:id="@+id/rb_4"
                     style="@style/CouldRecharge_btn_style"
-                    android:layout_width="40dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/cloud_recharge_btn_select"
                     android:gravity="center"
-                    android:paddingBottom="3dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="3dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:visibility="gone"
                     android:text="银联"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp"/>
-
-
+                    android:textSize="13sp" />
             </RadioGroup>
 
 
@@ -276,15 +278,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
+            android:background="@color/viewcolor"></View>
 
         <RelativeLayout
             android:id="@+id/consumption_rl_money"
             android:layout_width="match_parent"
             android:layout_height="41dp"
-            android:background="@color/white"
-            >
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/vip_tv_money"
@@ -294,8 +294,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="充值金额"
                 android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_money"
@@ -311,8 +310,7 @@
                 android:inputType="number|numberDecimal"
                 android:textColor="@color/theme_red"
                 android:textColorHint="@color/theme_red"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
@@ -321,27 +319,4 @@
                 android:background="@color/viewcolor"></View>
         </RelativeLayout>
     </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/viprecharge_rl_recharge"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/kuang_red_red"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="充值"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            />
-    </RelativeLayout>
 </RelativeLayout>

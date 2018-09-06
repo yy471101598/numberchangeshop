@@ -52,6 +52,14 @@ public class HomeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HomeMsg home = (HomeMsg) adapterView.getItemAtPosition(i);
+                switch (home.Title){
+                    case "会员充值":
+
+                        break;
+
+
+
+                }
 
 
             }

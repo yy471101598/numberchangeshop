@@ -74,7 +74,101 @@ public class HomeAdapter extends BaseAdapter {
     }
 
     public int obtainIconId(String icon) {
-        return R.mipmap.shopxiaofei;
+        int iconId = R.mipmap.icon_01;
+        switch (icon.toLowerCase()) {
+            case "icon_01.png":
+                iconId = R.mipmap.icon_01;
+                break;
+            case "icon_02.png":
+                iconId = R.mipmap.icon_02;
+                break;
+            case "icon_03.png":
+                iconId = R.mipmap.icon_03;
+                break;
+            case "icon_04.png":
+                iconId = R.mipmap.icon_04;
+                break;
+            case "icon_05.png":
+                iconId = R.mipmap.icon_05;
+                break;
+            case "icon_06.png":
+                iconId = R.mipmap.icon_06;
+                break;
+            case "icon_07.png":
+                iconId = R.mipmap.icon_07;
+                break;
+            case "icon_08.png":
+                iconId = R.mipmap.icon_08;
+                break;
+            case "icon_09.png":
+                iconId = R.mipmap.icon_09;
+                break;
+            case "icon_10.png":
+                iconId = R.mipmap.icon_10;
+                break;
+            case "icon_11.png":
+                iconId = R.mipmap.icon_11;
+                break;
+            case "icon_12.png":
+                iconId = R.mipmap.icon_12;
+                break;
+            case "icon_13.png":
+                iconId = R.mipmap.icon_13;
+                break;
+            case "icon_14.png":
+                iconId = R.mipmap.icon_14;
+                break;
+            case "icon_15.png":
+                iconId = R.mipmap.icon_15;
+                break;
+            case "icon_16.png":
+                iconId = R.mipmap.icon_16;
+                break;
+            case "icon_17.png":
+                iconId = R.mipmap.icon_17;
+                break;
+            case "icon_18.png":
+                iconId = R.mipmap.icon_18;
+                break;
+            case "icon_19.png":
+                iconId = R.mipmap.icon_19;
+                break;
+            case "icon_20.png":
+                iconId = R.mipmap.icon_20;
+                break;
+            case "icon_21.png":
+                iconId = R.mipmap.icon_21;
+                break;
+            case "icon_22.png":
+                iconId = R.mipmap.icon_22;
+                break;
+            case "icon_23.png":
+                iconId = R.mipmap.icon_23;
+                break;
+            case "icon_24.png":
+                iconId = R.mipmap.icon_24;
+                break;
+            case "icon_25.png":
+                iconId = R.mipmap.icon_25;
+                break;
+            case "icon_26.png":
+                iconId = R.mipmap.icon_26;
+                break;
+            case "icon_27.png":
+                iconId = R.mipmap.icon_27;
+                break;
+            case "icon_28.png":
+                iconId = R.mipmap.icon_28;
+                break;
+            case "icon_29.png":
+                iconId = R.mipmap.icon_29;
+                break;
+            case "icon_30.png":
+                iconId = R.mipmap.icon_30;
+                break;
+
+        }
+        return iconId;
     }
 
     class ViewHolder {

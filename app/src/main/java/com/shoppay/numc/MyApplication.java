@@ -5,8 +5,13 @@ import android.content.Context;
 
 import com.shoppay.numc.bean.SystemQuanxian;
 import com.shoppay.numc.crash.CrashHandler;
+import com.shoppay.numc.nbean.Currency;
+import com.shoppay.numc.nbean.PayType;
 import com.sunmi.pay.hardware.aidl.readcard.ReadCardOpt;
 import com.sunmi.payservice.hardware.aidl.HardwareOpt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import sunmi.paylib.SunmiPayKernel;
 import sunmi.payservicelib.SunmiPayService;
@@ -28,10 +33,9 @@ public class MyApplication extends Application {
     //SUNMI P1N设备
     public static HardwareOpt sHardwareOpt;
     private SunmiPayService mSunmiPayService;
-   private SystemQuanxian sysquanxian;
-    private int payway;
-    private int isPointByOilExp;
-    private int oilExpPointNum;
+    private List<Currency> currency = new ArrayList<>();
+    private List<PayType> payType = new ArrayList<>();
+    private SystemQuanxian sysquanxian;
 
     @Override
     public void onCreate() {
@@ -52,26 +56,24 @@ public class MyApplication extends Application {
         this.sysquanxian = systemQuanxian;
     }
 
-    public int getPayway(){
-        return  payway;
-    }
-    public void setPayway(int payway){
-        this.payway=payway;
+    public List<PayType> getPayType() {
+        return payType;
     }
 
-    public int getIsPointByOilExp(){
-        return  isPointByOilExp;
-    }
-    public void setIsPointByOilExp(int isPointByOilExp){
-        this.isPointByOilExp=isPointByOilExp;
+    public void setPayType(List<PayType> payType) {
+        this.payType.clear();
+        this.payType.addAll(payType);
     }
 
-    public int getOilExpPointNum(){
-        return  oilExpPointNum;
+    public List<Currency> getCurrency() {
+        return currency;
     }
-    public void setOilExpPointNum(int oilExpPointNum){
-        this.oilExpPointNum=oilExpPointNum;
+
+    public void setCurrency(List<Currency> currency) {
+        this.currency.clear();
+        this.currency.addAll(currency);
     }
+
     /**
      * SUNMI-P1N连接读卡支付SDK
      */

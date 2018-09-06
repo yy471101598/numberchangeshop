@@ -24,24 +24,22 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ImpObtainHome {
-    public void obtainHomeMsg(final Activity ac,final Dialog dialog,
+    public void obtainHomeMsg(final Activity ac, final Dialog dialog,
                               final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
 //        client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
-        params.put("UserID", PreferenceHelper.readString(ac, "shoppay", "userid", ""));
+        params.put("UserID", PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         JSONObject jso = new JSONObject();
         try {
-            jso.put("username", PreferenceHelper.readString(ac, "shoppay", "account",""));
-            jso.put("password",  PreferenceHelper.readString(ac, "shoppay", "pwd", ""));
-
+            jso.put("UserID".toLowerCase(), PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.MD5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/main.ashx", params, new AsyncHttpResponseHandler() {
             @Override
