@@ -10,11 +10,21 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.shoppay.numc.MyApplication;
+import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.http.PermissionListener;
+import com.shoppay.numc.modle.ImpObtainCurrency;
+import com.shoppay.numc.modle.ImpObtainPaytype;
+import com.shoppay.numc.nbean.Currency;
+import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.ObtainSystemLanguage;
+import com.shoppay.numc.tools.PreferenceHelper;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -29,13 +39,61 @@ public abstract class BaseActivity extends Activity {
     public Dialog dialog;
     public Resources res;
     public static Activity ac;
+    public List<PayType> paylist = new ArrayList<>();
+    public List<Currency> currlist = new ArrayList<>();
+    public MyApplication app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ac = this;
         initLocaleLanguage();
         dialog = DialogUtil.loadingDialog(BaseActivity.this, 1);
         res = getResources();
+
+        app = (MyApplication) getApplication();
+        if (app.getPayType().size() == 0) {
+            ImpObtainPaytype paytype = new ImpObtainPaytype();
+            paytype.obtainPayType(ac, new InterfaceBack() {
+                @Override
+                public void onResponse(Object response) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<PayType>>() {
+                    }.getType();
+                    List<PayType> sllist = gson.fromJson(response.toString(), listType);
+                    paylist.addAll(sllist);
+                }
+
+                @Override
+                public void onErrorResponse(Object msg) {
+
+                }
+            });
+
+        } else {
+            paylist.addAll(app.getPayType());
+        }
+
+        if (app.getCurrency().size() == 0) {
+            ImpObtainCurrency currency = new ImpObtainCurrency();
+            currency.obtainCurrency(ac, new InterfaceBack() {
+                @Override
+                public void onResponse(Object response) {
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<Currency>>() {
+                    }.getType();
+                    List<Currency> sllist = gson.fromJson(response.toString(), listType);
+                    currlist.addAll(sllist);
+                }
+
+                @Override
+                public void onErrorResponse(Object msg) {
+
+                }
+            });
+        } else {
+            currlist.addAll(app.getCurrency());
+        }
     }
 
     private void initLocaleLanguage() {
@@ -44,14 +102,15 @@ public abstract class BaseActivity extends Activity {
         //获取屏幕参数
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         String language = ObtainSystemLanguage.obainLanguage(getApplicationContext());
-        LogUtils.d("xxx", language);
         //设置本地语言
         switch (language) {
             case "zh":
                 configuration.locale = Locale.CHINA;
+                PreferenceHelper.write(ac, "numc", "lagavage", "zh");
                 break;
             case "en":
                 configuration.locale = Locale.ENGLISH;
+                PreferenceHelper.write(ac, "numc", "lagavage", "en");
                 break;
             case "vi":
                 configuration.locale = new Locale("vi");
@@ -59,6 +118,7 @@ public abstract class BaseActivity extends Activity {
         }
         resources.updateConfiguration(configuration, displayMetrics);
     }
+
     /*防止系统字体影响到app的字体*/
     public Resources getResources() {
         Resources res = super.getResources();

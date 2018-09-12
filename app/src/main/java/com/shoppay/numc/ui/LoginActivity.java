@@ -60,7 +60,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2017/6/30.
  */
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends Activity {
     private RelativeLayout rl_login;
     private EditText et_account, et_pwd;
     private CheckBox cb;
@@ -88,11 +88,11 @@ public class LoginActivity extends BaseActivity {
                 "error.log");
         app = (MyApplication) getApplication();
 
-        ImpObtainCurrency currency=new ImpObtainCurrency();
+        ImpObtainCurrency currency = new ImpObtainCurrency();
         currency.obtainCurrency(ac, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
-                Gson gson=new Gson();
+                Gson gson = new Gson();
                 Type listType = new TypeToken<List<Currency>>() {
                 }.getType();
                 List<Currency> sllist = gson.fromJson(response.toString(), listType);
@@ -105,11 +105,11 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        ImpObtainPaytype paytype=new ImpObtainPaytype();
+        ImpObtainPaytype paytype = new ImpObtainPaytype();
         paytype.obtainPayType(ac, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
-                Gson gson=new Gson();
+                Gson gson = new Gson();
                 Type listType = new TypeToken<List<PayType>>() {
                 }.getType();
                 List<PayType> sllist = gson.fromJson(response.toString(), listType);
@@ -192,11 +192,11 @@ public class LoginActivity extends BaseActivity {
             protected void onNoDoubleClick(View view) {
                 if (et_account.getText().toString().equals("")
                         || et_account.getText().toString() == null) {
-                    Toast.makeText(getApplicationContext(), "请输入账号",
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.inputaccount),
                             Toast.LENGTH_SHORT).show();
                 } else if (et_pwd.getText().toString().equals("")
                         || et_pwd.getText().toString() == null) {
-                    Toast.makeText(getApplicationContext(), "请输入密码",
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.inputpwd),
                             Toast.LENGTH_SHORT).show();
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
@@ -217,7 +217,7 @@ public class LoginActivity extends BaseActivity {
 
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "请检查网络是否可用",
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.internet),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -228,8 +228,6 @@ public class LoginActivity extends BaseActivity {
 
     private void login() {
         dialog.show();
-        PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
-        PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
         client.setCookieStore(myCookieStore);
@@ -245,7 +243,7 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString()+"bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/login.ashx", params, new AsyncHttpResponseHandler() {
             @Override
@@ -257,14 +255,14 @@ public class LoginActivity extends BaseActivity {
                         PreferenceHelper.write(ac, "shoppay", "account", et_account.getText().toString());
                         PreferenceHelper.write(ac, "shoppay", "pwd", et_pwd.getText().toString());
                         PreferenceHelper.write(ac, "shoppay", "userid", jso.getInt("userid"));
-                        ImpObtainHome home=new ImpObtainHome();
+                        ImpObtainHome home = new ImpObtainHome();
                         home.obtainHomeMsg(LoginActivity.this, dialog, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                Gson gson=new Gson();
+                                Gson gson = new Gson();
                                 Type listType = new TypeToken<List<HomeMsg>>() {
                                 }.getType();
-                               List<HomeMsg> sllist = gson.fromJson(response.toString(), listType);
+                                List<HomeMsg> sllist = gson.fromJson(response.toString(), listType);
                                 Intent intent = new Intent(ac, HomeActivity.class);
                                 intent.putExtra("list", (Serializable) sllist);
                                 startActivity(intent);
@@ -286,14 +284,14 @@ public class LoginActivity extends BaseActivity {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, "登录失败，请重新登录", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, getResources().getString(R.string.loginfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, "登录失败，请重新登录", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, getResources().getString(R.string.loginfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

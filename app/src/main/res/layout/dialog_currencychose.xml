@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_dialog"></include>
+
+    <cn.carbswang.android.numberpickerview.library.NumberPickerView
+        android:id="@+id/picker"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:contentDescription="test_number_picker_view"
+        app:npv_ItemPaddingHorizontal="2dp"
+        app:npv_ItemPaddingVertical="2dp"
+        app:npv_ShowCount="4"
+        app:npv_TextSizeNormal="13sp"
+        app:npv_TextColorNormal="#c6c4c4"
+        app:npv_DividerColor="#cccccc"
+        app:npv_TextColorSelected="#333333"
+        app:npv_TextSizeSelected="15sp"
+        app:npv_WrapSelectorWheel="true" />
+</LinearLayout>

@@ -3,6 +3,7 @@ package com.shoppay.numc.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by songxiaotao on 2017/6/30.
  */
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends BaseActivity {
     private MyGridViews gridViews;
     private List<HomeMsg> list;
     private HomeAdapter adapter;
@@ -52,13 +53,25 @@ public class HomeActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HomeMsg home = (HomeMsg) adapterView.getItemAtPosition(i);
-                switch (home.Title){
+                switch (home.Title) {
                     case "会员充值":
-
+                        Intent recharge = new Intent(ac, VipRechargeActivity.class);
+                        recharge.putExtra("title",home.Title);
+                        recharge.putExtra("entitle",home.EnTitle);
+                        startActivity(recharge);
                         break;
-
-
-
+                    case "法币兑换":
+                        Intent duihuan = new Intent(ac, FabiDuihuanActivity.class);
+                        duihuan.putExtra("title",home.Title);
+                        duihuan.putExtra("entitle",home.EnTitle);
+                        startActivity(duihuan);
+                        break;
+                    case "法币转帐":
+                        Intent fbzz = new Intent(ac, FabiZhuanzhangActivity.class);
+                        fbzz.putExtra("title",home.Title);
+                        fbzz.putExtra("entitle",home.EnTitle);
+                        startActivity(fbzz);
+                        break;
                 }
 
 

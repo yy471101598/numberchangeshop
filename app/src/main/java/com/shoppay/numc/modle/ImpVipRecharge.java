@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
@@ -24,12 +25,13 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ImpVipRecharge {
-    public void vipRecharge(final Activity ac, final Dialog dialog, int RechargeID, int UserID, String password, int CurrencyID, int PayTypeID, double Money,
+    public void vipRecharge(final Activity ac, final Dialog dialog, int RechargeID, int UserID, String password, int CurrencyID, int PayTypeID, String Money,
                             final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
 //        client.setCookieStore(myCookieStore);
+        LogUtils.d("xxmoney", Money + "");
         RequestParams params = new RequestParams();
         params.put("RechargeID", RechargeID);
         params.put("UserID", UserID);
@@ -51,7 +53,7 @@ public class ImpVipRecharge {
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/main.ashx", params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/Recharge.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
@@ -59,24 +61,43 @@ public class ImpVipRecharge {
                     LogUtils.d("xxRechargeS", new String(responseBody, "UTF-8"));
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
                     if (jso.getInt("flag") == 1) {
-                        back.onResponse(jso.getString("paystate"));
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            ToastUtils.showToast(ac, jso.getString("msg"));
+                        } else {
+                            ToastUtils.showToast(ac, jso.getString("enmsg"));
+                        }
+                        back.onResponse("");
+                        //打印
+//                                            if (jsonObject.getInt("printNumber") == 0) {
+//                                                finish();
+//                                            } else {
+//                                                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//                                                if (bluetoothAdapter.isEnabled()) {
+//                                                    BluetoothUtil.connectBlueTooth(MyApplication.context);
+//                                                    BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
+//                                                    ActivityStack.create().finishActivity(VipRechargeActivity.class);
+//                                                } else {
+//                                                    ActivityStack.create().finishActivity(VipRechargeActivity.class);
+//                                                }
+//                                            }
                     } else {
                         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                             ToastUtils.showToast(ac, jso.getString("msg"));
                         } else {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
+
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, "充值失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, "充值失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

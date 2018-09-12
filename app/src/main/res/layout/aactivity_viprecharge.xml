@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="充值"
+            android:text="@string/recharge"
             android:textColor="@color/white"
             android:textSize="15sp" />
     </RelativeLayout>
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="会员卡号"
+                android:text="@string/vipcard"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -59,7 +59,7 @@
                 android:layout_toRightOf="@id/viprecharge_tv_cardnum"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:hint="请输入会员卡号"
+                android:hint="@string/inputvip"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="会员姓名"
+                android:text="@string/vipname"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -113,11 +113,12 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="充值币种"
+                android:text="@string/czcurr"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
             <RelativeLayout
+                android:id="@+id/rl_curchose"
                 android:layout_width="100dp"
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
@@ -131,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="请选择"
+                    android:text="@string/chose"
                     android:textColor="@color/text_30"
                     android:textSize="15sp" />
 
@@ -162,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="会员余额"
+                android:text="@string/vipyue"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -195,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="支付方式"
+                android:text="@string/paytype"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -292,7 +293,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="充值金额"
+                android:text="@string/czmoney"
                 android:textColor="@color/text_30"
                 android:textSize="15sp" />
 
@@ -306,7 +307,7 @@
                 android:layout_toRightOf="@id/vip_tv_money"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:hint="请输入充值金额"
+                android:hint="@string/inputmoney"
                 android:inputType="number|numberDecimal"
                 android:textColor="@color/theme_red"
                 android:textColorHint="@color/theme_red"

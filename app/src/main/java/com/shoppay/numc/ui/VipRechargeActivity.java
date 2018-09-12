@@ -27,14 +27,20 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
+import com.shoppay.numc.VipCardActivity;
+import com.shoppay.numc.bean.Dengji;
 import com.shoppay.numc.bean.VipInfo;
 import com.shoppay.numc.bean.VipInfoMsg;
+import com.shoppay.numc.bean.VipRecharge;
 import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.dialog.CurrChoseDialog;
+import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpObtainCurrency;
 import com.shoppay.numc.modle.ImpObtainPaytype;
 import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
+import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
@@ -47,6 +53,8 @@ import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
+import com.shoppay.numc.tools.StringUtil;
+import com.shoppay.numc.tools.ToastUtils;
 import com.shoppay.numc.tools.UrlTools;
 import com.shoppay.numc.view.MyGridViews;
 import com.shoppay.numc.wxcode.MipcaActivityCapture;
@@ -69,7 +77,9 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2017/6/30.
  */
 
-public class VipRechargeActivity extends BaseActivity  {
+public class VipRechargeActivity extends BaseActivity {
+    @Bind(R.id.rl_curchose)
+    RelativeLayout rlCurChose;
     @Bind(R.id.rl_left)
     RelativeLayout rlLeft;
     @Bind(R.id.tv_title)
@@ -110,8 +120,9 @@ public class VipRechargeActivity extends BaseActivity  {
     RelativeLayout consumptionRlMoney;
     @Bind(R.id.viprecharge_rl_recharge)
     RelativeLayout viprechargeRlRecharge;
-    private boolean isSuccess=false;
+    private boolean isSuccess = false;
     private int vipid;
+    private String pwd = "";
     private int currid;
     private Handler handler = new Handler() {
         @Override
@@ -121,26 +132,25 @@ public class VipRechargeActivity extends BaseActivity  {
                 case 1:
                     try {
                         JSONObject jso = new JSONObject(msg.obj.toString());
-                        vipid=jso.getInt("userid");
-                        viprechargeTvName.setText(jso.getString("name"));
+                        vipid = jso.getInt("userid");
+                        pwd = jso.getString("paypassword");
+                        viprechargeEtName.setText(jso.getString("name"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     isSuccess = true;
                     break;
                 case 2:
-                    viprechargeTvName.setText("");
+                    viprechargeEtName.setText("");
                     isSuccess = false;
                     break;
             }
         }
     };
-    private MyApplication app;
     private Activity ac;
     private String editString;
-    private List<PayType> paylist = new ArrayList<>();
-    private List<Currency> currlist = new ArrayList<>();
     private PayType paytype;
+    private String title, entitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,55 +158,19 @@ public class VipRechargeActivity extends BaseActivity  {
         setContentView(R.layout.aactivity_viprecharge);
         ButterKnife.bind(this);
         ac = this;
-        app = (MyApplication) getApplication();
-        if (app.getPayType().size() == 0) {
-            ImpObtainPaytype paytype = new ImpObtainPaytype();
-            paytype.obtainPayType(ac, new InterfaceBack() {
-                @Override
-                public void onResponse(Object response) {
-                    Gson gson = new Gson();
-                    Type listType = new TypeToken<List<PayType>>() {
-                    }.getType();
-                    List<PayType> sllist = gson.fromJson(response.toString(), listType);
-                    paylist.addAll(sllist);
-                    handlePayType(paylist);
-                }
-
-                @Override
-                public void onErrorResponse(Object msg) {
-
-                }
-            });
-
-        } else {
-            paylist.addAll(app.getPayType());
-            handlePayType(paylist);
-        }
-
-        if (app.getCurrency().size() == 0) {
-            ImpObtainCurrency currency = new ImpObtainCurrency();
-            currency.obtainCurrency(ac, new InterfaceBack() {
-                @Override
-                public void onResponse(Object response) {
-                    Gson gson = new Gson();
-                    Type listType = new TypeToken<List<Currency>>() {
-                    }.getType();
-                    List<Currency> sllist = gson.fromJson(response.toString(), listType);
-                    currlist.addAll(sllist);
-                }
-
-                @Override
-                public void onErrorResponse(Object msg) {
-
-                }
-            });
-        } else {
-            currlist.addAll(app.getCurrency());
-        }
         dialog = DialogUtil.loadingDialog(VipRechargeActivity.this, 1);
         ActivityStack.create().addActivity(VipRechargeActivity.this);
+        title = getIntent().getStringExtra("title");
+        entitle = getIntent().getStringExtra("entitle");
+        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+            tvTitle.setText(title);
+        } else {
+            tvTitle.setText(entitle);
+        }
+
+        handlePayType(paylist);
         initView();
-        viprechargeTvCardnum.addTextChangedListener(new TextWatcher() {
+        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -226,7 +200,7 @@ public class VipRechargeActivity extends BaseActivity  {
         switch (paylist.size()) {
             case 1:
                 rb1.setVisibility(View.VISIBLE);
-                paytype=paylist.get(0);
+                paytype = paylist.get(0);
                 rb1.setChecked(true);
                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                     rb1.setText(paylist.get(0).PayTypeName);
@@ -237,7 +211,7 @@ public class VipRechargeActivity extends BaseActivity  {
             case 2:
                 rb1.setVisibility(View.VISIBLE);
                 rb2.setVisibility(View.VISIBLE);
-                paytype=paylist.get(0);
+                paytype = paylist.get(0);
                 rb1.setChecked(true);
                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                     rb1.setText(paylist.get(0).PayTypeName);
@@ -252,7 +226,7 @@ public class VipRechargeActivity extends BaseActivity  {
                 rb2.setVisibility(View.VISIBLE);
                 rb3.setVisibility(View.VISIBLE);
                 rb1.setChecked(true);
-                paytype=paylist.get(0);
+                paytype = paylist.get(0);
                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                     rb1.setText(paylist.get(0).PayTypeName);
                     rb2.setText(paylist.get(1).PayTypeName);
@@ -268,7 +242,7 @@ public class VipRechargeActivity extends BaseActivity  {
                 rb2.setVisibility(View.VISIBLE);
                 rb3.setVisibility(View.VISIBLE);
                 rb4.setVisibility(View.VISIBLE);
-                paytype=paylist.get(0);
+                paytype = paylist.get(0);
                 rb1.setChecked(true);
                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                     rb1.setText(paylist.get(0).PayTypeName);
@@ -298,7 +272,7 @@ public class VipRechargeActivity extends BaseActivity  {
     };
 
     private void ontainVipInfo() {
-        ImpObtainVipMsg vipmsg=new ImpObtainVipMsg();
+        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
         vipmsg.obtainVipMsg(VipRechargeActivity.this, editString, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
@@ -319,22 +293,80 @@ public class VipRechargeActivity extends BaseActivity  {
 
 
     private void initView() {
+        rlCurChose.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                if(isSuccess) {
+                    if (currlist.size() > 0) {
+                        String[] tft = new String[currlist.size()];
+                        for (int i = 0; i < currlist.size(); i++) {
+                            if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                tft[i] = currlist.get(i).CurrencyName;
+                            } else {
+                                tft[i] = currlist.get(i).EnCurrencyName;
+                            }
+                        }
+                        CurrChoseDialog.currChoseDialog(VipRechargeActivity.this, tft, 2, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                for (Currency curr : currlist) {
+                                    if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                        if (curr.CurrencyName.equals(response.toString())) {
+                                            currid = curr.CurrencyID;
+                                        }
+                                    } else {
+                                        if (curr.EnCurrencyName.equals(response.toString())) {
+                                            currid = curr.CurrencyID;
+                                        }
+                                    }
+                                }
+                                viprechargeEtBingzhong.setText(response.toString());
+                                dialog.show();
+                                ImpObtainYuemoney yue = new ImpObtainYuemoney();
+                                yue.obtainCurrency(VipRechargeActivity.this, vipid, currid, new InterfaceBack() {
+                                    @Override
+                                    public void onResponse(Object response) {
+                                        dialog.dismiss();
+                                        viprechargeEtYue.setText(response.toString());
+                                    }
 
+                                    @Override
+                                    public void onErrorResponse(Object msg) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
+                    } else {
+                        ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
+                    }
+                }else{
+                    ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
+                }
+            }
+        });
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.rb_1:
-                       paytype=paylist.get(0);
+                        paytype = paylist.get(0);
                         break;
                     case R.id.rb_2:
-                        paytype=paylist.get(1);
+                        paytype = paylist.get(1);
                         break;
                     case R.id.rb_3:
-                        paytype=paylist.get(2);
+                        paytype = paylist.get(2);
                         break;
                     case R.id.rb_4:
-                        paytype=paylist.get(4);
+                        paytype = paylist.get(3);
                         break;
                 }
             }
@@ -351,33 +383,37 @@ public class VipRechargeActivity extends BaseActivity  {
             @Override
             protected void onNoDoubleClick(View view) {
                 if (!isSuccess) {
-                    Toast.makeText(getApplicationContext(), "请输入会员卡号",
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 } else if (etMoney.getText().toString() == null || etMoney.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "请输入充值金额",
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputmoney),
                             Toast.LENGTH_SHORT).show();
-                } else if(viprechargeTvBizhong.getText().toString().equals("请选择")){
-                    Toast.makeText(getApplicationContext(), "请选择充值币种",
+                } else if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosecurr),
                             Toast.LENGTH_SHORT).show();
-                }else {
-                        if (CommonUtils.checkNet(getApplicationContext())) {
-                            ImpObtainRechargeId rechargeid=new ImpObtainRechargeId();
-                            rechargeid.obtainRechargeId(VipRechargeActivity.this, new InterfaceBack() {
-                                @Override
-                                public void onResponse(Object response) {
-                                    int rechargeid=-1;
-                                    try {
-                                        JSONObject jso = new JSONObject(response.toString());
-                                      rechargeid=jso.getInt("rechargeid");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    dialog.show();
-                                    ImpVipRecharge recharge=new ImpVipRecharge();
-                                    recharge.vipRecharge(VipRechargeActivity.this, dialog, rechargeid, vipid, "", currid, paytype.PayTypeID, Double.parseDouble(etMoney.getText().toString()), new InterfaceBack() {
-                                        @Override
-                                        public void onResponse(Object response) {
-                                            //打印
+                } else {
+                    if (CommonUtils.checkNet(getApplicationContext())) {
+                        PwdDialog.pwdDialog(VipRechargeActivity.this, pwd, 1, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                ImpObtainRechargeId rechargeid = new ImpObtainRechargeId();
+                                rechargeid.obtainRechargeId(VipRechargeActivity.this, new InterfaceBack() {
+                                    @Override
+                                    public void onResponse(Object response) {
+                                        int rechargeid = -1;
+                                        try {
+                                            JSONObject jso = new JSONObject(response.toString());
+                                            rechargeid = jso.getInt("rechargeid");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        dialog.show();
+                                        ImpVipRecharge recharge = new ImpVipRecharge();
+                                        recharge.vipRecharge(VipRechargeActivity.this, dialog, rechargeid, vipid, pwd, currid, paytype.PayTypeID, etMoney.getText().toString(), new InterfaceBack() {
+                                            @Override
+                                            public void onResponse(Object response) {
+                                                ActivityStack.create().finishActivity(VipRechargeActivity.class);
+                                                //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();
 //                                            } else {
@@ -390,25 +426,32 @@ public class VipRechargeActivity extends BaseActivity  {
 //                                                    ActivityStack.create().finishActivity(VipRechargeActivity.class);
 //                                                }
 //                                            }
-                                        }
+                                            }
 
-                                        @Override
-                                        public void onErrorResponse(Object msg) {
+                                            @Override
+                                            public void onErrorResponse(Object msg) {
 
-                                        }
-                                    });
-                                }
+                                            }
+                                        });
+                                    }
 
-                                @Override
-                                public void onErrorResponse(Object msg) {
+                                    @Override
+                                    public void onErrorResponse(Object msg) {
 
-                                }
-                            });
+                                    }
+                                });
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "请检查网络是否可用",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getApplicationContext(), res.getString(R.string.internet),
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -425,6 +468,7 @@ public class VipRechargeActivity extends BaseActivity  {
                 break;
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();

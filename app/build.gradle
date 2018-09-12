@@ -47,6 +47,7 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile files('libs/core-3.3.0.jar')
     compile 'com.sunmi:sunmiui:1.1.22'
+    compile 'cn.carbswang.android:NumberPickerView:1.1.1'
     compile 'com.jakewharton:butterknife:7.0.0'
     compile 'com.sunmi:PayLib:1.0.23'
     compile project(':base_library_pullToRefresh')

@@ -41,7 +41,7 @@ public class ImpObtainVipMsg {
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/main.ashx", params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/BankCard.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
@@ -50,23 +50,21 @@ public class ImpObtainVipMsg {
                     if (jso.getInt("flag") == 1) {
                         back.onResponse(new String(responseBody, "UTF-8"));
                     } else {
-                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                            ToastUtils.showToast(ac, jso.getString("msg"));
-                        } else {
-                            ToastUtils.showToast(ac, jso.getString("enmsg"));
-                        }
+//                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+//                            ToastUtils.showToast(ac, jso.getString("msg"));
+//                        } else {
+//                            ToastUtils.showToast(ac, jso.getString("enmsg"));
+//                        }
                         back.onErrorResponse("");
                     }
                 } catch (Exception e) {
                     back.onErrorResponse("");
-                    Toast.makeText(ac, "获取会员卡信息失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 back.onErrorResponse("");
-                Toast.makeText(ac, "获取会员卡信息失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -43,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:textSize="14sp"
-            android:text="扫描"
+            android:text="@string/saomiao"
             android:textColor="@color/white"
              />
     </RelativeLayout>

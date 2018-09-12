@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
@@ -36,26 +37,17 @@ public class ImpObtainCurrency {
                 try {
                     LogUtils.d("xxCurrS", new String(responseBody, "UTF-8"));
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if (jso.getInt("flag") == 1) {
-                        back.onResponse(jso.getString("vdata"));
-                    } else {
-                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                            ToastUtils.showToast(ac, jso.getString("msg"));
-                        } else {
-                            ToastUtils.showToast(ac, jso.getString("enmsg"));
-                        }
-                        back.onErrorResponse("");
-                    }
+                    back.onResponse(jso.getString("vdata"));
                 } catch (Exception e) {
                     back.onErrorResponse("");
-                    Toast.makeText(ac, "获取货币种类失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.currno), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 back.onErrorResponse("");
-                Toast.makeText(ac, "获取货币种类失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, ac.getResources().getString(R.string.currno), Toast.LENGTH_SHORT).show();
             }
         });
     }

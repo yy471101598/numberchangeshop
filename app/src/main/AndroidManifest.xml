@@ -41,20 +41,28 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
-
-
         <activity
             android:name="com.shoppay.numc.ui.HomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
-
-
         <activity
-            android:name="com.shoppay.numc.HomeActivity"
+            android:name="com.shoppay.numc.ui.VipRechargeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            />
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+        <activity
+            android:name="com.shoppay.numc.ui.FabiDuihuanActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+        <activity
+            android:name="com.shoppay.numc.ui.FabiZhuanzhangActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+
+
         <activity
             android:name="com.shoppay.numc.BalanceTActivity"
             android:label="@string/app_name"
