@@ -29,6 +29,11 @@
     <string name="czcurr">充值币种</string>
     <string name="zzcurr">转账币种</string>
     <string name="skhuming">收款户名</string>
+    <string name="curr">币种</string>
+    <string name="cunqi">存期</string>
+    <string name="lilv">利率</string>
+    <string name="cunmoney">存入金额</string>
+    <string name="inputcunmoney">请输入存入金额</string>
     <string name="inputskhuming">请输入收款户名</string>
     <string name="inputskaccount">请输入收款账号</string>
     <string name="skaccount">收款账号</string>
@@ -40,10 +45,12 @@
     <string name="pwdno">密码错误</string>
     <string name="paytypeno">获取支付方式失败</string>
     <string name="currno">获取货币种类失败</string>
+    <string name="cunqifalse">获取存期失败</string>
     <string name="currno_chose">获取货币种类失败,请返回重试</string>
     <string name="inputvip">请输入会员卡号</string>
     <string name="inputmoney">请输入充值金额</string>
     <string name="chosecurr">请选择充值币种</string>
+    <string name="chosecunqi">请选择存期</string>
     <string name="rechargefalse">充值失败</string>
     <string name="yuefalse">获取账户余额失败</string>
     <string name="inputaccount">请输入账号</string>
@@ -57,6 +64,7 @@
     <string name="chosedhcurr">请选择兑换币种</string>
     <string name="huilvfalse">获取兑换汇率失败</string>
     <string name="fabiduhuifalse">法币兑换失败</string>
+    <string name="fabidingcunfalse">法币定存失败</string>
     <string name="vipmsgfalse">请先获取正确的用户信息</string>
     <string name="inputduihuanmoney">请输入兑换金额</string>
     <string name="zzbigyue">转账金额大于账户余额</string>
@@ -64,5 +72,7 @@
     <string name="czcodefalse">获取充值编号失败</string>
     <string name="zzcodefalse">获取转账编号失败</string>
     <string name="dhcodefalse">获取兑换编号失败</string>
+    <string name="dccodefalse">获取定存编号失败</string>
     <string name="fabizzfalse">法币转账失败</string>
+    <string name="lilvfalse">获取利率失败，请稍后</string>
 </resources>

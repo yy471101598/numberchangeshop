@@ -20,27 +20,27 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_cardnum"
+                android:id="@+id/tv_cardnum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="会员卡号"
+                android:text="@string/vipcard"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 
             <EditText
-                android:id="@+id/viprecharge_et_cardnum"
+                android:id="@+id/et_cardnum"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/viprecharge_tv_cardnum"
+                android:layout_toRightOf="@id/tv_cardnum"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:hint="请输入会员卡号"
+                android:hint="@string/inputvip"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
@@ -59,24 +59,24 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_name"
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="会员姓名"
+                android:text="@string/vipname"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 
             <TextView
-                android:id="@+id/viprecharge_et_name"
+                android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/viprecharge_tv_name"
+                android:layout_toRightOf="@id/tv_name"
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
@@ -96,16 +96,17 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_bizhong"
+                android:id="@+id/tv_bizhong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="币       种"
+                android:text="@string/curr"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 <RelativeLayout
+    android:id="@+id/rl_currchose"
     android:layout_width="100dp"
     android:layout_height="25dp"
     android:background="@drawable/shap_downchose"
@@ -115,12 +116,12 @@
     android:layout_centerVertical="true"
     >
     <TextView
-        android:id="@+id/viprecharge_et_bingzhong"
+        android:id="@+id/et_bingzhong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/text_30"
-        android:text="人民币"
+        android:text="@string/chose"
         android:textSize="15sp"
         />
     <ImageView
@@ -146,29 +147,45 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_cunqi"
+                android:id="@+id/tv_cunqi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="存       期"
+                android:text="@string/cunqi"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 
-            <TextView
-                android:id="@+id/viprecharge_et_cunqi"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
+            <RelativeLayout
+                android:id="@+id/rl_cunqichose"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:background="@drawable/shap_downchose"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/viprecharge_tv_cunqi"
-                android:gravity="center_vertical|right"
-                android:paddingLeft="10dp"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                >
+                <TextView
+                    android:id="@+id/et_cunqi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/text_30"
+                    android:text="@string/chose"
+                    android:textSize="15sp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:background="@mipmap/button_down"
+
+                    />
+            </RelativeLayout>
         </RelativeLayout>
 
         <View
@@ -182,24 +199,24 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_lilv"
+                android:id="@+id/tv_lilv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="利       率"
+                android:text="@string/lilv"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 
             <TextView
-                android:id="@+id/viprecharge_et_lilv"
+                android:id="@+id/et_lilv"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/viprecharge_tv_lilv"
+                android:layout_toRightOf="@id/tv_lilv"
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
@@ -219,24 +236,24 @@
             >
 
             <TextView
-                android:id="@+id/viprecharge_tv_yue"
+                android:id="@+id/tv_yue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="账户余额"
+                android:text="@string/accountyue"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
 
             <TextView
-                android:id="@+id/viprecharge_et_yue"
+                android:id="@+id/et_yue"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/viprecharge_tv_yue"
+                android:layout_toRightOf="@id/tv_yue"
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
@@ -263,7 +280,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="存入金额"
+                android:text="@string/cunmoney"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
@@ -278,7 +295,7 @@
                 android:layout_toRightOf="@id/vip_tv_money"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:hint="请输入存入金额"
+                android:hint="@string/inputcunmoney"
                 android:inputType="number|numberDecimal"
                 android:textColor="@color/theme_red"
                 android:textColorHint="@color/theme_red"
@@ -295,7 +312,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/viprecharge_rl_dingcuntijiao"
+        android:id="@+id/rl_dingcuntijiao"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
