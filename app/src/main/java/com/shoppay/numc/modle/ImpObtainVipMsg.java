@@ -1,8 +1,6 @@
 package com.shoppay.numc.modle;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -11,8 +9,6 @@ import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
-import com.shoppay.numc.tools.PreferenceHelper;
-import com.shoppay.numc.tools.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
 
 
     <RelativeLayout
@@ -23,15 +23,15 @@
             android:layout_centerInParent="true"
             android:text="@string/recharge"
             android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
 
         <include layout="@layout/title_twoicon_back"></include>
 
@@ -47,12 +47,12 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/vipcard"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <EditText
                 android:id="@+id/viprecharge_et_cardnum"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
@@ -62,7 +62,7 @@
                 android:hint="@string/inputvip"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
         </RelativeLayout>
 
         <View
@@ -82,12 +82,12 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/vipname"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/viprecharge_et_name"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
@@ -95,7 +95,7 @@
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
         </RelativeLayout>
 
         <View
@@ -115,7 +115,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/czcurr"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <RelativeLayout
                 android:id="@+id/rl_curchose"
@@ -134,7 +134,7 @@
                     android:layout_centerInParent="true"
                     android:text="@string/chose"
                     android:textColor="@color/text_30"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -165,12 +165,12 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/vipyue"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/viprecharge_et_yue"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
@@ -178,7 +178,7 @@
                 android:gravity="center_vertical|right"
                 android:paddingLeft="10dp"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
         </RelativeLayout>
 
         <View
@@ -198,7 +198,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/paytype"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <RadioGroup
                 android:id="@+id/radiogroup"
@@ -220,10 +220,10 @@
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:visibility="gone"
                     android:text="现金"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:id="@+id/rb_2"
@@ -235,10 +235,10 @@
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:visibility="gone"
                     android:text="微信"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
                 <RadioButton
                     android:id="@+id/rb_3"
@@ -249,11 +249,11 @@
                     android:background="@drawable/cloud_recharge_btn_select"
                     android:gravity="center"
                     android:paddingLeft="8dp"
-                    android:visibility="gone"
                     android:paddingRight="8dp"
                     android:text="支付宝"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
                 .
 
@@ -267,10 +267,10 @@
                     android:gravity="center"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
-                    android:visibility="gone"
                     android:text="银联"
                     android:textColor="@drawable/cloud_recharge_txt_color_select"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
             </RadioGroup>
 
 
@@ -295,7 +295,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="@string/czmoney"
                 android:textColor="@color/text_30"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <EditText
                 android:id="@+id/et_money"
@@ -311,7 +311,7 @@
                 android:inputType="number|numberDecimal"
                 android:textColor="@color/theme_red"
                 android:textColorHint="@color/theme_red"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
 
             <View
                 android:layout_width="match_parent"

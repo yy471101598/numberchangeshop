@@ -6,6 +6,7 @@
               android:orientation="vertical"
     >
 
+
     <include layout="@layout/title_twoicon_back"></include>
 
     <ScrollView
@@ -26,7 +27,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/tv_cardnum"
+                    android:id="@+id/viprecharge_tv_cardnum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -37,13 +38,13 @@
                     />
 
                 <EditText
-                    android:id="@+id/et_cardnum"
+                    android:id="@+id/viprecharge_et_cardnum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_cardnum"
+                    android:layout_toRightOf="@id/viprecharge_tv_cardnum"
                     android:background="@null"
                     android:gravity="center_vertical|right"
                     android:hint="@string/inputvip"
@@ -65,7 +66,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/viprecharge_tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -76,13 +77,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/et_name"
+                    android:id="@+id/viprecharge_et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_name"
+                    android:layout_toRightOf="@id/viprecharge_tv_name"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -102,18 +103,18 @@
                 >
 
                 <TextView
-                    android:id="@+id/tv_bizhong"
+                    android:id="@+id/viprecharge_tv_bizhong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/curr"
+                    android:text="@string/dycurr"
                     android:textColor="@color/text_30"
                     android:textSize="15sp"
                     />
 
                 <RelativeLayout
-                    android:id="@+id/rl_currchose"
+                    android:id="@+id/rl_dycurchose"
                     android:layout_width="100dp"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
@@ -124,7 +125,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/et_bingzhong"
+                        android:id="@+id/viprecharge_et_bingzhong"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -157,7 +158,117 @@
                 >
 
                 <TextView
-                    android:id="@+id/tv_yue"
+                    android:id="@+id/viprecharge_tv_dkqixian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/dkqixian"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/rl_dkqixian"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shap_downchose"
+                    >
+
+                    <TextView
+                        android:id="@+id/viprecharge_et_dkqixian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/chose"
+                        android:textColor="@color/text_30"
+                        android:textSize="15sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/button_down"
+
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/viprecharge_tv_dkbiz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/dkcurr"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/rl_dkcurchose"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shap_downchose"
+                    >
+
+                    <TextView
+                        android:id="@+id/viprecharge_et_dkbizhong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/chose"
+                        android:textColor="@color/text_30"
+                        android:textSize="15sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/button_down"
+
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/viprecharge_tv_yue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -168,13 +279,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/et_yue"
+                    android:id="@+id/viprecharge_et_yue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_yue"
+                    android:layout_toRightOf="@id/viprecharge_tv_yue"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -188,377 +299,6 @@
                 android:background="@color/viewcolor"
                 ></View>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_country"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/country"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <RelativeLayout
-                    android:id="@+id/rl_countrychose"
-                    android:layout_width="100dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/shap_downchose"
-                    >
-
-                    <TextView
-                        android:id="@+id/et_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/chose"
-                        android:textColor="@color/text_30"
-                        android:textSize="15sp"
-                        />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:background="@mipmap/button_down"
-
-                        />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_bank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/bankname"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_bank"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_bank"
-                    android:gravity="center_vertical|right"
-                    android:hint="@string/inputbankname"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_fenhang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/fenhang"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_fenhang"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_fenhang"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_zhihang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/zhihang"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_zhihang"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_zhihang"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_accout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/accountname"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_accout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_accout"
-                    android:gravity="center_vertical|right"
-                    android:hint="@string/inputaccountname"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_bankaccout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/bankaccount"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_bankaccout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_bankaccout"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:hint="@string/inputbankaccount"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_idtype"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/idtype"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <RelativeLayout
-                    android:id="@+id/rl_idtypechose"
-                    android:layout_width="100dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/shap_downchose"
-                    >
-
-                    <TextView
-                        android:id="@+id/et_idtype"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="@string/chose"
-                        android:textColor="@color/text_30"
-                        android:textSize="15sp"
-                        />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="5dp"
-                        android:background="@mipmap/button_down"
-
-                        />
-                </RelativeLayout>
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_idnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/idnum"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_idnum"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_idnum"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                >
-
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/phone"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-
-                <EditText
-                    android:id="@+id/et_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_phone"
-                    android:gravity="center_vertical|right"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/text_30"
-                    android:textSize="15sp"
-                    />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/viewcolor"
-                ></View>
 
             <RelativeLayout
                 android:id="@+id/consumption_rl_money"
@@ -573,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/txmoney"
+                    android:text="@string/dydiane"
                     android:textColor="@color/text_30"
                     android:textSize="15sp"
                     />
@@ -588,7 +328,7 @@
                     android:layout_toRightOf="@id/vip_tv_money"
                     android:background="@null"
                     android:gravity="center_vertical|right"
-                    android:hint="@string/inputtxmoney"
+                    android:hint="@string/inputdydiane"
                     android:inputType="number|numberDecimal"
                     android:textColor="@color/theme_red"
                     android:textColorHint="@color/theme_red"
@@ -608,24 +348,24 @@
                 >
 
                 <TextView
-                    android:id="@+id/tv_sxf"
+                    android:id="@+id/viprecharge_tv_huilv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/shouxufei"
+                    android:text="@string/dkmoney"
                     android:textColor="@color/text_30"
                     android:textSize="15sp"
                     />
 
                 <TextView
-                    android:id="@+id/et_sxf"
+                    android:id="@+id/viprecharge_et_dkmoney"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/tv_sxf"
+                    android:layout_toRightOf="@id/viprecharge_tv_huilv"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -639,15 +379,89 @@
                 android:background="@color/viewcolor"
                 ></View>
 
-
             <RelativeLayout
-                android:id="@+id/rl_dingcuntijiao"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/viprecharge_tv_sxf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/lilv"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:id="@+id/viprecharge_et_lilv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/viprecharge_tv_sxf"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/viprecharge_tv_xumoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/monthhk"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:id="@+id/viprecharge_et_mothhk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/viprecharge_tv_xumoney"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:id="@+id/viprecharge_rl_duihuan"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/kuang_red_red"
                 >
 
@@ -655,12 +469,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/txtijiao"
+                    android:text="@string/dktijiao"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

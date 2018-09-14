@@ -19,18 +19,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.Cunqi;
+import com.shoppay.numc.bean.DcLilv;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiDingCun;
-import com.shoppay.numc.modle.ImpFabiZhuanzhang;
 import com.shoppay.numc.modle.ImpObtainCunqi;
-import com.shoppay.numc.modle.ImpObtainCurrency;
 import com.shoppay.numc.modle.ImpObtainDcLilv;
 import com.shoppay.numc.modle.ImpObtainDingcunCurrency;
 import com.shoppay.numc.modle.ImpObtainFabiDCId;
-import com.shoppay.numc.modle.ImpObtainFabiZZId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.nbean.Currency;
@@ -131,6 +129,22 @@ public class FabiDingcunActivity extends BaseActivity {
                     etName.setText("");
                     isSuccess = false;
                     break;
+                case 1111:
+                    dialog.show();
+                    int rechargeid=(int)msg.obj;
+                    ImpFabiDingCun fbzz = new ImpFabiDingCun();
+                    fbzz.fabiDingcun(FabiDingcunActivity.this, dialog, rechargeid, vipid, pwd, currid, Integer.parseInt(cunqiId), etMoney.getText().toString(), new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            ActivityStack.create().finishActivity(FabiDingcunActivity.class);
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+                    break;
             }
         }
     };
@@ -139,7 +153,9 @@ public class FabiDingcunActivity extends BaseActivity {
     private String title, entitle;
     private List<Currency> dccurrlist = new ArrayList<>();
     private List<Cunqi> cunqilist = new ArrayList<>();
+    private List<DcLilv> lilvlist = new ArrayList<>();
     private String cunqiId;
+    private boolean isMoney = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +200,55 @@ public class FabiDingcunActivity extends BaseActivity {
                 handler.postDelayed(delayRun, 800);
             }
         });
+
+        etMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (currid == -1) {
+                    ToastUtils.showToast(ac, res.getString(R.string.chosedhcurr));
+                } else if (!isLilvSuccess) {
+                    ToastUtils.showToast(ac, res.getString(R.string.chosecunqi));
+                } else {
+                    double money = Double.parseDouble(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString());
+                    if (money < Double.parseDouble(lilvlist.get(0).MinMoney)) {
+                        isMoney = false;
+                        return;
+                    }
+                    for (DcLilv lilv : lilvlist) {
+                        if (lilv.MaxMoney.equals("")) {
+                            if (money > Double.parseDouble(lilv.MinMoney)) {
+                                isMoney = true;
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    etLilv.setText(lilv.ratetitle);
+                                } else {
+                                    etLilv.setText(lilv.enratetitle);
+                                }
+                            }
+                        } else {
+                            if (money > Double.parseDouble(lilv.MinMoney) && money < Double.parseDouble(lilv.MaxMoney)) {
+                                isMoney = true;
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    etLilv.setText(lilv.ratetitle);
+                                } else {
+                                    etLilv.setText(lilv.enratetitle);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+        });
     }
 
     private void obtainCunqi(String currid) {
@@ -226,12 +291,27 @@ public class FabiDingcunActivity extends BaseActivity {
                         lilv.obtainCunqi(ac, cunqiId, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-
+                                Gson gson = new Gson();
+                                isLilvSuccess = true;
+                                Type listType = new TypeToken<List<DcLilv>>() {
+                                }.getType();
+                                List<DcLilv> sllist = gson.fromJson(response.toString(), listType);
+                                lilvlist.addAll(sllist);
+                                isMoney=true;
+                                etMoney.setText(lilvlist.get(0).MinMoney);
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    etLilv.setText(lilvlist.get(0).ratetitle);
+                                } else {
+                                    etLilv.setText(lilvlist.get(0).enratetitle);
+                                }
                             }
 
                             @Override
                             public void onErrorResponse(Object msg) {
-
+                                isLilvSuccess = false;
+                                isMoney=false;
+                                etMoney.setText("");
+                                etLilv.setText("");
                             }
                         });
 
@@ -457,6 +537,8 @@ public class FabiDingcunActivity extends BaseActivity {
                     ToastUtils.showToast(ac, res.getString(R.string.inputcunmoney));
                 } else if (!isLilvSuccess) {
                     ToastUtils.showToast(ac, res.getString(R.string.lilvfalse));
+                } else if (!isMoney) {
+                    ToastUtils.showToast(ac, res.getString(R.string.smalldcmoney));
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
                         PwdDialog.pwdDialog(FabiDingcunActivity.this, pwd, 1, new InterfaceBack() {
@@ -473,19 +555,10 @@ public class FabiDingcunActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
-                                        ImpFabiDingCun fbzz = new ImpFabiDingCun();
-                                        fbzz.fabiDingcun(FabiDingcunActivity.this, dialog, rechargeid, vipid, pwd, currid, cunqiId, etMoney.getText().toString(), new InterfaceBack() {
-                                            @Override
-                                            public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(FabiDingcunActivity.class);
-                                            }
-
-                                            @Override
-                                            public void onErrorResponse(Object msg) {
-
-                                            }
-                                        });
+                                        Message msg=handler.obtainMessage();
+                                        msg.what=1111;
+                                        msg.obj=rechargeid;
+                                        handler.sendMessage(msg);
                                     }
 
                                     @Override

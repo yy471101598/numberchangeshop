@@ -72,6 +72,12 @@ public class HomeActivity extends BaseActivity {
                         fbzz.putExtra("entitle",home.EnTitle);
                         startActivity(fbzz);
                         break;
+                    case "法币定存":
+                        Intent dc = new Intent(ac, FabiDingcunActivity.class);
+                        dc.putExtra("title",home.Title);
+                        dc.putExtra("entitle",home.EnTitle);
+                        startActivity(dc);
+                        break;
                 }
 
 

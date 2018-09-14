@@ -189,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="@string/dhcurr"
+                android:text="@string/dhzhidian"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
@@ -245,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="@string/dhmoney"
+                android:text="@string/dhnum"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
@@ -260,7 +260,7 @@
                 android:layout_toRightOf="@id/vip_tv_money"
                 android:background="@null"
                 android:gravity="center_vertical|right"
-                android:hint="@string/inputduihuanmoney"
+                android:hint="@string/inputduihuannum"
                 android:inputType="number|numberDecimal"
                 android:textColor="@color/theme_red"
                 android:textColorHint="@color/theme_red"
@@ -284,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="@string/curhuilv"
+                android:text="@string/dhlv"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"
                 />
