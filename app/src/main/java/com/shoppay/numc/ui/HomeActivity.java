@@ -78,6 +78,12 @@ public class HomeActivity extends BaseActivity {
                         dc.putExtra("entitle",home.EnTitle);
                         startActivity(dc);
                         break;
+                    case "法币取现":
+                        Intent qx = new Intent(ac, FabiQuxianActivity.class);
+                        qx.putExtra("title",home.Title);
+                        qx.putExtra("entitle",home.EnTitle);
+                        startActivity(qx);
+                        break;
                 }
 
 

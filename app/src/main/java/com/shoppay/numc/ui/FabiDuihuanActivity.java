@@ -444,6 +444,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                         PwdDialog.pwdDialog(FabiDuihuanActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
+                                dialog.show();
                                 ImpObtainFabiDuihuanId duihuanid = new ImpObtainFabiDuihuanId();
                                 duihuanid.obtainFabiDuihuanId(FabiDuihuanActivity.this, new InterfaceBack() {
                                     @Override
@@ -455,7 +456,6 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
                                         ImpFabiDuihuan duihuan = new ImpFabiDuihuan();
                                         duihuan.fabiDuihuan(FabiDuihuanActivity.this, dialog, rechargeid, vipid, pwd, fkcurrid, currid, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
@@ -472,7 +472,7 @@ public class FabiDuihuanActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-
+                                        dialog.dismiss();
                                     }
                                 });
 
@@ -480,7 +480,6 @@ public class FabiDuihuanActivity extends BaseActivity {
 
                             @Override
                             public void onErrorResponse(Object msg) {
-
                             }
                         });
                     } else {

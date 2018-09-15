@@ -70,6 +70,7 @@
     <string name="inputduihuannum">请输入兑换数量</string>
     <string name="zzbigyue">转账金额大于账户余额</string>
     <string name="dhbigyue">兑换金额大于账户余额</string>
+    <string name="txbigyue">提现金额大于账户余额</string>
     <string name="czcodefalse">获取充值编号失败</string>
     <string name="zzcodefalse">获取转账编号失败</string>
     <string name="dhcodefalse">获取兑换编号失败</string>
@@ -113,4 +114,6 @@
     <string name="monthhk">月还款</string>
     <string name="dktijiao">贷款提交</string>
     <string name="inputdydiane">请输入抵押点额</string>
+    <string name="chosecountry">请选择国家</string>
+    <string name="inputjiaoyi">请输入交易密码</string>
 </resources>

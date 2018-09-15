@@ -299,6 +299,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                         PwdDialog.pwdDialog(FabiZhuanzhangActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
+                                dialog.show();
                                 ImpObtainFabiZZId zzid = new ImpObtainFabiZZId();
                                 zzid.obtainFabiZZId(FabiZhuanzhangActivity.this, new InterfaceBack() {
                                     @Override
@@ -310,7 +311,6 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
                                         ImpFabiZhuanzhang fbzz = new ImpFabiZhuanzhang();
                                         fbzz.fabiZhuanzhang(FabiZhuanzhangActivity.this, dialog, rechargeid, vipid, pwd, currid, etSkhm.getText().toString(), etSkaccount.getText().toString(), etMoney.getText().toString(), etZzremark.getText().toString(), new InterfaceBack() {
                                             @Override
@@ -327,7 +327,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-
+                                        dialog.dismiss();
                                     }
                                 });
 

@@ -9,6 +9,8 @@ import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 
+import org.json.JSONObject;
+
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -30,7 +32,8 @@ public class ImpObtainQxSxf {
                 try {
                     LogUtils.d("xxsxfS", new String(responseBody, "UTF-8"));
 //                    poundage String
-                    back.onResponse(new String(responseBody, "UTF-8"));
+                    JSONObject jso=new JSONObject(new String(responseBody, "UTF-8"));
+                    back.onResponse(jso.getString("poundage"));
                 } catch (Exception e) {
                     back.onErrorResponse("");
                 }

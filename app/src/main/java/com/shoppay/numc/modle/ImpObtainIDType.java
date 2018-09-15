@@ -34,14 +34,12 @@ public class ImpObtainIDType {
                     back.onResponse(jso.getString("vdata"));
                 } catch (Exception e) {
                     back.onErrorResponse("");
-                    Toast.makeText(ac, ac.getResources().getString(R.string.idtypefalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 back.onErrorResponse("");
-                Toast.makeText(ac, ac.getResources().getString(R.string.idtypefalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

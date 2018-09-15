@@ -25,8 +25,8 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ImpFabiTixian {
-    public void fabiTixian(final Activity ac, final Dialog dialog, int WitdrawID, int UserID, String PassWord, String Currency, int Country, String BankName, String AccountAgent, String AccountBranch,
-                           String AccountName, String AccountNumber, int IDType, String IDCard, String Mobile, String Money, String Remark,
+    public void fabiTixian(final Activity ac, final Dialog dialog, int WitdrawID, int UserID, String PassWord, int Currency, int Country, String BankName, String AccountAgent, String AccountBranch,
+                           String AccountName, String AccountNumber, int IDType, String IDCard, String Mobile, String Money,
                            final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -45,7 +45,11 @@ public class ImpFabiTixian {
         params.put("AccountBranch", AccountBranch);
         params.put("AccountName", AccountName);
         params.put("AccountNumber", AccountNumber);
-        params.put("IDType", IDType);
+        if(IDType==-1){
+
+        }else {
+            params.put("IDType", IDType);
+        }
         params.put("IDCard", IDCard);
         params.put("Mobile", Mobile);
         params.put("Money", Money);
@@ -58,7 +62,6 @@ public class ImpFabiTixian {
             jso.put("AccountName".toLowerCase(), AccountName);
             jso.put("AccountNumber".toLowerCase(), AccountNumber);
             jso.put("Money".toLowerCase(), Money);
-            jso.put("Remark".toLowerCase(), Remark.equals("") ? "无" : Remark);
         } catch (JSONException e) {
             e.printStackTrace();
         }

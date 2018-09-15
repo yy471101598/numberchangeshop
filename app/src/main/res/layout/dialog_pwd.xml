@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="@color/text_30"
-            android:text="请输入会员卡密码"
+            android:text="@string/inputjiaoyi"
             android:layout_centerInParent="true"
             />
         <View
@@ -26,14 +26,14 @@
          android:layout_width="match_parent"
          android:layout_height="40dp"
          android:background="@drawable/kuang_gray_white"
-         android:layout_marginLeft="10dp"
-         android:layout_marginRight="10dp"
+         android:layout_marginLeft="20dp"
+         android:layout_marginRight="20dp"
          android:layout_marginTop="15dp"
          >
-         <EditText
+         <TextView
              android:id="@+id/pwd_et_pwd"
              android:layout_width="match_parent"
-             android:layout_height="30dp"
+             android:layout_height="match_parent"
              android:layout_centerVertical="true"
              android:textColor="@color/text_30"
              android:textSize="15sp"
@@ -43,33 +43,116 @@
              android:gravity="center_vertical|left"
              android:inputType="textPassword"
              android:background="@null"
-             android:hint="请输入会员卡密码"
              />
 
      </RelativeLayout>
-
+<com.shoppay.numc.view.MyGridViews
+    android:id="@+id/gridview_num"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:numColumns="3"
+    android:scrollbars="none"></com.shoppay.numc.view.MyGridViews>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:layout_marginBottom="20dp"
+    >
     <RelativeLayout
-        android:id="@+id/pwd_rl_confirm"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="10dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/kuang_red_red"
-        android:layout_marginTop="30dp"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rl_cancel"
+        android:layout_height="40dp"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_centerInParent="true"
-            android:textSize="15sp"
-            android:text="确定"
-            />
+            android:background="@drawable/shap_yellow"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:textColor="@color/black"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1dp"
+                android:textSize="11sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/text_30"
+                android:textSize="9sp"
+                />
+        </RelativeLayout>
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/white"
-        ></View>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rl_confirm"
+        android:layout_height="40dp"
+        >
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shap_red"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="确认支付"
+                android:textColor="@color/white"
+                android:layout_centerInParent="true"
+                android:textSize="12sp"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:id="@+id/rl_retrest"
+        android:layout_height="40dp"
+        >
+        <RelativeLayout
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shap_green"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retreat"
+                android:textColor="@color/white"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="1dp"
+                android:textSize="11sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退格"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
 </LinearLayout>

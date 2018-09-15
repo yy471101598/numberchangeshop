@@ -296,7 +296,7 @@ public class VipRechargeActivity extends BaseActivity {
         rlCurChose.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-                if(isSuccess) {
+                if (isSuccess) {
                     if (currlist.size() > 0) {
                         String[] tft = new String[currlist.size()];
                         for (int i = 0; i < currlist.size(); i++) {
@@ -347,7 +347,7 @@ public class VipRechargeActivity extends BaseActivity {
                     } else {
                         ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
                     }
-                }else{
+                } else {
                     ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
                 }
             }
@@ -396,6 +396,7 @@ public class VipRechargeActivity extends BaseActivity {
                         PwdDialog.pwdDialog(VipRechargeActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
+                                dialog.show();
                                 ImpObtainRechargeId rechargeid = new ImpObtainRechargeId();
                                 rechargeid.obtainRechargeId(VipRechargeActivity.this, new InterfaceBack() {
                                     @Override
@@ -407,25 +408,11 @@ public class VipRechargeActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
                                         ImpVipRecharge recharge = new ImpVipRecharge();
                                         recharge.vipRecharge(VipRechargeActivity.this, dialog, rechargeid, vipid, pwd, currid, paytype.PayTypeID, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
                                                 ActivityStack.create().finishActivity(VipRechargeActivity.class);
-                                                //打印
-//                                            if (jsonObject.getInt("printNumber") == 0) {
-//                                                finish();
-//                                            } else {
-//                                                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//                                                if (bluetoothAdapter.isEnabled()) {
-//                                                    BluetoothUtil.connectBlueTooth(MyApplication.context);
-//                                                    BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")), jsonObject.getInt("printNumber"));
-//                                                    ActivityStack.create().finishActivity(VipRechargeActivity.class);
-//                                                } else {
-//                                                    ActivityStack.create().finishActivity(VipRechargeActivity.class);
-//                                                }
-//                                            }
                                             }
 
                                             @Override
@@ -437,7 +424,7 @@ public class VipRechargeActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-
+                                        dialog.dismiss();
                                     }
                                 });
 

@@ -51,7 +51,7 @@ public class ImpFabiZhuanzhang {
             jso.put("AccountName".toLowerCase(), AccountName);
             jso.put("AccountNumber".toLowerCase(), AccountNumber);
             jso.put("Money".toLowerCase(), Money);
-            jso.put("Remark".toLowerCase(), Remark.equals("") ? "无" : Remark);
+            jso.put("Remark".toLowerCase(), Remark.equals("") ? "无" : Remark.toLowerCase());
         } catch (JSONException e) {
             e.printStackTrace();
         }
