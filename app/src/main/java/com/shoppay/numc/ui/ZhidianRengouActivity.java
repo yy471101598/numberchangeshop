@@ -15,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shoppay.numc.R;
+import com.shoppay.numc.bean.ZhidianMsg;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
@@ -23,13 +26,22 @@ import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiDuihuan;
 import com.shoppay.numc.modle.ImpObtainDuihuanLulv;
 import com.shoppay.numc.modle.ImpObtainFabiDuihuanId;
+import com.shoppay.numc.modle.ImpObtainRGFeilv;
+import com.shoppay.numc.modle.ImpObtainRGZhidianList;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
+import com.shoppay.numc.modle.ImpObtainXFZhidianList;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
+import com.shoppay.numc.modle.ImpObtainZDRGCurrency;
+import com.shoppay.numc.modle.ImpObtainZDRGId;
+import com.shoppay.numc.modle.ImpObtainZDRGYuemoney;
+import com.shoppay.numc.modle.ImpObtainZDYuemoney;
+import com.shoppay.numc.modle.ImpZDRengou;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -38,8 +50,11 @@ import com.shoppay.numc.wxcode.MipcaActivityCapture;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,6 +85,8 @@ public class ZhidianRengouActivity extends BaseActivity {
     TextView viprechargeTvBizhong;
     @Bind(R.id.viprecharge_et_bingzhong)
     TextView viprechargeEtBingzhong;
+    @Bind(R.id.rl_fkcurchose)
+    RelativeLayout rlFkcurchose;
     @Bind(R.id.viprecharge_tv_yue)
     TextView viprechargeTvYue;
     @Bind(R.id.viprecharge_et_yue)
@@ -78,6 +95,8 @@ public class ZhidianRengouActivity extends BaseActivity {
     TextView viprechargeTvDhbiz;
     @Bind(R.id.viprecharge_et_dhbizhong)
     TextView viprechargeEtDhbizhong;
+    @Bind(R.id.rl_dhcurchose)
+    RelativeLayout rlDhcurchose;
     @Bind(R.id.vip_tv_money)
     TextView vipTvMoney;
     @Bind(R.id.et_money)
@@ -98,15 +117,11 @@ public class ZhidianRengouActivity extends BaseActivity {
     TextView viprechargeEtXumoney;
     @Bind(R.id.viprecharge_rl_duihuan)
     RelativeLayout viprechargeRlDuihuan;
-    @Bind(R.id.rl_dhcurchose)
-    RelativeLayout rlDhCurChose;
-    @Bind(R.id.rl_fkcurchose)
-    RelativeLayout rlFkCurChose;
     private boolean isSuccess = false;
     private int vipid;
     private String pwd = "";
     private int currid = -1;
-    private int fkcurrid = -1;
+    private int dhzhidian = -1;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -132,16 +147,17 @@ public class ZhidianRengouActivity extends BaseActivity {
     };
     private Activity ac;
     private String editString;
-    private PayType paytype;
     private String title, entitle;
     private String jisuanHuilv = "";
     private String xueditString;
     private boolean isHuilv = false;
+    private List<Currency> fkCurrlist = new ArrayList<>();
+    private List<ZhidianMsg> zdlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aactivity_fabiduihuan);
+        setContentView(R.layout.aactivity_zhidianrengou);
         ButterKnife.bind(this);
         ac = this;
         dialog = DialogUtil.loadingDialog(ZhidianRengouActivity.this, 1);
@@ -154,6 +170,8 @@ public class ZhidianRengouActivity extends BaseActivity {
             tvTitle.setText(entitle);
         }
         initView();
+        obtainRgCurr("no");
+        obtainRgZhidian("no");
         viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -194,22 +212,188 @@ public class ZhidianRengouActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (currid == -1) {
-                    ToastUtils.showToast(ac, res.getString(R.string.chosedhcurr));
-                } else if (fkcurrid == -1) {
                     ToastUtils.showToast(ac, res.getString(R.string.chosefkcurr));
+                } else if (dhzhidian == -1) {
+                    ToastUtils.showToast(ac, res.getString(R.string.chosedhzhidian));
                 } else if (!isHuilv) {
-                    ToastUtils.showToast(ac, res.getString(R.string.huilvfalse));
+                    ToastUtils.showToast(ac, res.getString(R.string.rgflfalse));
                 } else {
                     //计算所需金额
 //                    所需金额（兑换金额* 计算汇率exchangeratetitle*（1+手续费率Poundage））
                     double sxf = CommonUtils.add(1.0, Double.parseDouble(viprechargeEtSxf.getText().toString()));
+                    LogUtils.d("xxmoey", etMoney.getText().toString() + "-------" + jisuanHuilv);
                     String xu = CommonUtils.multiply(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString(), jisuanHuilv);
                     double xumoney = Double.parseDouble(CommonUtils.multiply(xu, sxf + ""));
-                    viprechargeEtXumoney.setText(xumoney + "");
+                    viprechargeEtXumoney.setText(CommonUtils.lasttwo(xumoney));
                 }
 
             }
         });
+    }
+
+    private void obtainRgCurr(final String type) {
+        ImpObtainZDRGCurrency currency = new ImpObtainZDRGCurrency();
+        currency.obtainZDRGCurrency(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Currency>>() {
+                }.getType();
+                List<Currency> sllist = gson.fromJson(response.toString(), listType);
+                fkCurrlist.addAll(sllist);
+                if (type.equals("no")) {
+
+                } else {
+                    String[] tft = new String[fkCurrlist.size()];
+                    for (int i = 0; i < fkCurrlist.size(); i++) {
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            tft[i] = fkCurrlist.get(i).CurrencyName;
+                        } else {
+                            tft[i] = fkCurrlist.get(i).EnCurrencyName;
+                        }
+                    }
+                    CurrChoseDialog.currChoseDialog(ZhidianRengouActivity.this, tft, 2, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            for (Currency curr : fkCurrlist) {
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    if (curr.CurrencyName.equals(response.toString())) {
+                                        currid = curr.CurrencyID;
+                                    }
+                                } else {
+                                    if (curr.EnCurrencyName.equals(response.toString())) {
+                                        currid = curr.CurrencyID;
+                                    }
+                                }
+                            }
+                            viprechargeEtBingzhong.setText(response.toString());
+                            dialog.show();
+                            ImpObtainZDRGYuemoney yue = new ImpObtainZDRGYuemoney();
+                            yue.obtainCurrency(ZhidianRengouActivity.this, vipid, currid, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    dialog.dismiss();
+                                    viprechargeEtYue.setText(response.toString());
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+                                    viprechargeEtYue.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+                if (type.equals("no")) {
+
+                } else {
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+
+    private void obtainRgZhidian(final String type) {
+        ImpObtainRGZhidianList rgzd = new ImpObtainRGZhidianList();
+        rgzd.obtainRGZdlist(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ZhidianMsg>>() {
+                }.getType();
+                List<ZhidianMsg> sllist = gson.fromJson(response.toString(), listType);
+                zdlist.addAll(sllist);
+                if (type.equals("no")) {
+
+                } else {
+                    String[] tft = new String[zdlist.size()];
+                    for (int i = 0; i < zdlist.size(); i++) {
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            tft[i] = zdlist.get(i).StockCodeName;
+                        } else {
+                            tft[i] = zdlist.get(i).EnStockCodeName;
+                        }
+                    }
+                    CurrChoseDialog.currChoseDialog(ZhidianRengouActivity.this, tft, 2, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            for (ZhidianMsg curr : zdlist) {
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    if (curr.StockCodeName.equals(response.toString())) {
+                                        dhzhidian = curr.StockCodeID;
+                                    }
+                                } else {
+                                    if (curr.EnStockCodeName.equals(response.toString())) {
+                                        dhzhidian = curr.StockCodeID;
+                                    }
+                                }
+                            }
+                            viprechargeEtDhbizhong.setText(response.toString());
+                            dialog.show();
+                            ImpObtainRGFeilv feilv = new ImpObtainRGFeilv();
+                            feilv.obtainDuihuanHuilv(ZhidianRengouActivity.this, currid, dhzhidian, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    dialog.dismiss();
+                                    try {
+                                        JSONObject jso = new JSONObject(response.toString());
+                                        viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
+                                        viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                        jisuanHuilv = jso.getString("subscriberate");
+                                        LogUtils.d("xxjisuan", jisuanHuilv);
+                                        isHuilv = true;
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+                                    isHuilv = false;
+                                    jisuanHuilv = "";
+                                    viprechargeEtHuilv.setText("");
+                                    viprechargeEtSxf.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+                if (type.equals("no")) {
+
+                } else {
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
     /**
@@ -246,65 +430,39 @@ public class ZhidianRengouActivity extends BaseActivity {
 
 
     private void initView() {
-        rlFkCurChose.setOnClickListener(new NoDoubleClickListener() {
+        rlFkcurchose.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
                 if (isSuccess) {
-                    if (currlist.size() > 0) {
-                        String[] tft = new String[currlist.size()];
-                        for (int i = 0; i < currlist.size(); i++) {
+                    if (fkCurrlist.size() == 0) {
+                        obtainRgCurr("yes");
+                    } else {
+                        String[] tft = new String[fkCurrlist.size()];
+                        for (int i = 0; i < fkCurrlist.size(); i++) {
                             if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                tft[i] = currlist.get(i).CurrencyName;
+                                tft[i] = fkCurrlist.get(i).CurrencyName;
                             } else {
-                                tft[i] = currlist.get(i).EnCurrencyName;
+                                tft[i] = fkCurrlist.get(i).EnCurrencyName;
                             }
                         }
                         CurrChoseDialog.currChoseDialog(ZhidianRengouActivity.this, tft, 2, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                for (Currency curr : currlist) {
+                                for (Currency curr : fkCurrlist) {
                                     if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                         if (curr.CurrencyName.equals(response.toString())) {
-                                            fkcurrid = curr.CurrencyID;
+                                            currid = curr.CurrencyID;
                                         }
                                     } else {
                                         if (curr.EnCurrencyName.equals(response.toString())) {
-                                            fkcurrid = curr.CurrencyID;
+                                            currid = curr.CurrencyID;
                                         }
                                     }
                                 }
                                 viprechargeEtBingzhong.setText(response.toString());
                                 dialog.show();
-                                if (currid != -1) {
-                                    //获取汇率
-                                    ImpObtainDuihuanLulv huilv = new ImpObtainDuihuanLulv();
-                                    huilv.obtainDuihuanHuilv(ZhidianRengouActivity.this, fkcurrid, currid, new InterfaceBack() {
-                                        @Override
-                                        public void onResponse(Object response) {
-                                            try {
-                                                JSONObject jso = new JSONObject(response.toString());
-                                                viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
-                                                viprechargeEtSxf.setText(jso.getString("Poundage"));
-                                                jisuanHuilv = jso.getString("exchangerate");
-                                                isHuilv = true;
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                                isHuilv = false;
-                                            }
-
-                                        }
-
-                                        @Override
-                                        public void onErrorResponse(Object msg) {
-                                            viprechargeEtHuilv.setText("");
-                                            viprechargeEtSxf.setText("");
-                                            jisuanHuilv = "";
-                                            isHuilv = false;
-                                        }
-                                    });
-                                }
-                                ImpObtainYuemoney yue = new ImpObtainYuemoney();
-                                yue.obtainCurrency(ZhidianRengouActivity.this, vipid, fkcurrid, new InterfaceBack() {
+                                ImpObtainZDRGYuemoney yue = new ImpObtainZDRGYuemoney();
+                                yue.obtainCurrency(ZhidianRengouActivity.this, vipid, currid, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         dialog.dismiss();
@@ -326,8 +484,6 @@ public class ZhidianRengouActivity extends BaseActivity {
 
                             }
                         });
-                    } else {
-                        ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
                     }
                 } else {
                     ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
@@ -335,76 +491,77 @@ public class ZhidianRengouActivity extends BaseActivity {
             }
         });
 
-
-        rlDhCurChose.setOnClickListener(new NoDoubleClickListener() {
+        rlDhcurchose.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-                if (currlist.size() > 0) {
-                    String[] tft = new String[currlist.size()];
-                    for (int i = 0; i < currlist.size(); i++) {
-                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                            tft[i] = currlist.get(i).CurrencyName;
-                        } else {
-                            tft[i] = currlist.get(i).EnCurrencyName;
+                if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkcurr),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    if (zdlist.size() == 0) {
+                        obtainRgZhidian("yes");
+                    } else {
+                        String[] tft = new String[zdlist.size()];
+                        for (int i = 0; i < zdlist.size(); i++) {
+                            if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                tft[i] = zdlist.get(i).StockCodeName;
+                            } else {
+                                tft[i] = zdlist.get(i).EnStockCodeName;
+                            }
                         }
-                    }
-                    CurrChoseDialog.currChoseDialog(ZhidianRengouActivity.this, tft, 2, new InterfaceBack() {
-                        @Override
-                        public void onResponse(Object response) {
-                            for (Currency curr : currlist) {
-                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                    if (curr.CurrencyName.equals(response.toString())) {
-                                        currid = curr.CurrencyID;
-                                    }
-                                } else {
-                                    if (curr.EnCurrencyName.equals(response.toString())) {
-                                        currid = curr.CurrencyID;
+                        CurrChoseDialog.currChoseDialog(ZhidianRengouActivity.this, tft, 2, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                for (ZhidianMsg curr : zdlist) {
+                                    if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                        if (curr.StockCodeName.equals(response.toString())) {
+                                            dhzhidian = curr.StockCodeID;
+                                        }
+                                    } else {
+                                        if (curr.EnStockCodeName.equals(response.toString())) {
+                                            dhzhidian = curr.StockCodeID;
+                                        }
                                     }
                                 }
-                            }
-                            viprechargeEtDhbizhong.setText(response.toString());
-
-
-                            if (fkcurrid != -1) {
-                                //获取汇率
+                                viprechargeEtDhbizhong.setText(response.toString());
                                 dialog.show();
-                                ImpObtainDuihuanLulv huilv = new ImpObtainDuihuanLulv();
-                                huilv.obtainDuihuanHuilv(ZhidianRengouActivity.this, fkcurrid, currid, new InterfaceBack() {
+                                ImpObtainRGFeilv feilv = new ImpObtainRGFeilv();
+                                feilv.obtainDuihuanHuilv(ZhidianRengouActivity.this, currid, dhzhidian, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         dialog.dismiss();
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
-                                            viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
+                                            viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
                                             viprechargeEtSxf.setText(jso.getString("Poundage"));
-                                            jisuanHuilv = jso.getString("exchangerate");
+                                            jisuanHuilv = jso.getString("subscriberate");
+                                            LogUtils.d("xxjisuan", jisuanHuilv);
                                             isHuilv = true;
                                         } catch (JSONException e) {
                                             e.printStackTrace();
-                                            isHuilv = false;
                                         }
-
                                     }
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-                                        dialog.dismiss();
+                                        isHuilv = false;
+                                        jisuanHuilv = "";
                                         viprechargeEtHuilv.setText("");
                                         viprechargeEtSxf.setText("");
-                                        jisuanHuilv = "";
-                                        isHuilv = false;
+                                        dialog.dismiss();
                                     }
                                 });
+
+
                             }
-                        }
 
-                        @Override
-                        public void onErrorResponse(Object msg) {
+                            @Override
+                            public void onErrorResponse(Object msg) {
 
-                        }
-                    });
-                } else {
-                    ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
+                            }
+                        });
+                    }
+
                 }
             }
         });
@@ -423,13 +580,13 @@ public class ZhidianRengouActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 } else if (etMoney.getText().toString() == null || etMoney.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputduihuanmoney),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputduihuannum),
                             Toast.LENGTH_SHORT).show();
                 } else if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkcurr),
                             Toast.LENGTH_SHORT).show();
                 } else if (viprechargeEtDhbizhong.getText().toString().equals(res.getString(R.string.chose))) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosedhcurr),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosedhzhidian),
                             Toast.LENGTH_SHORT).show();
                 } else if (Double.parseDouble(etMoney.getText().toString()) > Double.parseDouble(viprechargeEtYue.getText().toString())) {
                     ToastUtils.showToast(ac, res.getString(R.string.dhbigyue));
@@ -440,20 +597,20 @@ public class ZhidianRengouActivity extends BaseActivity {
                         PwdDialog.pwdDialog(ZhidianRengouActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                ImpObtainFabiDuihuanId duihuanid = new ImpObtainFabiDuihuanId();
-                                duihuanid.obtainFabiDuihuanId(ZhidianRengouActivity.this, new InterfaceBack() {
+                                dialog.show();
+                                ImpObtainZDRGId duihuanid = new ImpObtainZDRGId();
+                                duihuanid.obtainZDRGId(ZhidianRengouActivity.this, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         int rechargeid = -1;
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
-                                            rechargeid = jso.getInt("fepid");
+                                            rechargeid = jso.getInt("subscribeid");
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
-                                        ImpFabiDuihuan duihuan = new ImpFabiDuihuan();
-                                        duihuan.fabiDuihuan(ZhidianRengouActivity.this, dialog, rechargeid, vipid, pwd, fkcurrid, currid, etMoney.getText().toString(), new InterfaceBack() {
+                                        ImpZDRengou zdrg = new ImpZDRengou();
+                                        zdrg.zdRengou(ZhidianRengouActivity.this, dialog, rechargeid, vipid,pwd, currid, dhzhidian, viprechargeEtXumoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
                                                 ActivityStack.create().finishActivity(ZhidianRengouActivity.class);
@@ -468,7 +625,7 @@ public class ZhidianRengouActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-
+                                        dialog.dismiss();
                                     }
                                 });
 

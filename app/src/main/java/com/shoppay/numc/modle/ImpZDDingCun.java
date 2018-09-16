@@ -24,29 +24,30 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2018/9/5.
  */
 
-public class ImpVipRecharge {
-    public void vipRecharge(final Activity ac, final Dialog dialog, int RechargeID, int UserID, String password, int CurrencyID, int PayTypeID, String Money,
+public class ImpZDDingCun {
+    public void zdDingcun(final Activity ac, final Dialog dialog, int DepositID, int UserID,String password, int StockCode, int Maturity, String Money,
                             final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
 //        client.setCookieStore(myCookieStore);
-        LogUtils.d("xxmoney", Money + "");
+
+
         RequestParams params = new RequestParams();
-        params.put("RechargeID", RechargeID);
+        params.put("DepositID", DepositID);
         params.put("UserID", UserID);
         params.put("password", password);
-        params.put("CurrencyID", CurrencyID);
+        params.put("StockCode", StockCode);
         params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
-        params.put("PayTypeID", PayTypeID);
+        params.put("Maturity", Maturity);
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("RechargeID".toLowerCase(), RechargeID);
+            jso.put("DepositID".toLowerCase(), DepositID);
             jso.put("UserID".toLowerCase(), UserID);
             jso.put("password".toLowerCase(), password);
-            jso.put("CurrencyID".toLowerCase(), CurrencyID);
-            jso.put("PayTypeID".toLowerCase(), PayTypeID);
+            jso.put("StockCode".toLowerCase(),StockCode);
+            jso.put("Maturity".toLowerCase(), Maturity);
             jso.put("Money".toLowerCase(), Money);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -54,12 +55,12 @@ public class ImpVipRecharge {
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/Recharge.ashx", params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/CoinDeposit.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
                 try {
-                    LogUtils.d("xxRechargeS", new String(responseBody, "UTF-8"));
+                    LogUtils.d("xxdingcunS", new String(responseBody, "UTF-8"));
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
                     if (jso.getInt("flag") == 1) {
                         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
@@ -91,14 +92,14 @@ public class ImpVipRecharge {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.fabidingcunfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, ac.getResources().getString(R.string.fabidingcunfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

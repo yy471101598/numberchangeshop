@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:text="@string/zzcurr"
+                android:text="@string/zzzhidian"
                 android:textColor="@color/text_30"
                 android:textSize="15sp"/>
 

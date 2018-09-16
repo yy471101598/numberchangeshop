@@ -38,6 +38,7 @@ public class ImpFabiZhuanzhang {
         params.put("UserID", UserID);
         params.put("password", password);
         params.put("CurrencyID", CurrencyID);
+        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("AccountName", AccountName);
         params.put("AccountNumber", AccountNumber);
         params.put("Money", Money);

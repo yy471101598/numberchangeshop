@@ -39,6 +39,7 @@ public class ImpFabiDingCun {
         params.put("password", password);
         params.put("CurrencyID", CurrencyID);
         params.put("Maturity", Maturity);
+        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {

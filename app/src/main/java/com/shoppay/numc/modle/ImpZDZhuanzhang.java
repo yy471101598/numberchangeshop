@@ -24,37 +24,42 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2018/9/5.
  */
 
-public class ImpVipRecharge {
-    public void vipRecharge(final Activity ac, final Dialog dialog, int RechargeID, int UserID, String password, int CurrencyID, int PayTypeID, String Money,
-                            final InterfaceBack back) {
+public class ImpZDZhuanzhang {
+    public void zdZhuanzhang(final Activity ac, final Dialog dialog, int TransferID, int UserID, String password, int StockCode, String AccountName, String AccountNumber, String Money, String Remark,
+                               final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
 //        client.setCookieStore(myCookieStore);
-        LogUtils.d("xxmoney", Money + "");
+
+
         RequestParams params = new RequestParams();
-        params.put("RechargeID", RechargeID);
+        params.put("TransferID", TransferID);
         params.put("UserID", UserID);
         params.put("password", password);
-        params.put("CurrencyID", CurrencyID);
+        params.put("StockCode", StockCode);
         params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
-        params.put("PayTypeID", PayTypeID);
+        params.put("AccountName", AccountName);
+        params.put("AccountNumber", AccountNumber);
         params.put("Money", Money);
+        params.put("Remark", Remark.equals("") ? "无" : Remark);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("RechargeID".toLowerCase(), RechargeID);
+            jso.put("TransferID".toLowerCase(), TransferID);
             jso.put("UserID".toLowerCase(), UserID);
             jso.put("password".toLowerCase(), password);
-            jso.put("CurrencyID".toLowerCase(), CurrencyID);
-            jso.put("PayTypeID".toLowerCase(), PayTypeID);
+            jso.put("StockCode".toLowerCase(), StockCode);
+            jso.put("AccountName".toLowerCase(), AccountName);
+            jso.put("AccountNumber".toLowerCase(), AccountNumber);
             jso.put("Money".toLowerCase(), Money);
+            jso.put("Remark".toLowerCase(), Remark.equals("") ? "无" : Remark.toLowerCase());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/Recharge.ashx", params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/CoinTransfer.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
@@ -91,14 +96,14 @@ public class ImpVipRecharge {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.fabizzfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, ac.getResources().getString(R.string.rechargefalse), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, ac.getResources().getString(R.string.fabizzfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

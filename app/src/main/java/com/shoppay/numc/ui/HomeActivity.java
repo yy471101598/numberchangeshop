@@ -84,6 +84,33 @@ public class HomeActivity extends BaseActivity {
                         qx.putExtra("entitle",home.EnTitle);
                         startActivity(qx);
                         break;
+                    case "点消费":
+                        Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
+                        dxf.putExtra("title",home.Title);
+                        dxf.putExtra("entitle",home.EnTitle);
+                        startActivity(dxf);
+                        break;
+                    case "点认购":
+                        Intent drg = new Intent(ac, ZhidianRengouActivity.class);
+                        drg.putExtra("title",home.Title);
+                        drg.putExtra("entitle",home.EnTitle);
+                        startActivity(drg);
+                        break;
+                    case "点定存":
+                        Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
+                        ddc.putExtra("title",home.Title);
+                        ddc.putExtra("entitle",home.EnTitle);
+                        startActivity(ddc);
+                        break;
+
+
+
+                    case "点转帐":
+                        Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
+                        dzz.putExtra("title",home.Title);
+                        dzz.putExtra("entitle",home.EnTitle);
+                        startActivity(dzz);
+                        break;
                 }
 
 

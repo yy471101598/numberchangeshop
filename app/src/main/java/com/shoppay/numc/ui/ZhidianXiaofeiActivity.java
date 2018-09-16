@@ -10,21 +10,29 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shoppay.numc.R;
+import com.shoppay.numc.bean.ZhidianMsg;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.modle.ImpObtainDingcunCurrency;
 import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
+import com.shoppay.numc.modle.ImpObtainXFZhidianList;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
+import com.shoppay.numc.modle.ImpObtainZDXiaofeiId;
+import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpVipRecharge;
+import com.shoppay.numc.modle.ImpZDXiaofei;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
@@ -38,7 +46,9 @@ import com.shoppay.numc.wxcode.MipcaActivityCapture;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +61,11 @@ import butterknife.OnClick;
  */
 
 public class ZhidianXiaofeiActivity extends BaseActivity {
-    @Bind(R.id.rl_curchose)
-    RelativeLayout rlCurChose;
+
+    @Bind(R.id.viprecharge_rl_recharge)
+    RelativeLayout viprechargeRlRecharge;
+    @Bind(R.id.img_left)
+    ImageView imgLeft;
     @Bind(R.id.rl_left)
     RelativeLayout rlLeft;
     @Bind(R.id.tv_title)
@@ -71,28 +84,18 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
     TextView viprechargeTvBizhong;
     @Bind(R.id.viprecharge_et_bingzhong)
     TextView viprechargeEtBingzhong;
+    @Bind(R.id.rl_curchose)
+    RelativeLayout rlCurchose;
     @Bind(R.id.viprecharge_tv_yue)
     TextView viprechargeTvYue;
     @Bind(R.id.viprecharge_et_yue)
     TextView viprechargeEtYue;
-    @Bind(R.id.rb_1)
-    RadioButton rb1;
-    @Bind(R.id.rb_2)
-    RadioButton rb2;
-    @Bind(R.id.rb_3)
-    RadioButton rb3;
-    @Bind(R.id.rb_4)
-    RadioButton rb4;
-    @Bind(R.id.radiogroup)
-    RadioGroup radiogroup;
     @Bind(R.id.vip_tv_money)
     TextView vipTvMoney;
     @Bind(R.id.et_money)
     EditText etMoney;
     @Bind(R.id.consumption_rl_money)
     RelativeLayout consumptionRlMoney;
-    @Bind(R.id.viprecharge_rl_recharge)
-    RelativeLayout viprechargeRlRecharge;
     private boolean isSuccess = false;
     private int vipid;
     private String pwd = "";
@@ -122,13 +125,13 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
     };
     private Activity ac;
     private String editString;
-    private PayType paytype;
     private String title, entitle;
+    private List<ZhidianMsg> zdlist=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aactivity_viprecharge);
+        setContentView(R.layout.aactivity_zhidianxiaofei);
         ButterKnife.bind(this);
         ac = this;
         dialog = DialogUtil.loadingDialog(ZhidianXiaofeiActivity.this, 1);
@@ -141,8 +144,8 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
             tvTitle.setText(entitle);
         }
 
-        handlePayType(paylist);
         initView();
+        obtainXFzhidian("no");
         viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -169,68 +172,82 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
         });
     }
 
-    private void handlePayType(List<PayType> paylist) {
-        switch (paylist.size()) {
-            case 1:
-                rb1.setVisibility(View.VISIBLE);
-                paytype = paylist.get(0);
-                rb1.setChecked(true);
-                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                    rb1.setText(paylist.get(0).PayTypeName);
+    private void obtainXFzhidian( final String type) {
+        ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
+        currency.obtainCurrency(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ZhidianMsg>>() {
+                }.getType();
+                List<ZhidianMsg> sllist = gson.fromJson(response.toString(), listType);
+                zdlist.addAll(sllist);
+                if (type.equals("no")) {
+
                 } else {
-                    rb1.setText(paylist.get(0).EnPayTypeName);
+                    String[] tft = new String[zdlist.size()];
+                    for (int i = 0; i < zdlist.size(); i++) {
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            tft[i] = zdlist.get(i).StockCodeName;
+                        } else {
+                            tft[i] = zdlist.get(i).EnStockCodeName;
+                        }
+                    }
+                    CurrChoseDialog.currChoseDialog(ZhidianXiaofeiActivity.this, tft, 2, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            for (ZhidianMsg curr : zdlist) {
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    if (curr.StockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                } else {
+                                    if (curr.EnStockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                }
+                            }
+                            viprechargeEtBingzhong.setText(response.toString());
+                            dialog.show();
+                            ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
+                            yue.obtainCurrency(ZhidianXiaofeiActivity.this, vipid, currid, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    dialog.dismiss();
+                                    viprechargeEtYue.setText(response.toString());
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+                                    viprechargeEtYue.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+
                 }
-                break;
-            case 2:
-                rb1.setVisibility(View.VISIBLE);
-                rb2.setVisibility(View.VISIBLE);
-                paytype = paylist.get(0);
-                rb1.setChecked(true);
-                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                    rb1.setText(paylist.get(0).PayTypeName);
-                    rb2.setText(paylist.get(1).PayTypeName);
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+                if (type.equals("no")) {
+
                 } else {
-                    rb1.setText(paylist.get(0).EnPayTypeName);
-                    rb2.setText(paylist.get(1).EnPayTypeName);
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case 3:
-                rb1.setVisibility(View.VISIBLE);
-                rb2.setVisibility(View.VISIBLE);
-                rb3.setVisibility(View.VISIBLE);
-                rb1.setChecked(true);
-                paytype = paylist.get(0);
-                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                    rb1.setText(paylist.get(0).PayTypeName);
-                    rb2.setText(paylist.get(1).PayTypeName);
-                    rb3.setText(paylist.get(2).PayTypeName);
-                } else {
-                    rb1.setText(paylist.get(0).EnPayTypeName);
-                    rb2.setText(paylist.get(1).EnPayTypeName);
-                    rb3.setText(paylist.get(2).EnPayTypeName);
-                }
-                break;
-            case 4:
-                rb1.setVisibility(View.VISIBLE);
-                rb2.setVisibility(View.VISIBLE);
-                rb3.setVisibility(View.VISIBLE);
-                rb4.setVisibility(View.VISIBLE);
-                paytype = paylist.get(0);
-                rb1.setChecked(true);
-                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                    rb1.setText(paylist.get(0).PayTypeName);
-                    rb2.setText(paylist.get(1).PayTypeName);
-                    rb3.setText(paylist.get(2).PayTypeName);
-                    rb4.setText(paylist.get(3).PayTypeName);
-                } else {
-                    rb1.setText(paylist.get(0).EnPayTypeName);
-                    rb2.setText(paylist.get(1).EnPayTypeName);
-                    rb3.setText(paylist.get(2).EnPayTypeName);
-                    rb4.setText(paylist.get(3).EnPayTypeName);
-                }
-                break;
-        }
+            }
+        });
+
     }
+
 
     /**
      * 延迟线程，看是否还有下一个字符输入
@@ -266,36 +283,38 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
 
 
     private void initView() {
-        rlCurChose.setOnClickListener(new NoDoubleClickListener() {
+        rlCurchose.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-                if(isSuccess) {
-                    if (currlist.size() > 0) {
-                        String[] tft = new String[currlist.size()];
-                        for (int i = 0; i < currlist.size(); i++) {
+                if (isSuccess) {
+                    if (zdlist.size() == 0) {
+                        obtainXFzhidian("yes");
+                    } else {
+                        String[] tft = new String[zdlist.size()];
+                        for (int i = 0; i < zdlist.size(); i++) {
                             if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                tft[i] = currlist.get(i).CurrencyName;
+                                tft[i] = zdlist.get(i).StockCodeName;
                             } else {
-                                tft[i] = currlist.get(i).EnCurrencyName;
+                                tft[i] = zdlist.get(i).EnStockCodeName;
                             }
                         }
                         CurrChoseDialog.currChoseDialog(ZhidianXiaofeiActivity.this, tft, 2, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                for (Currency curr : currlist) {
+                                for (ZhidianMsg curr : zdlist) {
                                     if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                        if (curr.CurrencyName.equals(response.toString())) {
-                                            currid = curr.CurrencyID;
+                                        if (curr.StockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
                                         }
                                     } else {
-                                        if (curr.EnCurrencyName.equals(response.toString())) {
-                                            currid = curr.CurrencyID;
+                                        if (curr.EnStockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
                                         }
                                     }
                                 }
                                 viprechargeEtBingzhong.setText(response.toString());
                                 dialog.show();
-                                ImpObtainYuemoney yue = new ImpObtainYuemoney();
+                                ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
                                 yue.obtainCurrency(ZhidianXiaofeiActivity.this, vipid, currid, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
@@ -305,6 +324,7 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
+                                        viprechargeEtYue.setText("");
                                         dialog.dismiss();
                                     }
                                 });
@@ -317,34 +337,12 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
 
                             }
                         });
-                    } else {
-                        ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
                     }
-                }else{
+                } else {
                     ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
                 }
             }
         });
-        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.rb_1:
-                        paytype = paylist.get(0);
-                        break;
-                    case R.id.rb_2:
-                        paytype = paylist.get(1);
-                        break;
-                    case R.id.rb_3:
-                        paytype = paylist.get(2);
-                        break;
-                    case R.id.rb_4:
-                        paytype = paylist.get(3);
-                        break;
-                }
-            }
-        });
-
         rlRight.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
@@ -359,30 +357,34 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 } else if (etMoney.getText().toString() == null || etMoney.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputmoney),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputxfzhidian),
                             Toast.LENGTH_SHORT).show();
                 } else if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosecurr),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkzd),
                             Toast.LENGTH_SHORT).show();
+                } else if(etMoney.getText().toString().equals("")){
+                    ToastUtils.showToast(ac,res.getString(R.string.inputxfzhidian));
+                }else if (Double.parseDouble(etMoney.getText().toString())>Double.parseDouble(viprechargeEtYue.getText().toString())) {
+                  ToastUtils.showToast(ac,res.getString(R.string.xfzdbigyue));
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
                         PwdDialog.pwdDialog(ZhidianXiaofeiActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                ImpObtainRechargeId rechargeid = new ImpObtainRechargeId();
-                                rechargeid.obtainRechargeId(ZhidianXiaofeiActivity.this, new InterfaceBack() {
+                                dialog.show();
+                                ImpObtainZDXiaofeiId rechargeid = new ImpObtainZDXiaofeiId();
+                                rechargeid.obtainZDXiaofeiId(ZhidianXiaofeiActivity.this, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         int rechargeid = -1;
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
-                                            rechargeid = jso.getInt("rechargeid");
+                                            rechargeid = jso.getInt("consumeid");
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        dialog.show();
-                                        ImpVipRecharge recharge = new ImpVipRecharge();
-                                        recharge.vipRecharge(ZhidianXiaofeiActivity.this, dialog, rechargeid, vipid, pwd, currid, paytype.PayTypeID, etMoney.getText().toString(), new InterfaceBack() {
+                                        ImpZDXiaofei recharge = new ImpZDXiaofei();
+                                        recharge.zdXiaofei(ZhidianXiaofeiActivity.this, dialog, rechargeid, vipid, pwd, currid,etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
                                                 ActivityStack.create().finishActivity(ZhidianXiaofeiActivity.class);
@@ -410,7 +412,7 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-
+                                       dialog.dismiss();
                                     }
                                 });
 

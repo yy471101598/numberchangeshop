@@ -37,6 +37,7 @@ public class ImpFabiDuihuan {
         params.put("UserID", UserID);
         params.put("password", password);
         params.put("FepID", FepID);
+        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("FromCurrency", FromCurrency+"");
         params.put("ToCurrency", ToCurrency+"");
         params.put("Money", Money);

@@ -31,6 +31,7 @@ import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
+import com.shoppay.numc.tools.CommonUtil;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.NoDoubleClickListener;
@@ -139,6 +140,7 @@ public class FabiDuihuanActivity extends BaseActivity {
     private PayType paytype;
     private String title, entitle;
     private String jisuanHuilv = "";
+    private String shouxufei = "";
     private String xueditString;
     private boolean isHuilv = false;
 
@@ -206,10 +208,10 @@ public class FabiDuihuanActivity extends BaseActivity {
                 } else {
                     //计算所需金额
 //                    所需金额（兑换金额* 计算汇率exchangeratetitle*（1+手续费率Poundage））
-                    double sxf = CommonUtils.add(1.0, Double.parseDouble(viprechargeEtSxf.getText().toString()));
+                    double sxf = CommonUtils.add(1.0, Double.parseDouble(shouxufei));
                     String xu = CommonUtils.multiply(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString(), jisuanHuilv);
                     double xumoney = Double.parseDouble(CommonUtils.multiply(xu, sxf + ""));
-                    viprechargeEtXumoney.setText(xumoney + "");
+                    viprechargeEtXumoney.setText(CommonUtils.lasttwo(xumoney));
                 }
 
             }
@@ -287,9 +289,10 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         public void onResponse(Object response) {
                                             try {
                                                 JSONObject jso = new JSONObject(response.toString());
-                                                viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
-                                                viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                                viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
+                                                viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                                 jisuanHuilv = jso.getString("exchangerate");
+                                                shouxufei = jso.getString("Poundage");
                                                 isHuilv = true;
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -303,6 +306,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                                             viprechargeEtHuilv.setText("");
                                             viprechargeEtSxf.setText("");
                                             jisuanHuilv = "";
+                                            shouxufei = "";
                                             isHuilv = false;
                                         }
                                     });
@@ -379,9 +383,10 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         dialog.dismiss();
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
-                                            viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
-                                            viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                            viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
+                                            viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                             jisuanHuilv = jso.getString("exchangerate");
+                                            shouxufei = jso.getString("Poundage");
                                             isHuilv = true;
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -396,6 +401,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         viprechargeEtHuilv.setText("");
                                         viprechargeEtSxf.setText("");
                                         jisuanHuilv = "";
+                                        shouxufei = "";
                                         isHuilv = false;
                                     }
                                 });

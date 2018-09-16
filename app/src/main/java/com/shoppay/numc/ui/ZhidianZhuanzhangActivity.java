@@ -11,22 +11,26 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shoppay.numc.R;
+import com.shoppay.numc.bean.ZhidianMsg;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiZhuanzhang;
 import com.shoppay.numc.modle.ImpObtainFabiZZId;
-import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
+import com.shoppay.numc.modle.ImpObtainXFZhidianList;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
-import com.shoppay.numc.modle.ImpVipRecharge;
+import com.shoppay.numc.modle.ImpObtainZDYuemoney;
+import com.shoppay.numc.modle.ImpObtainZDZZId;
+import com.shoppay.numc.modle.ImpZDZhuanzhang;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
@@ -40,7 +44,9 @@ import com.shoppay.numc.wxcode.MipcaActivityCapture;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +58,7 @@ import butterknife.OnClick;
  * Created by songxiaotao on 2017/6/30.
  */
 
-public class FabiZhuanzhangActivity extends BaseActivity {
+public class ZhidianZhuanzhangActivity extends BaseActivity {
 
     @Bind(R.id.rl_recharge)
     RelativeLayout rlRecharge;
@@ -131,15 +137,15 @@ public class FabiZhuanzhangActivity extends BaseActivity {
     private String editString;
     private PayType paytype;
     private String title, entitle;
-
+    private List<ZhidianMsg> zdlist=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aactivity_fabizhuanzhang);
+        setContentView(R.layout.aactivity_zhidianzhuanzhang);
         ButterKnife.bind(this);
         ac = this;
-        dialog = DialogUtil.loadingDialog(FabiZhuanzhangActivity.this, 1);
-        ActivityStack.create().addActivity(FabiZhuanzhangActivity.this);
+        dialog = DialogUtil.loadingDialog(ZhidianZhuanzhangActivity.this, 1);
+        ActivityStack.create().addActivity(ZhidianZhuanzhangActivity.this);
         title = getIntent().getStringExtra("title");
         entitle = getIntent().getStringExtra("entitle");
         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
@@ -148,6 +154,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
             tvTitle.setText(entitle);
         }
         initView();
+        obtainXFzhidian("no");
         etCardnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -174,6 +181,81 @@ public class FabiZhuanzhangActivity extends BaseActivity {
         });
     }
 
+    private void obtainXFzhidian( final String type) {
+        ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
+        currency.obtainCurrency(ac, new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ZhidianMsg>>() {
+                }.getType();
+                List<ZhidianMsg> sllist = gson.fromJson(response.toString(), listType);
+                zdlist.addAll(sllist);
+                if (type.equals("no")) {
+
+                } else {
+                    String[] tft = new String[zdlist.size()];
+                    for (int i = 0; i < zdlist.size(); i++) {
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            tft[i] = zdlist.get(i).StockCodeName;
+                        } else {
+                            tft[i] = zdlist.get(i).EnStockCodeName;
+                        }
+                    }
+                    CurrChoseDialog.currChoseDialog(ZhidianZhuanzhangActivity.this, tft, 2, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            for (ZhidianMsg curr : zdlist) {
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    if (curr.StockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                } else {
+                                    if (curr.EnStockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                }
+                            }
+                            etBingzhong.setText(response.toString());
+                            dialog.show();
+                            ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
+                            yue.obtainCurrency(ZhidianZhuanzhangActivity.this, vipid, currid, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    dialog.dismiss();
+                                    etYue.setText(response.toString());
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+                                    etYue.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+                if (type.equals("no")) {
+
+                } else {
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
 
     /**
      * 延迟线程，看是否还有下一个字符输入
@@ -189,7 +271,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
 
     private void ontainVipInfo() {
         ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
-        vipmsg.obtainVipMsg(FabiZhuanzhangActivity.this, editString, new InterfaceBack() {
+        vipmsg.obtainVipMsg(ZhidianZhuanzhangActivity.this, editString, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
                 Message msg = handler.obtainMessage();
@@ -213,33 +295,35 @@ public class FabiZhuanzhangActivity extends BaseActivity {
             @Override
             protected void onNoDoubleClick(View view) {
                 if (isSuccess) {
-                    if (currlist.size() > 0) {
-                        String[] tft = new String[currlist.size()];
-                        for (int i = 0; i < currlist.size(); i++) {
+                    if (zdlist.size() == 0) {
+                        obtainXFzhidian("yes");
+                    } else {
+                        String[] tft = new String[zdlist.size()];
+                        for (int i = 0; i < zdlist.size(); i++) {
                             if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                tft[i] = currlist.get(i).CurrencyName;
+                                tft[i] = zdlist.get(i).StockCodeName;
                             } else {
-                                tft[i] = currlist.get(i).EnCurrencyName;
+                                tft[i] = zdlist.get(i).EnStockCodeName;
                             }
                         }
-                        CurrChoseDialog.currChoseDialog(FabiZhuanzhangActivity.this, tft, 2, new InterfaceBack() {
+                        CurrChoseDialog.currChoseDialog(ZhidianZhuanzhangActivity.this, tft, 2, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
-                                for (Currency curr : currlist) {
+                                for (ZhidianMsg curr : zdlist) {
                                     if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                        if (curr.CurrencyName.equals(response.toString())) {
-                                            currid = curr.CurrencyID;
+                                        if (curr.StockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
                                         }
                                     } else {
-                                        if (curr.EnCurrencyName.equals(response.toString())) {
-                                            currid = curr.CurrencyID;
+                                        if (curr.EnStockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
                                         }
                                     }
                                 }
                                 etBingzhong.setText(response.toString());
                                 dialog.show();
-                                ImpObtainYuemoney yue = new ImpObtainYuemoney();
-                                yue.obtainCurrency(FabiZhuanzhangActivity.this, vipid, currid, new InterfaceBack() {
+                                ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
+                                yue.obtainCurrency(ZhidianZhuanzhangActivity.this, vipid, currid, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         dialog.dismiss();
@@ -261,8 +345,6 @@ public class FabiZhuanzhangActivity extends BaseActivity {
 
                             }
                         });
-                    } else {
-                        ToastUtils.showToast(ac, res.getString(R.string.currno_chose));
                     }
                 } else {
                     ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
@@ -284,7 +366,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 } else if (etBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosezzcurr),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosezzzhidian),
                             Toast.LENGTH_SHORT).show();
                 } else if (etSkhm.getText().toString().equals("")) {
                     ToastUtils.showToast(ac, res.getString(R.string.inputskhuming));
@@ -296,12 +378,12 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                     ToastUtils.showToast(ac, res.getString(R.string.zzbigyue));
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
-                        PwdDialog.pwdDialog(FabiZhuanzhangActivity.this, pwd, 1, new InterfaceBack() {
+                        PwdDialog.pwdDialog(ZhidianZhuanzhangActivity.this, pwd, 1, new InterfaceBack() {
                             @Override
                             public void onResponse(Object response) {
                                 dialog.show();
-                                ImpObtainFabiZZId zzid = new ImpObtainFabiZZId();
-                                zzid.obtainFabiZZId(FabiZhuanzhangActivity.this, new InterfaceBack() {
+                                ImpObtainZDZZId zzid = new ImpObtainZDZZId();
+                                zzid.obtainZDZZId(ZhidianZhuanzhangActivity.this, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {
                                         int rechargeid = -1;
@@ -311,11 +393,11 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        ImpFabiZhuanzhang fbzz = new ImpFabiZhuanzhang();
-                                        fbzz.fabiZhuanzhang(FabiZhuanzhangActivity.this, dialog, rechargeid, vipid, pwd, currid, etSkhm.getText().toString(), etSkaccount.getText().toString(), etMoney.getText().toString(), etZzremark.getText().toString(), new InterfaceBack() {
+                                        ImpZDZhuanzhang zdzz = new ImpZDZhuanzhang();
+                                        zdzz.zdZhuanzhang(ZhidianZhuanzhangActivity.this, dialog, rechargeid, vipid, pwd, currid, etSkhm.getText().toString(), etSkaccount.getText().toString(), etMoney.getText().toString(), etZzremark.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(FabiZhuanzhangActivity.class);
+                                                ActivityStack.create().finishActivity(ZhidianZhuanzhangActivity.class);
                                             }
 
                                             @Override
@@ -389,6 +471,6 @@ public class FabiZhuanzhangActivity extends BaseActivity {
 
     @OnClick(R.id.rl_left)
     public void onViewClicked() {
-        ActivityStack.create().finishActivity(FabiZhuanzhangActivity.class);
+        ActivityStack.create().finishActivity(ZhidianZhuanzhangActivity.class);
     }
 }

@@ -41,6 +41,7 @@ public class ImpFabiTixian {
         params.put("Currency", Currency);
         params.put("Country", Country);
         params.put("BankName", BankName);
+        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("AccountAgent", AccountAgent);
         params.put("AccountBranch", AccountBranch);
         params.put("AccountName", AccountName);
