@@ -56,12 +56,16 @@
     <string name="chosezzzhidian">请选择转账指点</string>
     <string name="chosezhidian">请选择指点</string>
     <string name="chosefkzd">请选择付款指点</string>
+    <string name="chosedyzd">请选择抵押指点</string>
+    <string name="chosedkqx">请选择贷款期限</string>
+    <string name="chosedkcurr">请选择贷款币种</string>
     <string name="rechargefalse">充值失败</string>
     <string name="zdxffalse">指点消费失败</string>
     <string name="zdrgfalse">指点认购失败</string>
     <string name="zdlistfalse">获取指点种类失败</string>
     <string name="yuefalse">获取账户余额失败</string>
     <string name="zdrgflfalse">获取指点认购费率失败</string>
+    <string name="zddklilvfalse">获取贷款利率失败</string>
     <string name="inputaccount">请输入账号</string>
     <string name="inputpwd">请输入密码</string>
     <string name="rememberpwd">记住密码</string>
@@ -82,6 +86,7 @@
     <string name="inputduihuannum">请输入兑换数量</string>
     <string name="zzbigyue">转账金额大于账户余额</string>
     <string name="dhbigyue">兑换金额大于账户余额</string>
+    <string name="dydianebigyue">抵押点额大于账户余额</string>
     <string name="txbigyue">提现金额大于账户余额</string>
     <string name="xfzdbigyue">消费指点大于账户余额</string>
     <string name="czcodefalse">获取充值编号失败</string>
@@ -90,6 +95,7 @@
     <string name="zdxfcodefalse">获取指点消费编号失败</string>
     <string name="zddccodefalse">获取指点定存编号失败</string>
     <string name="zdrgcodefalse">获取指点认购编号失败</string>
+    <string name="zddkcodefalse">获取指点贷款编号失败</string>
     <string name="dccodefalse">获取定存编号失败</string>
     <string name="qxcodefalse">获取取现编号失败</string>
     <string name="fabizzfalse">法币转账失败</string>
@@ -124,6 +130,7 @@
     <string name="dhnum">兑换数量</string>
     <string name="dhlv">兑换率</string>
     <string name="dycurr">抵押币种</string>
+    <string name="dyzhidian">抵押指点</string>
     <string name="dkqixian">贷款期限</string>
     <string name="dkcurr">贷款币种</string>
     <string name="dydiane">抵押点额</string>
@@ -135,4 +142,10 @@
     <string name="inputjiaoyi">请输入交易密码</string>
     <string name="zhidian">指点</string>
     <string name="cunruzhidian">存入指点</string>
+    <string name="lipincode">礼品编号</string>
+    <string name="inputlipincode">请输入或定位礼品编号</string>
+    <string name="dingwei">定位</string>
+    <string name="duihuanallnum">兑换总数量：</string>
+    <string name="duihuanallmoney">兑换总币额：</string>
+    <string name="lipinlistfalse">获取可兑换礼品失败</string>
 </resources>

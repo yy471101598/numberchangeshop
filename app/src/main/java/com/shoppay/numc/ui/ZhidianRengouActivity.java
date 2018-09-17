@@ -23,21 +23,14 @@ import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.modle.ImpFabiDuihuan;
-import com.shoppay.numc.modle.ImpObtainDuihuanLulv;
-import com.shoppay.numc.modle.ImpObtainFabiDuihuanId;
 import com.shoppay.numc.modle.ImpObtainRGFeilv;
 import com.shoppay.numc.modle.ImpObtainRGZhidianList;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
-import com.shoppay.numc.modle.ImpObtainXFZhidianList;
-import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDRGCurrency;
 import com.shoppay.numc.modle.ImpObtainZDRGId;
 import com.shoppay.numc.modle.ImpObtainZDRGYuemoney;
-import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpZDRengou;
 import com.shoppay.numc.nbean.Currency;
-import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
@@ -461,6 +454,38 @@ public class ZhidianRengouActivity extends BaseActivity {
                                 }
                                 viprechargeEtBingzhong.setText(response.toString());
                                 dialog.show();
+                                //兑换指点选择后，又选择了付款币种
+                                if(dhzhidian!=-1){
+                                    //避免计算错误，每次选择清空输入金额
+                                    etMoney.setText("");
+                                    ImpObtainRGFeilv feilv = new ImpObtainRGFeilv();
+                                    feilv.obtainDuihuanHuilv(ZhidianRengouActivity.this, currid, dhzhidian, new InterfaceBack() {
+                                        @Override
+                                        public void onResponse(Object response) {
+                                            dialog.dismiss();
+                                            try {
+                                                JSONObject jso = new JSONObject(response.toString());
+                                                viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
+                                                viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                                jisuanHuilv = jso.getString("subscriberate");
+                                                LogUtils.d("xxjisuan", jisuanHuilv);
+                                                isHuilv = true;
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onErrorResponse(Object msg) {
+                                            isHuilv = false;
+                                            jisuanHuilv = "";
+                                            viprechargeEtHuilv.setText("");
+                                            viprechargeEtSxf.setText("");
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+                                }
                                 ImpObtainZDRGYuemoney yue = new ImpObtainZDRGYuemoney();
                                 yue.obtainCurrency(ZhidianRengouActivity.this, vipid, currid, new InterfaceBack() {
                                     @Override
@@ -535,6 +560,8 @@ public class ZhidianRengouActivity extends BaseActivity {
                                             viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
                                             viprechargeEtSxf.setText(jso.getString("Poundage"));
                                             jisuanHuilv = jso.getString("subscriberate");
+                                            //避免计算错误，每次选择清空输入金额
+                                            etMoney.setText("");
                                             LogUtils.d("xxjisuan", jisuanHuilv);
                                             isHuilv = true;
                                         } catch (JSONException e) {

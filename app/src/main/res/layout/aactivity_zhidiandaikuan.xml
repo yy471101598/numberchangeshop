@@ -27,7 +27,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_cardnum"
+                    android:id="@+id/tv_cardnum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -38,13 +38,13 @@
                     />
 
                 <EditText
-                    android:id="@+id/viprecharge_et_cardnum"
+                    android:id="@+id/et_cardnum"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_cardnum"
+                    android:layout_toRightOf="@id/tv_cardnum"
                     android:background="@null"
                     android:gravity="center_vertical|right"
                     android:hint="@string/inputvip"
@@ -66,7 +66,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_name"
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -77,13 +77,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/viprecharge_et_name"
+                    android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_name"
+                    android:layout_toRightOf="@id/tv_name"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -103,12 +103,12 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_bizhong"
+                    android:id="@+id/tv_bizhong"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="@string/dycurr"
+                    android:text="@string/dyzhidian"
                     android:textColor="@color/text_30"
                     android:textSize="15sp"
                     />
@@ -125,7 +125,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/viprecharge_et_bingzhong"
+                        android:id="@+id/et_bingzhong"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -158,7 +158,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_dkqixian"
+                    android:id="@+id/tv_dkqixian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -180,7 +180,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/viprecharge_et_dkqixian"
+                        android:id="@+id/et_dkqixian"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -213,7 +213,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_dkbiz"
+                    android:id="@+id/tv_dkbiz"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -235,7 +235,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/viprecharge_et_dkbizhong"
+                        android:id="@+id/et_dkbizhong"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -268,7 +268,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_yue"
+                    android:id="@+id/tv_yue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -279,13 +279,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/viprecharge_et_yue"
+                    android:id="@+id/et_yue"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_yue"
+                    android:layout_toRightOf="@id/tv_yue"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -348,7 +348,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_huilv"
+                    android:id="@+id/tv_huilv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -359,13 +359,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/viprecharge_et_dkmoney"
+                    android:id="@+id/et_dkmoney"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_huilv"
+                    android:layout_toRightOf="@id/tv_huilv"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -385,7 +385,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_sxf"
+                    android:id="@+id/tv_sxf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -396,13 +396,13 @@
                     />
 
                 <TextView
-                    android:id="@+id/viprecharge_et_lilv"
+                    android:id="@+id/et_lilv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_sxf"
+                    android:layout_toRightOf="@id/tv_sxf"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
@@ -422,7 +422,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/viprecharge_tv_xumoney"
+                    android:id="@+id/tv_xumoney"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -433,18 +433,17 @@
                     />
 
                 <TextView
-                    android:id="@+id/viprecharge_et_mothhk"
+                    android:id="@+id/et_mothhk"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="15dp"
-                    android:layout_toRightOf="@id/viprecharge_tv_xumoney"
                     android:gravity="center_vertical|right"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
                     android:textSize="15sp"
-                    />
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/tv_xumoney"/>
             </RelativeLayout>
 
             <View
@@ -454,7 +453,7 @@
                 ></View>
 
             <RelativeLayout
-                android:id="@+id/viprecharge_rl_duihuan"
+                android:id="@+id/rl_duihuan"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"

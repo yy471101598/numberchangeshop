@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +23,11 @@ import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiDuihuan;
 import com.shoppay.numc.modle.ImpObtainDuihuanLulv;
 import com.shoppay.numc.modle.ImpObtainFabiDuihuanId;
-import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
-import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
-import com.shoppay.numc.tools.CommonUtil;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.NoDoubleClickListener;
@@ -44,7 +40,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -293,6 +288,8 @@ public class FabiDuihuanActivity extends BaseActivity {
                                                 viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                                 jisuanHuilv = jso.getString("exchangerate");
                                                 shouxufei = jso.getString("Poundage");
+                                                //避免计算错误，每次选择清空输入金额
+                                                etMoney.setText("");
                                                 isHuilv = true;
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -372,10 +369,11 @@ public class FabiDuihuanActivity extends BaseActivity {
                             }
                             viprechargeEtDhbizhong.setText(response.toString());
 
-
                             if (fkcurrid != -1) {
                                 //获取汇率
                                 dialog.show();
+                                //避免计算错误，每次选择清空输入金额
+                                etMoney.setText("");
                                 ImpObtainDuihuanLulv huilv = new ImpObtainDuihuanLulv();
                                 huilv.obtainDuihuanHuilv(FabiDuihuanActivity.this, fkcurrid, currid, new InterfaceBack() {
                                     @Override
