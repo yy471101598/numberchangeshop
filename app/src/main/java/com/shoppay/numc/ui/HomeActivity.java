@@ -84,32 +84,43 @@ public class HomeActivity extends BaseActivity {
                         qx.putExtra("entitle",home.EnTitle);
                         startActivity(qx);
                         break;
-                    case "点消费":
+                    case "指点消费":
                         Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
                         dxf.putExtra("title",home.Title);
                         dxf.putExtra("entitle",home.EnTitle);
                         startActivity(dxf);
                         break;
-                    case "点认购":
+                    case "指点认购":
                         Intent drg = new Intent(ac, ZhidianRengouActivity.class);
                         drg.putExtra("title",home.Title);
                         drg.putExtra("entitle",home.EnTitle);
                         startActivity(drg);
                         break;
-                    case "点定存":
+                    case "指点定存":
                         Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
                         ddc.putExtra("title",home.Title);
                         ddc.putExtra("entitle",home.EnTitle);
                         startActivity(ddc);
                         break;
 
+                    case "指点兑换":
+                        Intent ddh = new Intent(ac, ZhidianDuihuanActivity.class);
+                        ddh.putExtra("title",home.Title);
+                        ddh.putExtra("entitle",home.EnTitle);
+                        startActivity(ddh);
+                        break;
 
-
-                    case "点转帐":
+                    case "指点转帐":
                         Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
                         dzz.putExtra("title",home.Title);
                         dzz.putExtra("entitle",home.EnTitle);
                         startActivity(dzz);
+                        break;
+                    case "指点贷款":
+                        Intent ddk = new Intent(ac, ZhidianDaikuanActivity.class);
+                        ddk.putExtra("title",home.Title);
+                        ddk.putExtra("entitle",home.EnTitle);
+                        startActivity(ddk);
                         break;
                 }
 

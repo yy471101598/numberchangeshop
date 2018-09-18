@@ -1,13 +1,17 @@
 package com.shoppay.numc.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,9 +22,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.shoppay.numc.JifenDuihuanActivity;
 import com.shoppay.numc.R;
+import com.shoppay.numc.adapter.ZhidianDuihuanAdapter;
+import com.shoppay.numc.bean.LipinMsg;
 import com.shoppay.numc.bean.ZhidianMsg;
 import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.db.DBAdapter;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
@@ -33,6 +41,7 @@ import com.shoppay.numc.modle.ImpZDDuihuan;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -132,6 +141,12 @@ public class ZhidianDuihuanActivity extends BaseActivity {
     private String title, entitle;
     private List<ZhidianMsg> zdlist = new ArrayList<>();
     private String shopcode;
+    private ShopChangeReceiver shopChangeReceiver;
+    private int num = 0;
+    private int point = 0;
+    private DBAdapter dbAdapter;
+    private List<LipinMsg> list = new ArrayList<>();
+    private ZhidianDuihuanAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +163,19 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         } else {
             mTvTitle.setText(entitle);
         }
-
+        dbAdapter = DBAdapter.getInstance(ac);
+        dbAdapter.deleteJifenShopCar();
         initView();
         obtainDHzhidian("no");
+        // 注册广播
+        shopChangeReceiver = new ShopChangeReceiver();
+        IntentFilter iiiff = new IntentFilter();
+        iiiff.addAction("com.shoppay.wy.jifenduihuan");
+        registerReceiver(shopChangeReceiver, iiiff);
+
+
+        adapter = new ZhidianDuihuanAdapter(ac, list);
+        mListview.setAdapter(adapter);
         mVipEtCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -191,7 +216,6 @@ public class ZhidianDuihuanActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (mEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
                     ToastUtils.showToast(ac, res.getString(R.string.chosefkzd));
-                    mVipEtCode.setText("");
                 } else {
                     if (codeRun != null) {
                         //每次editText有变化的时候，则移除上次发出的延迟线程
@@ -234,7 +258,33 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         shopmsg.obtainZDDHShopmsg(ac, shopcode, currid, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
-
+                try {
+                    LipinMsg lipin = new LipinMsg();
+                    boolean ishas = true;
+                    JSONObject jso = new JSONObject(response.toString());
+                    if (list.size() == 0) {
+                        ishas = false;
+                    } else {
+                        for (int i = 0; i < list.size(); i++) {
+                            if (!list.get(i).staid.equals(jso.getString("staid"))) {
+                                ishas = false;
+                            }
+                        }
+                    }
+                    if (!ishas) {
+                        lipin.staid = jso.getString("staid");
+                        lipin.stockcode = jso.getString("stockcode");
+                        lipin.title = jso.getString("title");
+                        lipin.entitle = jso.getString("entitle");
+                        lipin.price = jso.getString("price");
+                        lipin.stock = jso.getString("stock");
+                        lipin.num = "0";
+                        list.add(lipin);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -283,6 +333,8 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                                 }
                             }
                             mEtBingzhong.setText(response.toString());
+                            mVipEtCode.setText("");
+                            dbAdapter.deleteJifenShopCar();
                             dialog.show();
                             ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
                             yue.obtainCurrency(ZhidianDuihuanActivity.this, vipid, currid, new InterfaceBack() {
@@ -349,6 +401,7 @@ public class ZhidianDuihuanActivity extends BaseActivity {
             @Override
             protected void onNoDoubleClick(View view) {
                 if (isSuccess) {
+
                     if (zdlist.size() == 0) {
                         obtainDHzhidian("yes");
                     } else {
@@ -375,6 +428,8 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                                     }
                                 }
                                 mEtBingzhong.setText(response.toString());
+                                mVipEtCode.setText("");
+                                dbAdapter.deleteJifenShopCar();
                                 dialog.show();
                                 ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
                                 yue.obtainCurrency(ZhidianDuihuanActivity.this, vipid, currid, new InterfaceBack() {
@@ -430,7 +485,7 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                             Toast.LENGTH_SHORT).show();
                 } else if (mTvAllnum.getText().toString().equals("0")) {
                     ToastUtils.showToast(ac, res.getString(R.string.choselipin));
-                } else if (Double.parseDouble(mTvAllmoney.getText().toString()) > Double.parseDouble(mEtYue.getText().toString())) {
+                } else if (Double.parseDouble(mTvAllmoney.getText().toString()) > Double.parseDouble(mEtYue.getText().toString().equals("") ? "0" : mEtYue.getText().toString())) {
                     ToastUtils.showToast(ac, res.getString(R.string.xfzdbigyue));
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
@@ -450,9 +505,9 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                                             e.printStackTrace();
                                         }
                                         //拼接礼品信息
-                                        StringBuffer sb=new StringBuffer();
+                                        StringBuffer sb = new StringBuffer();
                                         ImpZDDuihuan recharge = new ImpZDDuihuan();
-                                        recharge.zdDuihuan(ZhidianDuihuanActivity.this, dialog, rechargeid, vipid, pwd, currid,sb.toString(), new InterfaceBack() {
+                                        recharge.zdDuihuan(ZhidianDuihuanActivity.this, dialog, rechargeid, vipid, pwd, currid, sb.toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
                                                 ActivityStack.create().finishActivity(ZhidianDuihuanActivity.class);
@@ -529,6 +584,28 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         }
     }
 
+
+    private class ShopChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("xx", "ShopChangeReceiver");
+            List<LipinMsg> listss = dbAdapter.getListJifenShopCar(currid + "");
+            num = 0;
+            point = 0;
+            for (LipinMsg shopCar : listss) {
+                if (shopCar.num.equals("0")) {
+
+                } else {
+                    num = num + Integer.parseInt(shopCar.num);
+                    point = point + Integer.parseInt(CommonUtils.multiply(shopCar.price, shopCar.num));
+                }
+            }
+            mTvAllmoney.setText(point + "");
+            mTvAllnum.setText(num + "");
+
+        }
+    }
 
     public static String getStringDate() {
         Date currentTime = new Date();

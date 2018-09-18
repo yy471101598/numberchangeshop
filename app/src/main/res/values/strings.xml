@@ -152,4 +152,5 @@
     <string name="duihuanallmoney">兑换总币额：</string>
     <string name="lipinlistfalse">获取可兑换礼品失败</string>
     <string name="choselipin">请选择兑换礼品</string>
+  <string name="lipinnumbigkucun">礼品数量大于礼品库存</string>
 </resources>

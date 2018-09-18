@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.LipinMsg;
 import com.shoppay.numc.bean.ShopCar;
 import com.shoppay.numc.db.DBAdapter;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -73,14 +75,15 @@ public class ZhidianDuihuanAdapter extends BaseAdapter {
         }
         vh.itemTvJifen.setText(home.price);
         vh.itemTvKucunnum.setText(home.stock);
-        ShopCar dbshop = dbAdapter.getShopCar(home.stockcode);
+        LogUtils.d("xxst", home.stockcode);
+         LipinMsg dbshop = dbAdapter.getJifenShop(home.staid);
         if (dbshop == null) {
             vh.itemTvNum.setText("0");
         } else {
-            if (dbshop.count != 0) {
+            if (!dbshop.num.equals("0")) {
                 vh.itemIvDel.setVisibility(View.VISIBLE);
                 vh.itemTvNum.setVisibility(View.VISIBLE);
-                vh.itemTvNum.setText(dbshop.count + "");
+                vh.itemTvNum.setText(dbshop.num);
             }
         }
         vh.itemIvAdd.setOnClickListener(new View.OnClickListener() {
@@ -91,20 +94,20 @@ public class ZhidianDuihuanAdapter extends BaseAdapter {
                     vh.itemTvNum.setVisibility(View.VISIBLE);
                     vh.itemIvDel.setVisibility(View.VISIBLE);
                 }
-//                JifenDuihuan shopCar = dbAdapter.getJifenShop(home.stockcode);
-//                if (shopCar == null) {
-//                    num = 1;
-//                    vh.itemTvNum.setText(num + "");
-//                    insertJifenShopCar(home, num);
-//                } else {
-//                    num = num + 1;
-//                    if (Integer.parseInt(home.num) < num) {
-//                        num = num - 1;
-//                        Toast.makeText(context,context.getResources().getString(R.string.lipinkucun) + home.stock, Toast.LENGTH_SHORT).show();
-//                    }
-//                    vh.itemTvNum.setText(num + "");
-//                    insertJifenShopCar(home, num);
-//                }
+                LipinMsg dbshop = dbAdapter.getJifenShop(home.staid);
+                if (dbshop == null) {
+                    num = 1;
+                    vh.itemTvNum.setText(num + "");
+                    insertJifenShopCar(home, num);
+                } else {
+                    num = num + 1;
+                    if (Integer.parseInt(home.stock) < num) {
+                        num = num - 1;
+                        Toast.makeText(context, context.getResources().getString(R.string.lipinnumbigkucun) + home.stock, Toast.LENGTH_SHORT).show();
+                    }
+                    vh.itemTvNum.setText(num + "");
+                    insertJifenShopCar(home, num);
+                }
 
             }
         });
@@ -137,7 +140,7 @@ public class ZhidianDuihuanAdapter extends BaseAdapter {
         shopCar.title = shop.title;
         shopCar.entitle = shop.entitle;
         li.add(shopCar);
-//        dbAdapter.insertJifenShopCar(li);
+        dbAdapter.insertJifenShopCar(li);
         context.sendBroadcast(intent);
     }
 

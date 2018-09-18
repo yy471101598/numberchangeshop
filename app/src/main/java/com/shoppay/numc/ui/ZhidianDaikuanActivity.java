@@ -31,6 +31,7 @@ import com.shoppay.numc.modle.ImpObtainZDDKId;
 import com.shoppay.numc.modle.ImpObtainZDDKLilv;
 import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpObtainZhidianDcCunqi;
+import com.shoppay.numc.modle.ImpObtainZhidianDkCunqi;
 import com.shoppay.numc.modle.ImpZDDaikuan;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.tools.ActivityStack;
@@ -436,8 +437,8 @@ public class ZhidianDaikuanActivity extends BaseActivity {
 
     private void obtainCunqi(final String cuid) {
         dialog.show();
-        ImpObtainZhidianDcCunqi cunqi = new ImpObtainZhidianDcCunqi();
-        cunqi.obtainZddcCunqi(ac, cuid, new InterfaceBack() {
+        ImpObtainZhidianDkCunqi cunqi = new ImpObtainZhidianDkCunqi();
+        cunqi.obtainZddkCunqi(ac, cuid, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
                 dialog.dismiss();
