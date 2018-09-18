@@ -35,13 +35,13 @@ public class ImpObtainDuihuanLulv {
         params.put("ToCurrency", ToCurrency+"");
         JSONObject jso = new JSONObject();
         try {
-            jso.put("FromCurrency".toLowerCase(), FromCurrency+"");
-            jso.put("ToCurrency".toLowerCase(), ToCurrency+"");
+            jso.put("FromCurrency", FromCurrency+"");
+            jso.put("ToCurrency", ToCurrency+"");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/ExchangeRate.ashx",params, new AsyncHttpResponseHandler() {
             @Override

@@ -42,13 +42,13 @@ public class ImpZDDaikuan {
         params.put("MortgageCoin", MortgageCoin);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("LoanID".toLowerCase(),LoanID);
-            jso.put("UserID".toLowerCase(), UserID);
-//            jso.put("LoginUserID".toLowerCase(),PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
-            jso.put("RateID".toLowerCase(), RateID);
-            jso.put("StockCode".toLowerCase(), StockCode);
-            jso.put("Currency".toLowerCase(), Currency);
-            jso.put("MortgageCoin".toLowerCase(), MortgageCoin);
+            jso.put("LoanID",LoanID);
+            jso.put("UserID", UserID);
+//            jso.put("LoginUserID",PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
+            jso.put("RateID", RateID);
+            jso.put("StockCode", StockCode);
+            jso.put("Currency", Currency);
+            jso.put("MortgageCoin", MortgageCoin);
         } catch (JSONException e) {
             e.printStackTrace();
         }

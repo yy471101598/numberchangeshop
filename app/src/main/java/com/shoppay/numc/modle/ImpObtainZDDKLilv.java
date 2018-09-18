@@ -35,8 +35,8 @@ public class ImpObtainZDDKLilv {
         params.put("CurrencyID", CurrencyID);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("RateID".toLowerCase(), RateID);
-            jso.put("CurrencyID".toLowerCase(), CurrencyID);
+            jso.put("RateID", RateID);
+            jso.put("CurrencyID", CurrencyID);
         } catch (JSONException e) {
             e.printStackTrace();
         }

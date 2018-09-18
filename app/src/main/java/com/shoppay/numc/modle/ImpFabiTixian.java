@@ -56,18 +56,18 @@ public class ImpFabiTixian {
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("UserID".toLowerCase(), UserID);
-            jso.put("WitdrawID".toLowerCase(), WitdrawID);
-            jso.put("Currency".toLowerCase(), Currency);
-            jso.put("BankName".toLowerCase(), BankName);
-            jso.put("AccountName".toLowerCase(), AccountName);
-            jso.put("AccountNumber".toLowerCase(), AccountNumber);
-            jso.put("Money".toLowerCase(), Money);
+            jso.put("UserID", UserID);
+            jso.put("WitdrawID", WitdrawID);
+            jso.put("Currency", Currency);
+            jso.put("BankName", BankName);
+            jso.put("AccountName", AccountName);
+            jso.put("AccountNumber", AccountNumber);
+            jso.put("Money", Money);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/Witdraw.ashx", params, new AsyncHttpResponseHandler() {
             @Override

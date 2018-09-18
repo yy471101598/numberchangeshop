@@ -45,19 +45,19 @@ public class ImpFabiZhuanzhang {
         params.put("Remark", Remark.equals("") ? "无" : Remark);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("TransferID".toLowerCase(), TransferID);
-            jso.put("UserID".toLowerCase(), UserID);
-            jso.put("password".toLowerCase(), password);
-            jso.put("CurrencyID".toLowerCase(), CurrencyID);
-            jso.put("AccountName".toLowerCase(), AccountName);
-            jso.put("AccountNumber".toLowerCase(), AccountNumber);
-            jso.put("Money".toLowerCase(), Money);
-            jso.put("Remark".toLowerCase(), Remark.equals("") ? "无" : Remark.toLowerCase());
+            jso.put("TransferID", TransferID);
+            jso.put("UserID", UserID);
+            jso.put("password", password);
+            jso.put("CurrencyID", CurrencyID);
+            jso.put("AccountName", AccountName);
+            jso.put("AccountNumber", AccountNumber);
+            jso.put("Money", Money);
+            jso.put("Remark", Remark.equals("") ? "无" : Remark);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/Transfer.ashx", params, new AsyncHttpResponseHandler() {
             @Override

@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.shoppay.numc.bean.JifenDuihuan;
+import com.shoppay.numc.bean.LipinMsg;
 import com.shoppay.numc.bean.NumShop;
 import com.shoppay.numc.bean.ShopCar;
 import com.shoppay.numc.bean.YinpianMsg;
@@ -726,10 +726,12 @@ public class DBAdapter {
     public boolean deleteYinpShopCar() {
         return db.delete(DBHelper.YINPIAN_TABLE_NAME,null,null) > 0;
     }
+
+
     /**
      * 更新购物车信息
      */
-    public void updateJifenShopCar(JifenDuihuan shopcar, String shopid) {
+    public void updateJifenShopCar(LipinMsg shopcar, String shopid) {
         ContentValues initialValues = getJifenShopCarValues(shopcar);
 
         int id = db.update(DBHelper.JIFENSHOP_TABLE_NAME, initialValues,
@@ -737,14 +739,14 @@ public class DBAdapter {
     }
 
 
-    public ContentValues getJifenShopCarValues(JifenDuihuan shopcar) {
+    public ContentValues getJifenShopCarValues(LipinMsg shopcar) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(DBHelper.jifenshop_code, shopcar.GiftCode);
-        initialValues.put(DBHelper.jifenshop_count, shopcar.count);
-        initialValues.put(DBHelper.jifenshop_id, shopcar.GiftID);
-        initialValues.put(DBHelper.jifenshop_name, shopcar.GiftName);
-        initialValues.put(DBHelper.jifenshop_account, shopcar.account);
-        initialValues.put(DBHelper.jifenshop_point, shopcar.GiftExchangePoint);
+        initialValues.put(DBHelper.jifenshop_code, shopcar.entitle);
+        initialValues.put(DBHelper.jifenshop_count, shopcar.num);
+        initialValues.put(DBHelper.jifenshop_id, shopcar.staid);
+        initialValues.put(DBHelper.jifenshop_name, shopcar.title);
+        initialValues.put(DBHelper.jifenshop_account, shopcar.stockcode);
+        initialValues.put(DBHelper.jifenshop_point, shopcar.price);
         return initialValues;
     }
 
@@ -753,24 +755,24 @@ public class DBAdapter {
      *
      * @return
      */
-    public List<JifenDuihuan> getLiJifenShopCar(Cursor cursor) {
-        List<JifenDuihuan> list = null;
+    public List<LipinMsg> getLiJifenShopCar(Cursor cursor) {
+        List<LipinMsg> list = null;
         if (cursor != null) {
-            list = new ArrayList<JifenDuihuan>();
+            list = new ArrayList<LipinMsg>();
             while (cursor.moveToNext()) {
-                JifenDuihuan shopcar = new JifenDuihuan();
+                LipinMsg shopcar = new LipinMsg();
 
-                shopcar.count = cursor.getString(cursor
+                shopcar.num = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_count));
-                shopcar.GiftCode = cursor.getString(cursor
+                shopcar.entitle = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_code));
-                shopcar.account = cursor.getString(cursor
+                shopcar.stockcode = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_account));
-                shopcar.GiftExchangePoint = cursor.getString(cursor
+                shopcar.price = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_point));
-                shopcar.GiftID = cursor.getString(cursor
+                shopcar.staid = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_id));
-                shopcar.GiftName = cursor.getString(cursor
+                shopcar.title = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_name));
                 list.add(shopcar);
             }
@@ -787,7 +789,7 @@ public class DBAdapter {
      *
      * @return
      */
-    public List<JifenDuihuan> getListJifenShopCar(String account) {
+    public List<LipinMsg> getListJifenShopCar(String account) {
         Cursor cursor = null;
         cursor = db.query(DBHelper.JIFENSHOP_TABLE_NAME, null,
                 DBHelper.jifenshop_account + " =?", new String[]{account.trim()},
@@ -826,8 +828,8 @@ public class DBAdapter {
      *
      * @return
      */
-    public JifenDuihuan getJifenShop(String number) {
-        JifenDuihuan shopcar = null;
+    public LipinMsg getJifenShop(String number) {
+        LipinMsg shopcar = null;
         Cursor cursor = null;
         if (!"".equals(number)) {
             cursor = db.query(DBHelper.JIFENSHOP_TABLE_NAME, null,
@@ -835,19 +837,19 @@ public class DBAdapter {
                     null, null);
             Log.d("find", number);
             if (cursor.moveToFirst()) {
-                shopcar = new JifenDuihuan();
-                shopcar.count = cursor.getString(cursor
+                shopcar = new LipinMsg();
+                shopcar.num = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_count));
-                shopcar.GiftName = cursor.getString(cursor
-                        .getColumnIndex(DBHelper.jifenshop_name));
-                shopcar.GiftID = cursor.getString(cursor
-                        .getColumnIndex(DBHelper.jifenshop_id));
-                shopcar.GiftExchangePoint = cursor.getString(cursor
-                        .getColumnIndex(DBHelper.jifenshop_point));
-                shopcar.account = cursor.getString(cursor
-                        .getColumnIndex(DBHelper.jifenshop_account));
-                shopcar.GiftCode = cursor.getString(cursor
+                shopcar.entitle = cursor.getString(cursor
                         .getColumnIndex(DBHelper.jifenshop_code));
+                shopcar.stockcode = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.jifenshop_account));
+                shopcar.price = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.jifenshop_point));
+                shopcar.staid = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.jifenshop_id));
+                shopcar.title = cursor.getString(cursor
+                        .getColumnIndex(DBHelper.jifenshop_name));
             }
         }
         if (!cursor.isClosed()) {
@@ -862,23 +864,23 @@ public class DBAdapter {
      *
      * @return
      */
-    public long insertJifenShopCar(List<JifenDuihuan> list) {
+    public long insertJifenShopCar(List<LipinMsg> list) {
         // deleteLABEL_TABLE_NAME();
         int count = 0;
         if (null != list && list.size() > 0) {
             db.beginTransaction();
             ContentValues initialValues = null;
-            for (JifenDuihuan shopcar : list) {
-                if (hasJifenShopCar(shopcar.GiftID)) {
-                    updateJifenShopCar(shopcar, shopcar.GiftID);
+            for (LipinMsg shopcar : list) {
+                if (hasJifenShopCar(shopcar.staid)) {
+                    updateJifenShopCar(shopcar, shopcar.staid);
                 } else {
                     initialValues = new ContentValues();
-                    initialValues.put(DBHelper.jifenshop_code, shopcar.GiftCode);
-                    initialValues.put(DBHelper.jifenshop_point, shopcar.GiftExchangePoint);
-                    initialValues.put(DBHelper.jifenshop_name, shopcar.GiftName);
-                    initialValues.put(DBHelper.jifenshop_id, shopcar.GiftID);
-                    initialValues.put(DBHelper.jifenshop_account, shopcar.account);
-                    initialValues.put(DBHelper.jifenshop_count, shopcar.count + "");
+                    initialValues.put(DBHelper.jifenshop_code, shopcar.entitle);
+                    initialValues.put(DBHelper.jifenshop_count, shopcar.num);
+                    initialValues.put(DBHelper.jifenshop_id, shopcar.staid);
+                    initialValues.put(DBHelper.jifenshop_name, shopcar.title);
+                    initialValues.put(DBHelper.jifenshop_account, shopcar.stockcode);
+                    initialValues.put(DBHelper.jifenshop_point, shopcar.price);
                     db.insert(DBHelper.JIFENSHOP_TABLE_NAME, null, initialValues);
                 }
             }

@@ -35,13 +35,13 @@ public class ImpObtainZDYuemoney {
         params.put("CurrencyID", CurrencyID);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("UserID".toLowerCase(), UserID);
-            jso.put("CurrencyID".toLowerCase(), CurrencyID);
+            jso.put("UserID", UserID);
+            jso.put("CurrencyID", CurrencyID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/CoinBalance.ashx",params, new AsyncHttpResponseHandler() {
             @Override

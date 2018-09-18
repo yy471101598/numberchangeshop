@@ -41,17 +41,17 @@ public class ImpZDRengou {
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("UserID".toLowerCase(), UserID);
-//            jso.put("LoginUserID".toLowerCase(),PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
-            jso.put("SubscribeID".toLowerCase(), SubscribeID);
-            jso.put("FromCurrency".toLowerCase(), FromCurrency);
-            jso.put("ToStockCode".toLowerCase(), ToStockCode);
-            jso.put("Money".toLowerCase(), Money);
+            jso.put("UserID", UserID);
+//            jso.put("LoginUserID",PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
+            jso.put("SubscribeID", SubscribeID);
+            jso.put("FromCurrency", FromCurrency);
+            jso.put("ToStockCode", ToStockCode);
+            jso.put("Money", Money);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/CoinSubscribe.ashx", params, new AsyncHttpResponseHandler() {
             @Override

@@ -43,17 +43,17 @@ public class ImpFabiDuihuan {
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {
-            jso.put("UserID".toLowerCase(), UserID);
-            jso.put("password".toLowerCase(), password);
-            jso.put("FepID".toLowerCase(), FepID);
-            jso.put("FromCurrency".toLowerCase(), FromCurrency+"");
-            jso.put("ToCurrency".toLowerCase(), ToCurrency+"");
-            jso.put("Money".toLowerCase(), Money);
+            jso.put("UserID", UserID);
+            jso.put("password", password);
+            jso.put("FepID", FepID);
+            jso.put("FromCurrency", FromCurrency+"");
+            jso.put("ToCurrency", ToCurrency+"");
+            jso.put("Money", Money);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
-        params.put("HMAC", MD5Util.md5(jso.toString() + "bankbosscc").toUpperCase());
+        params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
         client.post(ContansUtils.BASE_URL + "pos/Fep.ashx", params, new AsyncHttpResponseHandler() {
             @Override

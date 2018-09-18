@@ -1,19 +1,13 @@
 package com.shoppay.numc.ui;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,29 +18,27 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
 import com.shoppay.numc.R;
-import com.shoppay.numc.adapter.JifenDuihuanAdapter;
-import com.shoppay.numc.bean.JifenDuihuan;
-import com.shoppay.numc.bean.VipInfo;
-import com.shoppay.numc.bean.VipInfoMsg;
+import com.shoppay.numc.bean.ZhidianMsg;
 import com.shoppay.numc.card.ReadCardOpt;
-import com.shoppay.numc.db.DBAdapter;
-import com.shoppay.numc.http.ContansUtils;
+import com.shoppay.numc.dialog.CurrChoseDialog;
+import com.shoppay.numc.dialog.PwdDialog;
+import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.modle.ImpObtainVipMsg;
+import com.shoppay.numc.modle.ImpObtainZDDHCurrency;
+import com.shoppay.numc.modle.ImpObtainZDDHId;
+import com.shoppay.numc.modle.ImpObtainZDDHShopmsg;
+import com.shoppay.numc.modle.ImpObtainZDYuemoney;
+import com.shoppay.numc.modle.ImpZDDuihuan;
 import com.shoppay.numc.tools.ActivityStack;
-import com.shoppay.numc.tools.BluetoothUtil;
 import com.shoppay.numc.tools.CommonUtils;
-import com.shoppay.numc.tools.DateUtils;
-import com.shoppay.numc.tools.DayinUtils;
 import com.shoppay.numc.tools.DialogUtil;
-import com.shoppay.numc.tools.LogUtils;
+import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
-import com.shoppay.numc.tools.UrlTools;
+import com.shoppay.numc.tools.ToastUtils;
 import com.shoppay.numc.wxcode.MipcaActivityCapture;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -54,170 +46,112 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
-
-import static com.shoppay.numc.MyApplication.context;
 
 /**
  * Created by songxiaotao on 2017/6/30.
  */
 
 public class ZhidianDuihuanActivity extends BaseActivity {
-
-    @Bind(R.id.img_left)
-    ImageView imgLeft;
-    @Bind(R.id.rl_left)
-    RelativeLayout rlLeft;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
-    @Bind(R.id.rl_right)
-    RelativeLayout rlRight;
-    @Bind(R.id.vip_tv_card)
-    TextView vipTvCard;
-    @Bind(R.id.vip_et_card)
-    EditText vipEtCard;
-    @Bind(R.id.vip_tv_name)
-    TextView vipTvName;
-    @Bind(R.id.vip_tv_jifen)
-    TextView vipTvJifen;
-    @Bind(R.id.vip_tv_vipyue)
-    TextView vipTvVipyue;
-    @Bind(R.id.vip_tv_vipdengji)
-    TextView vipTvVipdengji;
-    @Bind(R.id.vip_tv_jifennum)
-    TextView vipTvJifennum;
-    @Bind(R.id.vip_tv_dingwei)
-    TextView vipTvDingwei;
-    @Bind(R.id.vip_et_code)
-    EditText etCode;
-    @Bind(R.id.item_tv_shopname)
-    TextView itemTvShopname;
-    @Bind(R.id.item_tv_kucunnum)
-    TextView itemTvKucunnum;
-    @Bind(R.id.item_tv_money)
-    TextView itemTvMoney;
-    @Bind(R.id.item_tv_jifen)
-    TextView itemTvJifen;
-    @Bind(R.id.item_iv_add)
-    ImageView itemIvAdd;
-    @Bind(R.id.item_tv_num)
-    TextView itemTvNum;
-    @Bind(R.id.item_iv_del)
-    ImageView itemIvDel;
-    @Bind(R.id.rl_duihuanmsg)
-    RelativeLayout rlDuihuanmsg;
-    @Bind(R.id.listview)
-    ListView listview;
     @Bind(R.id.balance_tv_n)
-    TextView balanceTvN;
+    TextView mBalanceTvN;
     @Bind(R.id.tv_allnum)
-    TextView tvAllnum;
+    TextView mTvAllnum;
     @Bind(R.id.balance_tv_z)
-    TextView balanceTvZ;
-    @Bind(R.id.tv_alljifen)
-    TextView tvAlljifen;
+    TextView mBalanceTvZ;
+    @Bind(R.id.tv_allmoney)
+    TextView mTvAllmoney;
     @Bind(R.id.rl_duihuan)
-    RelativeLayout rlDuihuan;
+    RelativeLayout mRlDuihuan;
     @Bind(R.id.balance_rl_d)
-    RelativeLayout balanceRlD;
+    RelativeLayout mBalanceRlD;
+    @Bind(R.id.img_left)
+    ImageView mImgLeft;
+    @Bind(R.id.rl_left)
+    RelativeLayout mRlLeft;
+    @Bind(R.id.tv_title)
+    TextView mTvTitle;
+    @Bind(R.id.rl_right)
+    RelativeLayout mRlRight;
+    @Bind(R.id.vip_tv_card)
+    TextView mVipTvCard;
+    @Bind(R.id.vip_et_card)
+    EditText mVipEtCard;
+    @Bind(R.id.vip_tv_name)
+    TextView mVipTvName;
+    @Bind(R.id.tv_bizhong)
+    TextView mTvBizhong;
+    @Bind(R.id.et_bingzhong)
+    TextView mEtBingzhong;
+    @Bind(R.id.rl_currchose)
+    RelativeLayout mRlCurrchose;
+    @Bind(R.id.tv_yue)
+    TextView mTvYue;
+    @Bind(R.id.et_yue)
+    TextView mEtYue;
+    @Bind(R.id.vip_tv_jifennum)
+    TextView mVipTvJifennum;
+    @Bind(R.id.vip_tv_dingwei)
+    TextView mVipTvDingwei;
+    @Bind(R.id.vip_et_code)
+    EditText mVipEtCode;
+    @Bind(R.id.listview)
+    ListView mListview;
     private boolean isSuccess = false;
-    private Activity ac;
-    private List<JifenDuihuan> list;
-    private JifenDuihuanAdapter adapter;
-    private DBAdapter dbAdapter;
-    private JifenDuihuan jifenDuihuan;
-    private ShopChangeReceiver shopChangeReceiver;
-    private int num=0;
-    private  int point=0;
-    private boolean isClick=true;
+    private int vipid;
+    private String pwd = "";
+    private int currid = -1;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    VipInfo info = (VipInfo) msg.obj;
-                    vipTvName.setText(info.getMemName());
-                    vipTvVipyue.setText(info.getMemMoney());
-                    vipTvJifen.setText(info.getMemPoint());
-                    vipTvVipdengji.setText(info.getLevelName());
-                    PreferenceHelper.write(ac, "shoppay", "memid", info.getMemID());
-                    PreferenceHelper.write(ac, "shoppay", "vipcar", vipEtCard.getText().toString());
-                    PreferenceHelper.write(ac, "shoppay", "Discount", info.getDiscount());
-                    PreferenceHelper.write(ac, "shoppay", "DiscountPoint", info.getDiscountPoint());
-                    PreferenceHelper.write(ac, "shoppay", "jifen", info.getMemPoint());
+                    try {
+                        JSONObject jso = new JSONObject(msg.obj.toString());
+                        vipid = jso.getInt("userid");
+                        pwd = jso.getString("paypassword");
+                        mVipTvName.setText(jso.getString("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     isSuccess = true;
                     break;
                 case 2:
-                    vipTvName.setText("");
-                    vipTvVipdengji.setText("");
-                    vipTvJifen.setText("");
-                    vipTvVipyue.setText("");
+                    mVipTvName.setText("");
                     isSuccess = false;
-                    PreferenceHelper.write(ac, "shoppay", "memid", "123");
-                    PreferenceHelper.write(ac, "shoppay", "vipcar", "123");
-                    break;
-                case 3:
-//                    rlDuihuanmsg.setVisibility(View.VISIBLE);
-                    jifenDuihuan=(JifenDuihuan) msg.obj;
-                    List<JifenDuihuan> jl=new CopyOnWriteArrayList<>();
-                    jl.addAll(list);
-                    for(int i=0;i<jl.size();i++){
-                        if(jl.get(i).GiftCode.equals(jifenDuihuan.GiftCode)){
-                            jl.remove(jl.get(i));
-                            jl.add(0,jifenDuihuan);
-                        }
-                    }
-                    list.clear();
-                    list.addAll(jl);
-                    adapter.notifyDataSetChanged();
-//                    itemTvJifen.setText(jifenDuihuan.GiftExchangePoint);
-//                    itemTvKucunnum.setText(jifenDuihuan.GiftStockNumber);
-//                    itemTvShopname.setText(jifenDuihuan.GiftName);
-                    break;
-                case 4:
-                    rlDuihuanmsg.setVisibility(View.GONE);
-                    jifenDuihuan=null;
-                    itemTvJifen.setText("0");
-                    itemTvKucunnum.setText("0");
-                    itemTvShopname.setText("");
                     break;
             }
         }
     };
-    private Dialog dialog;
+    private Activity ac;
     private String editString;
-    private String shopcode="";
+    private String title, entitle;
+    private List<ZhidianMsg> zdlist = new ArrayList<>();
+    private String shopcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jifenduihuan);
-        ac = this;
+        setContentView(R.layout.aactivity_zhidianduihuan);
         ButterKnife.bind(this);
-        dialog = DialogUtil.loadingDialog(ac, 1);
-        PreferenceHelper.write(context, "shoppay", "viptoast", "未查询到会员");
+        ac = this;
+        dialog = DialogUtil.loadingDialog(ZhidianDuihuanActivity.this, 1);
         ActivityStack.create().addActivity(ZhidianDuihuanActivity.this);
-        dbAdapter=DBAdapter.getInstance(ac);
-        dbAdapter.deleteJifenShopCar();
-        PreferenceHelper.write(ac, "shoppay", "jinfenIndex", -1);
-        PreferenceHelper.write(ac,"shoppay","ischoasejifen",false);
-        PreferenceHelper.write(ac, "shoppay", "ischoaseItemjifen", false);
-        obtainDuihuanMsg();
-        tvTitle.setText("积分兑换");
-        // 注册广播
-        shopChangeReceiver = new ShopChangeReceiver();
-        IntentFilter iiiff = new IntentFilter();
-        iiiff.addAction("com.shoppay.wy.jifenduihuan");
-        registerReceiver(shopChangeReceiver, iiiff);
+        title = getIntent().getStringExtra("title");
+        entitle = getIntent().getStringExtra("entitle");
+        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+            mTvTitle.setText(title);
+        } else {
+            mTvTitle.setText(entitle);
+        }
 
-
-        vipEtCard.addTextChangedListener(new TextWatcher() {
+        initView();
+        obtainDHzhidian("no");
+        mVipEtCard.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -241,7 +175,8 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                 handler.postDelayed(delayRun, 800);
             }
         });
-        etCode.addTextChangedListener(new TextWatcher() {
+
+        mVipEtCode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -254,26 +189,33 @@ public class ZhidianDuihuanActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (codeRun != null) {
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(codeRun);
+                if (mEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
+                    ToastUtils.showToast(ac, res.getString(R.string.chosefkzd));
+                    mVipEtCode.setText("");
+                } else {
+                    if (codeRun != null) {
+                        //每次editText有变化的时候，则移除上次发出的延迟线程
+                        handler.removeCallbacks(codeRun);
+                    }
+                    shopcode = editable.toString();
+
+                    //延迟800ms，如果不再输入字符，则执行该线程的run方法
+
+                    handler.postDelayed(codeRun, 800);
                 }
-                shopcode = editable.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-
-                handler.postDelayed(codeRun, 800);
             }
         });
-
-
-//        PreferenceHelper.write(getApplicationContext(), "PayOk", "time", "false");
-//        //动态注册广播接收器
-//        msgReceiver = new MsgReceiver();
-//        IntentFilter intentFilter = new IntentFilter();
-//        intentFilter.addAction("com.example.communication.RECEIVER");
-//        registerReceiver(msgReceiver, intentFilter);
     }
+
+    private Runnable codeRun = new Runnable() {
+
+        @Override
+        public void run() {
+            //在这里调用服务器的接口，获取数据
+            obtainDuihuanMsgByCode();
+        }
+    };
+
 
     /**
      * 延迟线程，看是否还有下一个字符输入
@@ -286,135 +228,114 @@ public class ZhidianDuihuanActivity extends BaseActivity {
             ontainVipInfo();
         }
     };
-    private Runnable codeRun = new Runnable() {
-
-        @Override
-        public void run() {
-            //在这里调用服务器的接口，获取数据
-            obtainDuihuanMsgByCode();
-        }
-    };
 
     private void obtainDuihuanMsgByCode() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-        client.setCookieStore(myCookieStore);
-        RequestParams params = new RequestParams();
-        params.put("key", shopcode);
-        LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(ac, "?Source=3", "GetGiftList");
-        LogUtils.d("xxurl", url);
-        client.post(url, params, new AsyncHttpResponseHandler() {
+        ImpObtainZDDHShopmsg shopmsg = new ImpObtainZDDHShopmsg();
+        shopmsg.obtainZDDHShopmsg(ac, shopcode, currid, new InterfaceBack() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    LogUtils.d("xxDuihuanS", new String(responseBody, "UTF-8"));
-                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if (jso.getInt("flag") == 1) {
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<JifenDuihuan>>(){}.getType();
-                        List<JifenDuihuan>  list = gson.fromJson(jso.getString("vdata"), listType);
-                        Message msg = handler.obtainMessage();
-                        msg.obj= list.get(0);
-                        msg.what = 3;
-                        handler.sendMessage(msg);
-                    } else {
-                        Message msg = handler.obtainMessage();
-                        msg.what = 4;
-                        handler.sendMessage(msg);
-                    }
-                } catch (Exception e) {
-                    Message msg = handler.obtainMessage();
-                    msg.what = 4;
-                    handler.sendMessage(msg);
-                }
+            public void onResponse(Object response) {
+
+
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Message msg = handler.obtainMessage();
-                msg.what = 4;
-                handler.sendMessage(msg);
+            public void onErrorResponse(Object msg) {
+
             }
         });
 
+
     }
 
-
-    private void obtainDuihuanMsg() {
-        AsyncHttpClient client = new AsyncHttpClient();
-//        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-//        client.setCookieStore(myCookieStore);
-        RequestParams params = new RequestParams();
-        params.put("key", shopcode);
-        LogUtils.d("xxparams", params.toString());
-        String url = ContansUtils.BASE_URL + "pos/Deposit.ashx";
-        LogUtils.d("xxurl", url);
-        client.post(url, params, new AsyncHttpResponseHandler() {
+    private void obtainDHzhidian(final String type) {
+        ImpObtainZDDHCurrency currency = new ImpObtainZDDHCurrency();
+        currency.obtainZDDHCurrency(ac, new InterfaceBack() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    LogUtils.d("xxDuihuanS", new String(responseBody, "UTF-8"));
-                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if (jso.getInt("flag") == 1) {
-                        Gson gson = new Gson();
-                        Type listType = new TypeToken<List<JifenDuihuan>>(){}.getType();
-                        list = gson.fromJson(jso.getString("vdata"), listType);
-                        adapter=new JifenDuihuanAdapter(ac,list);
-                        listview.setAdapter(adapter);
-                    } else {
-                        Toast.makeText(ac,jso.getString("msg"),Toast.LENGTH_SHORT).show();
+            public void onResponse(Object response) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<ZhidianMsg>>() {
+                }.getType();
+                List<ZhidianMsg> sllist = gson.fromJson(response.toString(), listType);
+                zdlist.addAll(sllist);
+                if (type.equals("no")) {
 
+                } else {
+                    String[] tft = new String[zdlist.size()];
+                    for (int i = 0; i < zdlist.size(); i++) {
+                        if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                            tft[i] = zdlist.get(i).StockCodeName;
+                        } else {
+                            tft[i] = zdlist.get(i).EnStockCodeName;
+                        }
                     }
-                } catch (Exception e) {
-                    Toast.makeText(ac,res.getString(R.string.lipinlistfalse),Toast.LENGTH_SHORT).show();
+                    CurrChoseDialog.currChoseDialog(ZhidianDuihuanActivity.this, tft, 2, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            for (ZhidianMsg curr : zdlist) {
+                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                    if (curr.StockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                } else {
+                                    if (curr.EnStockCodeName.equals(response.toString())) {
+                                        currid = curr.StockCodeID;
+                                    }
+                                }
+                            }
+                            mEtBingzhong.setText(response.toString());
+                            dialog.show();
+                            ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
+                            yue.obtainCurrency(ZhidianDuihuanActivity.this, vipid, currid, new InterfaceBack() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    dialog.dismiss();
+                                    mEtYue.setText(response.toString());
+                                }
+
+                                @Override
+                                public void onErrorResponse(Object msg) {
+                                    mEtYue.setText("");
+                                    dialog.dismiss();
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(ac,res.getString(R.string.lipinlistfalse),Toast.LENGTH_SHORT).show();
+            public void onErrorResponse(Object msg) {
+                if (type.equals("no")) {
+
+                } else {
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
     private void ontainVipInfo() {
-        AsyncHttpClient client = new AsyncHttpClient();
-        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-        client.setCookieStore(myCookieStore);
-        RequestParams params = new RequestParams();
-        params.put("MemCard", editString);
-        LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(ac, "?Source=3", "GetMem");
-        LogUtils.d("xxurl", url);
-        client.post(url, params, new AsyncHttpResponseHandler() {
+        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+        vipmsg.obtainVipMsg(ZhidianDuihuanActivity.this, editString, new InterfaceBack() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    LogUtils.d("xxVipinfoS", new String(responseBody, "UTF-8"));
-                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if (jso.getInt("flag") == 1) {
-                        Gson gson = new Gson();
-                        VipInfoMsg infomsg = gson.fromJson(new String(responseBody, "UTF-8"), VipInfoMsg.class);
-                        Message msg = handler.obtainMessage();
-                        msg.what = 1;
-                        msg.obj = infomsg.getVdata().get(0);
-                        handler.sendMessage(msg);
-                    } else {
-                        Message msg = handler.obtainMessage();
-                        msg.what = 2;
-                        handler.sendMessage(msg);
-                    }
-                } catch (Exception e) {
-                    Message msg = handler.obtainMessage();
-                    msg.what = 2;
-                    handler.sendMessage(msg);
-                }
+            public void onResponse(Object response) {
+                Message msg = handler.obtainMessage();
+                msg.what = 1;
+                msg.obj = response;
+                handler.sendMessage(msg);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onErrorResponse(Object msg1) {
                 Message msg = handler.obtainMessage();
                 msg.what = 2;
                 handler.sendMessage(msg);
@@ -423,27 +344,186 @@ public class ZhidianDuihuanActivity extends BaseActivity {
     }
 
 
+    private void initView() {
+        mRlCurrchose.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                if (isSuccess) {
+                    if (zdlist.size() == 0) {
+                        obtainDHzhidian("yes");
+                    } else {
+                        String[] tft = new String[zdlist.size()];
+                        for (int i = 0; i < zdlist.size(); i++) {
+                            if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                tft[i] = zdlist.get(i).StockCodeName;
+                            } else {
+                                tft[i] = zdlist.get(i).EnStockCodeName;
+                            }
+                        }
+                        CurrChoseDialog.currChoseDialog(ZhidianDuihuanActivity.this, tft, 2, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                for (ZhidianMsg curr : zdlist) {
+                                    if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
+                                        if (curr.StockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
+                                        }
+                                    } else {
+                                        if (curr.EnStockCodeName.equals(response.toString())) {
+                                            currid = curr.StockCodeID;
+                                        }
+                                    }
+                                }
+                                mEtBingzhong.setText(response.toString());
+                                dialog.show();
+                                ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
+                                yue.obtainCurrency(ZhidianDuihuanActivity.this, vipid, currid, new InterfaceBack() {
+                                    @Override
+                                    public void onResponse(Object response) {
+                                        dialog.dismiss();
+                                        mEtYue.setText(response.toString());
+                                    }
+
+                                    @Override
+                                    public void onErrorResponse(Object msg) {
+                                        mEtYue.setText("");
+                                        dialog.dismiss();
+                                    }
+                                });
+
+
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
+                    }
+                } else {
+                    ToastUtils.showToast(ac, res.getString(R.string.vipmsgfalse));
+                }
+            }
+        });
+        mRlRight.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                startActivityForResult(mipca, 111);
+            }
+        });
+        mVipTvDingwei.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
+                startActivityForResult(duihuan, 222);
+            }
+        });
+        mRlDuihuan.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                if (!isSuccess) {
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
+                            Toast.LENGTH_SHORT).show();
+                } else if (mEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkzd),
+                            Toast.LENGTH_SHORT).show();
+                } else if (mTvAllnum.getText().toString().equals("0")) {
+                    ToastUtils.showToast(ac, res.getString(R.string.choselipin));
+                } else if (Double.parseDouble(mTvAllmoney.getText().toString()) > Double.parseDouble(mEtYue.getText().toString())) {
+                    ToastUtils.showToast(ac, res.getString(R.string.xfzdbigyue));
+                } else {
+                    if (CommonUtils.checkNet(getApplicationContext())) {
+                        PwdDialog.pwdDialog(ZhidianDuihuanActivity.this, pwd, 1, new InterfaceBack() {
+                            @Override
+                            public void onResponse(Object response) {
+                                dialog.show();
+                                ImpObtainZDDHId rechargeid = new ImpObtainZDDHId();
+                                rechargeid.obtainZDDHId(ZhidianDuihuanActivity.this, new InterfaceBack() {
+                                    @Override
+                                    public void onResponse(Object response) {
+                                        int rechargeid = -1;
+                                        try {
+                                            JSONObject jso = new JSONObject(response.toString());
+                                            rechargeid = jso.getInt("exchangeid");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //拼接礼品信息
+                                        StringBuffer sb=new StringBuffer();
+                                        ImpZDDuihuan recharge = new ImpZDDuihuan();
+                                        recharge.zdDuihuan(ZhidianDuihuanActivity.this, dialog, rechargeid, vipid, pwd, currid,sb.toString(), new InterfaceBack() {
+                                            @Override
+                                            public void onResponse(Object response) {
+                                                ActivityStack.create().finishActivity(ZhidianDuihuanActivity.class);
+
+                                            }
+
+                                            @Override
+                                            public void onErrorResponse(Object msg) {
+
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onErrorResponse(Object msg) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onErrorResponse(Object msg) {
+
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getApplicationContext(), res.getString(R.string.internet),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case 111:
+                if (resultCode == RESULT_OK) {
+                    mVipEtCard.setText(data.getStringExtra("codedata"));
+                }
+                break;
+            case 222:
+                if (resultCode == RESULT_OK) {
+                    mVipEtCode.setText(data.getStringExtra("codedata"));
+                }
+                break;
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        new ReadCardOpt(vipEtCard);
+        new ReadCardOpt(mVipEtCard);
     }
 
     @Override
     protected void onStop() {
-        try
-        {
+        try {
             new ReadCardOpt().overReadCard();
-        }
-        catch (RemoteException e)
-        {
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
         super.onStop();
         if (delayRun != null) {
             //每次editText有变化的时候，则移除上次发出的延迟线程
             handler.removeCallbacks(delayRun);
-        }    if (codeRun != null) {
+        }
+        if (codeRun != null) {
             //每次editText有变化的时候，则移除上次发出的延迟线程
             handler.removeCallbacks(codeRun);
         }
@@ -457,235 +537,9 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         return dateString;
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 111:
-                if (resultCode == RESULT_OK) {
-                    vipEtCard.setText(data.getStringExtra("codedata"));
-                }
-                break;
-            case 222:
-                if (resultCode == RESULT_OK) {
-                    etCode.setText(data.getStringExtra("codedata"));
-                }
-                break;
-        }
+    @OnClick(R.id.rl_left)
+    public void onViewClicked() {
+        ActivityStack.create().finishActivity(ZhidianDuihuanActivity.class);
     }
 
-    @OnClick({R.id.rl_left, R.id.rl_right, R.id.item_iv_add, R.id.item_iv_del, R.id.rl_duihuan,R.id.vip_tv_dingwei})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_left:
-                finish();
-                break;
-            case R.id.rl_right:
-                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(mipca, 111);
-                break;
-            case R.id.item_iv_add:
-                if( PreferenceHelper.readBoolean(ac,"shoppay","ischoaseItemjifen",false)){
-                    Toast.makeText(ac,"只能选择一种商品",Toast.LENGTH_SHORT).show();
-                }else{
-                    if(num==0){
-                        itemIvDel.setVisibility(View.VISIBLE);
-                        itemTvNum.setVisibility(View.VISIBLE);
-                    }
-                    PreferenceHelper.write(ac,"shoppay","ischoasejifen",true);
-                    num=num+1;
-                    if(num>Integer.parseInt(jifenDuihuan.GiftStockNumber)){
-                        num=num-1;
-                        Toast.makeText(ac, "该商品的最大库存量为" + jifenDuihuan.GiftStockNumber, Toast.LENGTH_SHORT).show();
-                    }
-                        itemTvNum.setText(num + "");
-                        tvAllnum.setText(num + "");
-                        tvAlljifen.setText(CommonUtils.multiply(num + "", jifenDuihuan.GiftExchangePoint));
-
-                }
-                break;
-            case R.id.item_iv_del:
-                    num=num-1;
-                    if(num==0){
-                        PreferenceHelper.write(ac,"shoppay","ischoasejifen",false);
-                        itemIvDel.setVisibility(View.GONE);
-                        itemTvNum.setVisibility(View.GONE);
-                    }
-                    itemTvNum.setText(num+"");
-                    tvAllnum.setText(num+"");
-                    tvAlljifen.setText(CommonUtils.multiply(num+"",jifenDuihuan.GiftExchangePoint));
-                break;
-            case R.id.rl_duihuan:
-                if(tvAllnum.getText().toString().equals("0")){
-                    Toast.makeText(ac,"请选择一种商品",Toast.LENGTH_SHORT).show();
-                }else{
-                    if(isSuccess){
-                        if(isClick) {
-                            if(Double.parseDouble(vipTvJifen.getText().toString())<point) {
-                                Toast.makeText(ac, "积分不足", Toast.LENGTH_SHORT).show();
-                            }else {
-                                jifenJiesuan();
-                            }
-                        }
-                    }else{
-                        Toast.makeText(ac,"请获取会员信息",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
-            case R.id.vip_tv_dingwei:
-                Intent duihuan = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(duihuan, 222);
-                break;
-        }
-    }
-
-    private void jifenJiesuan() {
-        dialog.show();
-        isClick=false;
-
-        List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
-        List<JifenDuihuan> jifenlist=new ArrayList<>();
-        for(JifenDuihuan jf:listss){
-            if(jf.count.equals("0")){
-
-            }else{
-                jifenlist.add(jf);
-            }
-        }
-        AsyncHttpClient client = new AsyncHttpClient();
-        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-        client.setCookieStore(myCookieStore);
-        RequestParams params = new RequestParams();
-        params.put("MemID",  PreferenceHelper.readString(ac,"shoppay","memid",""));
-        params.put("OrderAccount", DateUtils.getCurrentTime("yyyyMMddHHmmss"));
-        params.put("GiftPoint",point);
-        params.put("GiftCount",jifenlist.size());
-        for (int i = 0; i < jifenlist.size(); i++) {
-            params.put("GiftList[" + i + "][GiftID]", jifenlist.get(i).GiftID);
-            params.put("GiftList[" + i + "][GiftExchangePoint]", jifenlist.get(i).GiftExchangePoint);
-            params.put("GiftList[" + i + "][ExcNumber]",  jifenlist.get(i).count);
-        }
-        LogUtils.d("xxparams", params.toString());
-        String url = UrlTools.obtainUrl(ac, "?Source=3", "PointGiftExchange");
-        LogUtils.d("xxurl", url);
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    dialog.dismiss();
-                    LogUtils.d("xxJiesuanS", new String(responseBody, "UTF-8"));
-                    JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if(jso.getInt("flag")==1){
-                        Toast.makeText(ac, jso.getString("msg"), Toast.LENGTH_LONG).show();
-                        JSONObject jsonObject=(JSONObject) jso.getJSONArray("print").get(0);
-                        dbAdapter.deleteJifenShopCar();
-                        if(jsonObject.getInt("printNumber")==0){
-                            finish();
-                        }else{
-                            BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
-                            if(bluetoothAdapter.isEnabled()) {
-                                BluetoothUtil.connectBlueTooth(context);
-                                BluetoothUtil.sendData(DayinUtils.dayin(jsonObject.getString("printContent")),jsonObject.getInt("printNumber"));
-                                finish();
-                            }else {
-                               finish();
-                            }
-                        }
-                    } else {
-                       isClick=true;
-                        Toast.makeText(ac, jso.getString("msg"), Toast.LENGTH_SHORT).show();
-                    }
-                } catch (Exception e) {
-                    dialog.dismiss();
-                    isClick=true;
-                    Toast.makeText(ac,"兑换失败",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                dialog.dismiss();
-                isClick=true;
-                Toast.makeText(ac,"兑换失败",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-
-    private class  ShopChangeReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("xx", "ShopChangeReceiver");
-            List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
-            num = 0;
-            point = 0;
-            for (JifenDuihuan shopCar : listss) {
-                if (shopCar.count.equals("0")) {
-
-                } else {
-                    num = num + Integer.parseInt(shopCar.count);
-                    point = point +Integer.parseInt(CommonUtils.multiply(shopCar.GiftExchangePoint,shopCar.count));
-                }
-            }
-            tvAlljifen.setText(point + "");
-            tvAllnum.setText(num + "");
-
-        }
-    }
-
-
-
-
-
-
-    /**
-     * 广播接收器
-     *
-     * @author len
-     */
-    public class MsgReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //拿到进度，更新UI
-//            String state = intent.getStringExtra("success");
-//            Log.d("MsgReceiver", "MsgReceiver" + state);
-//            if (state == null || state.equals("")) {
-//
-//            } else {
-//                if (state.equals("success")) {
-//                    weixinDialog.dismiss();
-//                     vipRecharge();
-//                } else {
-//                    String msg = intent.getStringExtra("msg");
-//                    Toast.makeText(ac,msg,Toast.LENGTH_SHORT).show();
-//
-//                }
-//            }
-        }
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        // TODO 自动生成的方法存根
-        super.onDestroy();
-//        if (intent != null) {
-//
-//            stopService(intent);
-//        }
-//
-//        //关闭闹钟机制启动service
-//        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        int anHour =2 * 1000; // 这是一小时的毫秒数 60 * 60 * 1000
-//        long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
-//        Intent i = new Intent(this, AlarmReceiver.class);
-//        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
-//        manager.cancel(pi);
-//        //注销广播
-        unregisterReceiver(shopChangeReceiver);
-    }
 }

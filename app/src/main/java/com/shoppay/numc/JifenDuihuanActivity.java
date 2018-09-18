@@ -542,15 +542,15 @@ public class JifenDuihuanActivity extends Activity {
         dialog.show();
         isClick=false;
 
-        List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+//        List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
         List<JifenDuihuan> jifenlist=new ArrayList<>();
-        for(JifenDuihuan jf:listss){
-            if(jf.count.equals("0")){
-
-            }else{
-                jifenlist.add(jf);
-            }
-        }
+//        for(JifenDuihuan jf:listss){
+//            if(jf.count.equals("0")){
+//
+//            }else{
+//                jifenlist.add(jf);
+//            }
+//        }
         AsyncHttpClient client = new AsyncHttpClient();
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
         client.setCookieStore(myCookieStore);
@@ -617,17 +617,17 @@ public class JifenDuihuanActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("xx", "ShopChangeReceiver");
-            List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
+//            List<JifenDuihuan> listss = dbAdapter.getListJifenShopCar(PreferenceHelper.readString(context, "shoppay", "account", "123"));
             num = 0;
             point = 0;
-            for (JifenDuihuan shopCar : listss) {
-                if (shopCar.count.equals("0")) {
-
-                } else {
-                    num = num + Integer.parseInt(shopCar.count);
-                    point = point +Integer.parseInt(CommonUtils.multiply(shopCar.GiftExchangePoint,shopCar.count));
-                }
-            }
+//            for (JifenDuihuan shopCar : listss) {
+//                if (shopCar.count.equals("0")) {
+//
+//                } else {
+//                    num = num + Integer.parseInt(shopCar.count);
+//                    point = point +Integer.parseInt(CommonUtils.multiply(shopCar.GiftExchangePoint,shopCar.count));
+//                }
+//            }
             tvAlljifen.setText(point + "");
             tvAllnum.setText(num + "");
 

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shoppay.numc.R;
-import com.shoppay.numc.bean.JifenDuihuan;
+import com.shoppay.numc.bean.LipinMsg;
 import com.shoppay.numc.bean.ShopCar;
 import com.shoppay.numc.db.DBAdapter;
 import com.shoppay.numc.tools.PreferenceHelper;
@@ -21,17 +21,17 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class JifenDuihuanAdapter extends BaseAdapter {
+public class ZhidianDuihuanAdapter extends BaseAdapter {
     private Context context;
-    private List<JifenDuihuan> list;
+    private List<LipinMsg> list;
     private LayoutInflater inflater;
     private Intent intent;
     private DBAdapter dbAdapter;
 
-    public JifenDuihuanAdapter(Context context, List<JifenDuihuan> list) {
+    public ZhidianDuihuanAdapter(Context context, List<LipinMsg> list) {
         this.context = context;
         if (list == null) {
-            this.list = new ArrayList<JifenDuihuan>();
+            this.list = new ArrayList<LipinMsg>();
         } else {
             this.list = list;
         }
@@ -65,11 +65,15 @@ public class JifenDuihuanAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.item_jifenduihuan, null);
         vh = new ViewHolder(convertView);
         convertView.setTag(vh);
-        final JifenDuihuan home = list.get(position);
-        vh.itemTvShopname.setText(home.GiftName);
-        vh.itemTvJifen.setText(home.GiftExchangePoint);
-        vh.itemTvKucunnum.setText(home.GiftStockNumber);
-        ShopCar dbshop = dbAdapter.getShopCar(home.GiftID);
+        final LipinMsg home = list.get(position);
+        if (PreferenceHelper.readString(context, "numc", "lagavage", "zh").equals("zh")) {
+            vh.itemTvShopname.setText(home.title);
+        } else {
+            vh.itemTvShopname.setText(home.entitle);
+        }
+        vh.itemTvJifen.setText(home.price);
+        vh.itemTvKucunnum.setText(home.stock);
+        ShopCar dbshop = dbAdapter.getShopCar(home.stockcode);
         if (dbshop == null) {
             vh.itemTvNum.setText("0");
         } else {
@@ -87,16 +91,16 @@ public class JifenDuihuanAdapter extends BaseAdapter {
                     vh.itemTvNum.setVisibility(View.VISIBLE);
                     vh.itemIvDel.setVisibility(View.VISIBLE);
                 }
-//                JifenDuihuan shopCar = dbAdapter.getJifenShop(home.GiftID);
+//                JifenDuihuan shopCar = dbAdapter.getJifenShop(home.stockcode);
 //                if (shopCar == null) {
 //                    num = 1;
 //                    vh.itemTvNum.setText(num + "");
 //                    insertJifenShopCar(home, num);
 //                } else {
 //                    num = num + 1;
-//                    if (Integer.parseInt(home.GiftStockNumber) < num) {
+//                    if (Integer.parseInt(home.num) < num) {
 //                        num = num - 1;
-//                        Toast.makeText(context, "该商品的最大库存量为" + home.GiftStockNumber, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context,context.getResources().getString(R.string.lipinkucun) + home.stock, Toast.LENGTH_SHORT).show();
 //                    }
 //                    vh.itemTvNum.setText(num + "");
 //                    insertJifenShopCar(home, num);
@@ -122,16 +126,16 @@ public class JifenDuihuanAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void insertJifenShopCar(JifenDuihuan shop, int num) {
+    private void insertJifenShopCar(LipinMsg shop, int num) {
         //加入购物车
-        List<JifenDuihuan> li = new ArrayList<JifenDuihuan>();
-        JifenDuihuan shopCar = new JifenDuihuan();
-        shopCar.count = num + "";
-        shopCar.account=PreferenceHelper.readString(context, "shoppay", "account", "123");
-        shopCar.GiftCode = shop.GiftCode;
-        shopCar.GiftExchangePoint = shop.GiftExchangePoint;
-        shopCar.GiftID = shop.GiftID;
-        shopCar.GiftName = shop.GiftName;
+        List<LipinMsg> li = new ArrayList<LipinMsg>();
+        LipinMsg shopCar = new LipinMsg();
+        shopCar.num = num + "";
+        shopCar.staid = shop.staid;
+        shopCar.stockcode = shop.stockcode;
+        shopCar.price = shop.price;
+        shopCar.title = shop.title;
+        shopCar.entitle = shop.entitle;
         li.add(shopCar);
 //        dbAdapter.insertJifenShopCar(li);
         context.sendBroadcast(intent);

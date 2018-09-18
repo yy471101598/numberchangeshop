@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.JifenDuihuan;
@@ -80,63 +79,63 @@ public class JifenDuihuanAdapterOne extends BaseAdapter {
                 vh.itemTvNum.setText(dbshop.count + "");
             }
         }
-        vh.itemIvAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!PreferenceHelper.readBoolean(context, "shoppay", "ischoasejifen", false)) {
-                    if (!PreferenceHelper.readBoolean(context, "shoppay", "ischoaseItemjifen", false)) {
-                        int num = Integer.parseInt(vh.itemTvNum.getText().toString());
-                        PreferenceHelper.write(context, "shoppay", "jinfenIndex", position);
-                        PreferenceHelper.write(context, "shoppay", "ischoaseItemjifen", true);
-                        if (num == 0) {
-                            vh.itemTvNum.setVisibility(View.VISIBLE);
-                            vh.itemIvDel.setVisibility(View.VISIBLE);
-                        }
-                            JifenDuihuan shopCar = dbAdapter.getJifenShop(home.GiftID);
-                            if (shopCar == null) {
-                                num = 1;
-                                vh.itemTvNum.setText(num + "");
-                                insertJifenShopCar(home, num);
-                            } else {
-                                num = num + 1;
-                                if (Integer.parseInt(home.GiftStockNumber) < num) {
-                                    num = num - 1;
-                                    Toast.makeText(context, "该商品的最大库存量为" + home.GiftStockNumber, Toast.LENGTH_SHORT).show();
-                                }
-                                vh.itemTvNum.setText(num + "");
-                                insertJifenShopCar(home, num);
-                            }
-                    }else{
-                        int num = Integer.parseInt(vh.itemTvNum.getText().toString());
-                        if(num!=0){
-                            if(PreferenceHelper.readInt(context, "shoppay", "jinfenIndex", -1)==position){
-                                JifenDuihuan shopCar = dbAdapter.getJifenShop(home.GiftID);
-                                if (shopCar == null) {
-                                    num = 1;
-                                    vh.itemTvNum.setText(num + "");
-                                    insertJifenShopCar(home, num);
-                                } else {
-                                    num = num + 1;
-                                    if (Integer.parseInt(home.GiftStockNumber) < num) {
-                                        num = num - 1;
-                                        Toast.makeText(context, "该商品的最大库存量为" + home.GiftStockNumber, Toast.LENGTH_SHORT).show();
-                                    }
-                                    vh.itemTvNum.setText(num + "");
-                                    insertJifenShopCar(home, num);
-                                }
-                            }else{
-                                Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
-                            }
-
-                        }else {
-                            Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        vh.itemIvAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!PreferenceHelper.readBoolean(context, "shoppay", "ischoasejifen", false)) {
+//                    if (!PreferenceHelper.readBoolean(context, "shoppay", "ischoaseItemjifen", false)) {
+//                        int num = Integer.parseInt(vh.itemTvNum.getText().toString());
+//                        PreferenceHelper.write(context, "shoppay", "jinfenIndex", position);
+//                        PreferenceHelper.write(context, "shoppay", "ischoaseItemjifen", true);
+//                        if (num == 0) {
+//                            vh.itemTvNum.setVisibility(View.VISIBLE);
+//                            vh.itemIvDel.setVisibility(View.VISIBLE);
+//                        }
+//                            JifenDuihuan shopCar = dbAdapter.getJifenShop(home.GiftID);
+//                            if (shopCar == null) {
+//                                num = 1;
+//                                vh.itemTvNum.setText(num + "");
+//                                insertJifenShopCar(home, num);
+//                            } else {
+//                                num = num + 1;
+//                                if (Integer.parseInt(home.GiftStockNumber) < num) {
+//                                    num = num - 1;
+//                                    Toast.makeText(context, "该商品的最大库存量为" + home.GiftStockNumber, Toast.LENGTH_SHORT).show();
+//                                }
+//                                vh.itemTvNum.setText(num + "");
+//                                insertJifenShopCar(home, num);
+//                            }
+//                    }else{
+//                        int num = Integer.parseInt(vh.itemTvNum.getText().toString());
+//                        if(num!=0){
+//                            if(PreferenceHelper.readInt(context, "shoppay", "jinfenIndex", -1)==position){
+//                                JifenDuihuan shopCar = dbAdapter.getJifenShop(home.GiftID);
+//                                if (shopCar == null) {
+//                                    num = 1;
+//                                    vh.itemTvNum.setText(num + "");
+//                                    insertJifenShopCar(home, num);
+//                                } else {
+//                                    num = num + 1;
+//                                    if (Integer.parseInt(home.GiftStockNumber) < num) {
+//                                        num = num - 1;
+//                                        Toast.makeText(context, "该商品的最大库存量为" + home.GiftStockNumber, Toast.LENGTH_SHORT).show();
+//                                    }
+//                                    vh.itemTvNum.setText(num + "");
+//                                    insertJifenShopCar(home, num);
+//                                }
+//                            }else{
+//                                Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                        }else {
+//                            Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                } else {
+//                    Toast.makeText(context, "只能选择一种商品", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         vh.itemIvDel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +164,7 @@ public class JifenDuihuanAdapterOne extends BaseAdapter {
         shopCar.GiftID = shop.GiftID;
         shopCar.GiftName = shop.GiftName;
         li.add(shopCar);
-        dbAdapter.insertJifenShopCar(li);
+//        dbAdapter.insertJifenShopCar(li);
         context.sendBroadcast(intent);
     }
 
