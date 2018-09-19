@@ -1,7 +1,12 @@
 package com.shoppay.numc.ui;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,11 +21,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
+import com.loopj.android.http.RequestParams;
+import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
+import com.shoppay.numc.VipCardActivity;
+import com.shoppay.numc.bean.Dengji;
+import com.shoppay.numc.bean.VipInfo;
+import com.shoppay.numc.bean.VipInfoMsg;
+import com.shoppay.numc.bean.VipRecharge;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.modle.ImpObtainCurrency;
+import com.shoppay.numc.modle.ImpObtainPaytype;
 import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
@@ -28,23 +47,34 @@ import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
+import com.shoppay.numc.tools.BluetoothUtil;
 import com.shoppay.numc.tools.CommonUtils;
+import com.shoppay.numc.tools.DateUtils;
+import com.shoppay.numc.tools.DayinUtils;
 import com.shoppay.numc.tools.DialogUtil;
+import com.shoppay.numc.tools.ESCUtil;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
+import com.shoppay.numc.tools.StringUtil;
 import com.shoppay.numc.tools.ToastUtils;
+import com.shoppay.numc.tools.UrlTools;
+import com.shoppay.numc.view.MyGridViews;
 import com.shoppay.numc.wxcode.MipcaActivityCapture;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by songxiaotao on 2017/6/30.
@@ -143,6 +173,7 @@ public class VipRechargeActivity extends BaseActivity {
 
         handlePayType(paylist);
         initView();
+
         viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -385,7 +416,7 @@ public class VipRechargeActivity extends BaseActivity {
                                         recharge.vipRecharge(VipRechargeActivity.this, dialog, rechargeid, vipid, pwd, currid, paytype.PayTypeID, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                              finish();
+                                                finish();
                                             }
 
                                             @Override
