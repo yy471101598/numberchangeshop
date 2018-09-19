@@ -23,15 +23,11 @@ import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.modle.ImpFabiZhuanzhang;
-import com.shoppay.numc.modle.ImpObtainFabiZZId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainXFZhidianList;
-import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDZZId;
 import com.shoppay.numc.modle.ImpZDZhuanzhang;
-import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
@@ -137,7 +133,8 @@ public class ZhidianZhuanzhangActivity extends BaseActivity {
     private String editString;
     private PayType paytype;
     private String title, entitle;
-    private List<ZhidianMsg> zdlist=new ArrayList<>();
+    private List<ZhidianMsg> zdlist = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,7 +178,7 @@ public class ZhidianZhuanzhangActivity extends BaseActivity {
         });
     }
 
-    private void obtainXFzhidian( final String type) {
+    private void obtainXFzhidian(final String type) {
         ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
         currency.obtainCurrency(ac, new InterfaceBack() {
             @Override
@@ -397,7 +394,7 @@ public class ZhidianZhuanzhangActivity extends BaseActivity {
                                         zdzz.zdZhuanzhang(ZhidianZhuanzhangActivity.this, dialog, rechargeid, vipid, pwd, currid, etSkhm.getText().toString(), etSkaccount.getText().toString(), etMoney.getText().toString(), etZzremark.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(ZhidianZhuanzhangActivity.class);
+                                                finish();
                                             }
 
                                             @Override

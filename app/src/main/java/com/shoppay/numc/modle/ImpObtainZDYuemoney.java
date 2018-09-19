@@ -24,7 +24,7 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ImpObtainZDYuemoney {
-    public void obtainCurrency(final Activity ac, int UserID, int CurrencyID,
+    public void obtainCurrency(final Activity ac, int UserID, int StockCode,
                                final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -32,26 +32,26 @@ public class ImpObtainZDYuemoney {
 //        client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
         params.put("UserID", UserID);
-        params.put("CurrencyID", CurrencyID);
+        params.put("StockCode", StockCode);
         JSONObject jso = new JSONObject();
         try {
             jso.put("UserID", UserID);
-            jso.put("CurrencyID", CurrencyID);
+            jso.put("StockCode", StockCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/CoinBalance.ashx",params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/CoinBalance.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {
                     LogUtils.d("xxCurrS", new String(responseBody, "UTF-8"));
                     JSONObject jso = new JSONObject(new String(responseBody, "UTF-8"));
-                    if(jso.getInt("flag")==1){
+                    if (jso.getInt("flag") == 1) {
                         back.onResponse(jso.getString("balance"));
-                    }else{
+                    } else {
                         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                             ToastUtils.showToast(ac, jso.getString("msg"));
                         } else {

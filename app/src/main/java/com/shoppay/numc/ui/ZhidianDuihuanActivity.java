@@ -22,7 +22,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shoppay.numc.JifenDuihuanActivity;
 import com.shoppay.numc.R;
 import com.shoppay.numc.adapter.ZhidianDuihuanAdapter;
 import com.shoppay.numc.bean.LipinMsg;
@@ -41,7 +40,6 @@ import com.shoppay.numc.modle.ImpZDDuihuan;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
-import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -506,11 +504,33 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                                         }
                                         //拼接礼品信息
                                         StringBuffer sb = new StringBuffer();
+                                        List<LipinMsg> lplist = dbAdapter.getListJifenShopCar(currid + "");
+                                        for (int i = 0; i < lplist.size(); i++) {
+                                            if (i == 0) {
+                                                if (lplist.get(0).num.equals("0") || lplist.get(0).num.equals("")) {
+
+                                                } else {
+                                                    sb.append(lplist.get(0).staid);
+                                                    sb.append(",");
+                                                    sb.append(lplist.get(0).num);
+                                                }
+                                            } else {
+                                                if (lplist.get(i).num.equals("0") || lplist.get(i).num.equals("")) {
+
+                                                } else {
+                                                    sb.append("|");
+                                                    sb.append(lplist.get(i).staid);
+                                                    sb.append(",");
+                                                    sb.append(lplist.get(i).num);
+                                                }
+                                            }
+                                        }
+
                                         ImpZDDuihuan recharge = new ImpZDDuihuan();
                                         recharge.zdDuihuan(ZhidianDuihuanActivity.this, dialog, rechargeid, vipid, pwd, currid, sb.toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(ZhidianDuihuanActivity.class);
+                                               finish();
 
                                             }
 

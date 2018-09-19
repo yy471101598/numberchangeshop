@@ -63,6 +63,7 @@
     <string name="zdxffalse">指点消费失败</string>
     <string name="zdrgfalse">指点认购失败</string>
     <string name="zddhfalse">指点兑换失败</string>
+  <string name="zddkfalse">指点贷款失败</string>
     <string name="zdlistfalse">获取指点种类失败</string>
     <string name="yuefalse">获取账户余额失败</string>
     <string name="zdrgflfalse">获取指点认购费率失败</string>
@@ -82,6 +83,7 @@
     <string name="rgflfalse">获取认购费率失败</string>
     <string name="fabiduhuifalse">法币兑换失败</string>
     <string name="fabidingcunfalse">法币定存失败</string>
+  <string name="zhidiandingcunfalse">指点定存失败</string>
     <string name="vipmsgfalse">请先获取正确的用户信息</string>
     <string name="inputduihuanmoney">请输入兑换金额</string>
     <string name="inputduihuannum">请输入兑换数量</string>
@@ -102,6 +104,7 @@
     <string name="dhshopmsgfalse">获取兑换商品信息失败</string>
     <string name="qxcodefalse">获取取现编号失败</string>
     <string name="fabizzfalse">法币转账失败</string>
+  <string name="zhidianzzfalse">指点转账失败</string>
     <string name="lilvfalse">获取利率失败，请稍后</string>
     <string name="smalldcmoney">小于最小定存金额</string>
     <string name="smalldzhidian">小于最小定存指点</string>

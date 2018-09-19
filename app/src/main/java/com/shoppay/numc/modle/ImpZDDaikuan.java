@@ -92,14 +92,15 @@ public class ImpZDDaikuan {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, ac.getResources().getString(R.string.zdrgfalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zddkfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, ac.getResources().getString(R.string.zdrgfalse), Toast.LENGTH_SHORT).show();
+                LogUtils.e("xxe",error.getMessage());
+                Toast.makeText(ac, ac.getResources().getString(R.string.zddkfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

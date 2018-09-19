@@ -20,6 +20,7 @@ import com.shoppay.numc.nbean.HomeMsg;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.SysUtil;
+import com.shoppay.numc.ui.web.CenterWebActivity;
 import com.shoppay.numc.view.MyGridViews;
 
 import java.util.List;
@@ -121,6 +122,22 @@ public class HomeActivity extends BaseActivity {
                         ddk.putExtra("title",home.Title);
                         ddk.putExtra("entitle",home.EnTitle);
                         startActivity(ddk);
+                        break;
+                    case "法币汇率":
+                        Intent web = new Intent(ac, CenterWebActivity.class);
+                        web.putExtra("title",home.Title);
+                        web.putExtra("entitle",home.EnTitle);
+                        web.putExtra("typeid",home.TypeID+"");
+                        web.putExtra("url",home.Url);
+                        startActivity(web);
+                        break;
+                    case "查询":
+                        Intent web1 = new Intent(ac, CenterWebActivity.class);
+                        web1.putExtra("title",home.Title);
+                        web1.putExtra("entitle",home.EnTitle);
+                        web1.putExtra("typeid",home.TypeID+"");
+                        web1.putExtra("url",home.Url);
+                        startActivity(web1);
                         break;
                 }
 

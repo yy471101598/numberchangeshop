@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,10 +22,8 @@ import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiZhuanzhang;
 import com.shoppay.numc.modle.ImpObtainFabiZZId;
-import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
-import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
@@ -42,7 +39,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -315,7 +311,7 @@ public class FabiZhuanzhangActivity extends BaseActivity {
                                         fbzz.fabiZhuanzhang(FabiZhuanzhangActivity.this, dialog, rechargeid, vipid, pwd, currid, etSkhm.getText().toString(), etSkaccount.getText().toString(), etMoney.getText().toString(), etZzremark.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(FabiZhuanzhangActivity.class);
+                                              finish();
                                             }
 
                                             @Override

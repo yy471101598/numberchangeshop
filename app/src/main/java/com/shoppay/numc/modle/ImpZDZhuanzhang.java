@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class ImpZDZhuanzhang {
     public void zdZhuanzhang(final Activity ac, final Dialog dialog, int TransferID, int UserID, String password, int StockCode, String AccountName, String AccountNumber, String Money, String Remark,
-                               final InterfaceBack back) {
+                             final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
@@ -38,7 +38,7 @@ public class ImpZDZhuanzhang {
         params.put("UserID", UserID);
         params.put("password", password);
         params.put("StockCode", StockCode);
-        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
+        params.put("LoginUserID", PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("AccountName", AccountName);
         params.put("AccountNumber", AccountNumber);
         params.put("Money", Money);
@@ -96,14 +96,15 @@ public class ImpZDZhuanzhang {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, ac.getResources().getString(R.string.fabizzfalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zhidianzzfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                LogUtils.d("xxe", error.getMessage());
                 dialog.dismiss();
-                Toast.makeText(ac, ac.getResources().getString(R.string.fabizzfalse), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ac, ac.getResources().getString(R.string.zhidianzzfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

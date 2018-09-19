@@ -455,7 +455,7 @@ public class ZhidianRengouActivity extends BaseActivity {
                                 viprechargeEtBingzhong.setText(response.toString());
                                 dialog.show();
                                 //兑换指点选择后，又选择了付款币种
-                                if(dhzhidian!=-1){
+                                if (dhzhidian != -1) {
                                     //避免计算错误，每次选择清空输入金额
                                     etMoney.setText("");
                                     ImpObtainRGFeilv feilv = new ImpObtainRGFeilv();
@@ -465,11 +465,11 @@ public class ZhidianRengouActivity extends BaseActivity {
                                             dialog.dismiss();
                                             try {
                                                 JSONObject jso = new JSONObject(response.toString());
+                                                isHuilv = true;
                                                 viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
                                                 viprechargeEtSxf.setText(jso.getString("Poundage"));
                                                 jisuanHuilv = jso.getString("subscriberate");
                                                 LogUtils.d("xxjisuan", jisuanHuilv);
-                                                isHuilv = true;
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
@@ -557,13 +557,13 @@ public class ZhidianRengouActivity extends BaseActivity {
                                         dialog.dismiss();
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
+                                            isHuilv = true;
                                             viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
                                             viprechargeEtSxf.setText(jso.getString("Poundage"));
                                             jisuanHuilv = jso.getString("subscriberate");
                                             //避免计算错误，每次选择清空输入金额
                                             etMoney.setText("");
                                             LogUtils.d("xxjisuan", jisuanHuilv);
-                                            isHuilv = true;
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -637,10 +637,10 @@ public class ZhidianRengouActivity extends BaseActivity {
                                             e.printStackTrace();
                                         }
                                         ImpZDRengou zdrg = new ImpZDRengou();
-                                        zdrg.zdRengou(ZhidianRengouActivity.this, dialog, rechargeid, vipid,pwd, currid, dhzhidian, viprechargeEtXumoney.getText().toString(), new InterfaceBack() {
+                                        zdrg.zdRengou(ZhidianRengouActivity.this, dialog, rechargeid, vipid, pwd, currid, dhzhidian, viprechargeEtXumoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(ZhidianRengouActivity.class);
+                                                finish();
                                             }
 
                                             @Override

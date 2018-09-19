@@ -25,10 +25,7 @@ import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpFabiTixian;
-import com.shoppay.numc.modle.ImpFabiZhuanzhang;
 import com.shoppay.numc.modle.ImpObtainCountry;
-import com.shoppay.numc.modle.ImpObtainDingcunCurrency;
-import com.shoppay.numc.modle.ImpObtainFabiZZId;
 import com.shoppay.numc.modle.ImpObtainIDType;
 import com.shoppay.numc.modle.ImpObtainQuxianId;
 import com.shoppay.numc.modle.ImpObtainQxSxf;
@@ -600,7 +597,7 @@ public class FabiQuxianActivity extends BaseActivity {
                                         fbzz.fabiTixian(FabiQuxianActivity.this, dialog, rechargeid, vipid, pwd, currid,CountryID, etBank.getText().toString(), etFenhang.getText().toString(),etZhihang.getText().toString(),etAccout.getText().toString(), etBankaccout.getText().toString(),typeId,etIdnum.getText().toString(), etPhone.getText().toString(), etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(FabiQuxianActivity.class);
+                                                finish();
                                             }
 
                                             @Override

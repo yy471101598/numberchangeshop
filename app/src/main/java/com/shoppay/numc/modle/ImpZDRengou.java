@@ -97,6 +97,7 @@ public class ImpZDRengou {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
+                LogUtils.d("xxe", error.getMessage());
                 Toast.makeText(ac, ac.getResources().getString(R.string.zdrgfalse), Toast.LENGTH_SHORT).show();
             }
         });

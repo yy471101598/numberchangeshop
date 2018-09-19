@@ -26,6 +26,7 @@ public class ImpObtainZhidianDkCunqi {
 //        client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
         params.put("StockCode", StockCode);
+        LogUtils.d("xxmap",params.toString());
         client.post(ContansUtils.BASE_URL + "pos/CoinLoanMaturity.ashx",params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

@@ -25,20 +25,13 @@ import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.modle.ImpFabiDingCun;
-import com.shoppay.numc.modle.ImpObtainCunqi;
-import com.shoppay.numc.modle.ImpObtainDcLilv;
-import com.shoppay.numc.modle.ImpObtainDingcunCurrency;
 import com.shoppay.numc.modle.ImpObtainDingcunZhidian;
-import com.shoppay.numc.modle.ImpObtainFabiDCId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
-import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDDCId;
 import com.shoppay.numc.modle.ImpObtainZDDcLilv;
 import com.shoppay.numc.modle.ImpObtainZDRGYuemoney;
 import com.shoppay.numc.modle.ImpObtainZhidianDcCunqi;
 import com.shoppay.numc.modle.ImpZDDingCun;
-import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
@@ -266,6 +259,7 @@ public class ZhidianDingcunActivity extends BaseActivity {
                 Type listType = new TypeToken<List<Cunqi>>() {
                 }.getType();
                 List<Cunqi> sllist = gson.fromJson(response.toString(), listType);
+                cunqilist.clear();
                 cunqilist.addAll(sllist);
                 String[] tft = new String[cunqilist.size()];
                 for (int i = 0; i < cunqilist.size(); i++) {

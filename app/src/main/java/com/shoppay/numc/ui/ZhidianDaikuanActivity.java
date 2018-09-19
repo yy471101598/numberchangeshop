@@ -30,13 +30,13 @@ import com.shoppay.numc.modle.ImpObtainZDDKCurrency;
 import com.shoppay.numc.modle.ImpObtainZDDKId;
 import com.shoppay.numc.modle.ImpObtainZDDKLilv;
 import com.shoppay.numc.modle.ImpObtainZDYuemoney;
-import com.shoppay.numc.modle.ImpObtainZhidianDcCunqi;
 import com.shoppay.numc.modle.ImpObtainZhidianDkCunqi;
 import com.shoppay.numc.modle.ImpZDDaikuan;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -251,10 +251,12 @@ public class ZhidianDaikuanActivity extends BaseActivity {
         currency.obtainZDdkCurrency(ac, Maturity, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
+                dialog.dismiss();
                 Gson gson = new Gson();
                 Type listType = new TypeToken<List<Currency>>() {
                 }.getType();
                 List<Currency> sllist = gson.fromJson(response.toString(), listType);
+                fkCurrlist.clear();
                 fkCurrlist.addAll(sllist);
                 String[] tft = new String[fkCurrlist.size()];
                 for (int i = 0; i < fkCurrlist.size(); i++) {
@@ -279,7 +281,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                             }
                         }
                         mEtDkbizhong.setText(response.toString());
-
+                        dialog.show();
                         ImpObtainZDDKLilv lilv = new ImpObtainZDDKLilv();
                         lilv.obtainZDDKLilv(ZhidianDaikuanActivity.this, Integer.parseInt(cunqiId), currid, new InterfaceBack() {
                             @Override
@@ -287,14 +289,15 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                                 dialog.dismiss();
                                 try {
                                     JSONObject jso = new JSONObject(response.toString());
+                                    isHuilv = true;
                                     mEtLilv.setText(jso.getString("ratetitle"));
                                     jisuanHuilv = jso.getString("rate");
                                     mortgagemoney = jso.getString("mortgagemoney");
                                     instalment = jso.getString("instalment");
                                     //避免计算错误，每次选择清空输入金额
                                     mEtMoney.setText("");
-                                    isHuilv = true;
                                 } catch (JSONException e) {
+                                    LogUtils.d("xxe",e.getMessage());
                                     e.printStackTrace();
                                 }
                             }
@@ -321,6 +324,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(Object msg) {
+                dialog.dismiss();
             }
         });
 
@@ -446,6 +450,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                 Type listType = new TypeToken<List<Cunqi>>() {
                 }.getType();
                 List<Cunqi> sllist = gson.fromJson(response.toString(), listType);
+                cunqilist.clear();
                 cunqilist.addAll(sllist);
                 String[] tft = new String[cunqilist.size()];
                 for (int i = 0; i < cunqilist.size(); i++) {
@@ -590,7 +595,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.chosezhidian),
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    obtainCunqi(currid + "");
+                    obtainCunqi(dhzhidian + "");
                 }
             }
         });

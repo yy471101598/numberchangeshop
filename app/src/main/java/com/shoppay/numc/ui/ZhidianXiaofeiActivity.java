@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,17 +23,11 @@ import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.modle.ImpObtainDingcunCurrency;
-import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainXFZhidianList;
-import com.shoppay.numc.modle.ImpObtainYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDXiaofeiId;
 import com.shoppay.numc.modle.ImpObtainZDYuemoney;
-import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.modle.ImpZDXiaofei;
-import com.shoppay.numc.nbean.Currency;
-import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
@@ -126,7 +119,7 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
     private Activity ac;
     private String editString;
     private String title, entitle;
-    private List<ZhidianMsg> zdlist=new ArrayList<>();
+    private List<ZhidianMsg> zdlist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +165,7 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
         });
     }
 
-    private void obtainXFzhidian( final String type) {
+    private void obtainXFzhidian(final String type) {
         ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
         currency.obtainCurrency(ac, new InterfaceBack() {
             @Override
@@ -362,10 +355,10 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
                 } else if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkzd),
                             Toast.LENGTH_SHORT).show();
-                } else if(etMoney.getText().toString().equals("")){
-                    ToastUtils.showToast(ac,res.getString(R.string.inputxfzhidian));
-                }else if (Double.parseDouble(etMoney.getText().toString())>Double.parseDouble(viprechargeEtYue.getText().toString())) {
-                  ToastUtils.showToast(ac,res.getString(R.string.xfzdbigyue));
+                } else if (etMoney.getText().toString().equals("")) {
+                    ToastUtils.showToast(ac, res.getString(R.string.inputxfzhidian));
+                } else if (Double.parseDouble(etMoney.getText().toString()) > Double.parseDouble(viprechargeEtYue.getText().toString())) {
+                    ToastUtils.showToast(ac, res.getString(R.string.xfzdbigyue));
                 } else {
                     if (CommonUtils.checkNet(getApplicationContext())) {
                         PwdDialog.pwdDialog(ZhidianXiaofeiActivity.this, pwd, 1, new InterfaceBack() {
@@ -384,10 +377,10 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
                                             e.printStackTrace();
                                         }
                                         ImpZDXiaofei recharge = new ImpZDXiaofei();
-                                        recharge.zdXiaofei(ZhidianXiaofeiActivity.this, dialog, rechargeid, vipid, pwd, currid,etMoney.getText().toString(), new InterfaceBack() {
+                                        recharge.zdXiaofei(ZhidianXiaofeiActivity.this, dialog, rechargeid, vipid, pwd, currid, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(ZhidianXiaofeiActivity.class);
+                                                finish();
                                                 //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();
@@ -412,7 +405,7 @@ public class ZhidianXiaofeiActivity extends BaseActivity {
 
                                     @Override
                                     public void onErrorResponse(Object msg) {
-                                       dialog.dismiss();
+                                        dialog.dismiss();
                                     }
                                 });
 

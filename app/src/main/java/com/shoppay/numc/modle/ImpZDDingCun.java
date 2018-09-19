@@ -92,14 +92,15 @@ public class ImpZDDingCun {
                     }
                 } catch (Exception e) {
                     dialog.dismiss();
-                    Toast.makeText(ac, ac.getResources().getString(R.string.fabidingcunfalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zhidiandingcunfalse), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, ac.getResources().getString(R.string.fabidingcunfalse), Toast.LENGTH_SHORT).show();
+                LogUtils.d("xxe", error.getMessage());
+                Toast.makeText(ac, ac.getResources().getString(R.string.zhidiandingcunfalse), Toast.LENGTH_SHORT).show();
             }
         });
     }

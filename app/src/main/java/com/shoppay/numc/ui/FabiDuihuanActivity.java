@@ -284,13 +284,13 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         public void onResponse(Object response) {
                                             try {
                                                 JSONObject jso = new JSONObject(response.toString());
+                                                isHuilv = true;
                                                 viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
                                                 viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                                 jisuanHuilv = jso.getString("exchangerate");
                                                 shouxufei = jso.getString("Poundage");
                                                 //避免计算错误，每次选择清空输入金额
                                                 etMoney.setText("");
-                                                isHuilv = true;
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                                 isHuilv = false;
@@ -372,8 +372,6 @@ public class FabiDuihuanActivity extends BaseActivity {
                             if (fkcurrid != -1) {
                                 //获取汇率
                                 dialog.show();
-                                //避免计算错误，每次选择清空输入金额
-                                etMoney.setText("");
                                 ImpObtainDuihuanLulv huilv = new ImpObtainDuihuanLulv();
                                 huilv.obtainDuihuanHuilv(FabiDuihuanActivity.this, fkcurrid, currid, new InterfaceBack() {
                                     @Override
@@ -381,11 +379,13 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         dialog.dismiss();
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
+                                            isHuilv = true;
                                             viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
                                             viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                             jisuanHuilv = jso.getString("exchangerate");
                                             shouxufei = jso.getString("Poundage");
-                                            isHuilv = true;
+                                            //避免计算错误，每次选择清空输入金额
+                                            etMoney.setText("");
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                             isHuilv = false;
@@ -396,11 +396,11 @@ public class FabiDuihuanActivity extends BaseActivity {
                                     @Override
                                     public void onErrorResponse(Object msg) {
                                         dialog.dismiss();
+                                        isHuilv = false;
                                         viprechargeEtHuilv.setText("");
                                         viprechargeEtSxf.setText("");
                                         jisuanHuilv = "";
                                         shouxufei = "";
-                                        isHuilv = false;
                                     }
                                 });
                             }
@@ -464,7 +464,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         duihuan.fabiDuihuan(FabiDuihuanActivity.this, dialog, rechargeid, vipid, pwd, fkcurrid, currid, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
-                                                ActivityStack.create().finishActivity(FabiDuihuanActivity.class);
+                                               finish();
                                             }
 
                                             @Override

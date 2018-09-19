@@ -130,12 +130,12 @@ public class FabiDingcunActivity extends BaseActivity {
                     isSuccess = false;
                     break;
                 case 1111:
-                    int rechargeid=(int)msg.obj;
+                    int rechargeid = (int) msg.obj;
                     ImpFabiDingCun fbzz = new ImpFabiDingCun();
                     fbzz.fabiDingcun(FabiDingcunActivity.this, dialog, rechargeid, vipid, pwd, currid, Integer.parseInt(cunqiId), etMoney.getText().toString(), new InterfaceBack() {
                         @Override
                         public void onResponse(Object response) {
-                            ActivityStack.create().finishActivity(FabiDingcunActivity.class);
+                            finish();
                         }
 
                         @Override
@@ -261,6 +261,7 @@ public class FabiDingcunActivity extends BaseActivity {
                 Type listType = new TypeToken<List<Cunqi>>() {
                 }.getType();
                 List<Cunqi> sllist = gson.fromJson(response.toString(), listType);
+                cunqilist.clear();
                 cunqilist.addAll(sllist);
                 String[] tft = new String[cunqilist.size()];
                 for (int i = 0; i < cunqilist.size(); i++) {
@@ -292,11 +293,11 @@ public class FabiDingcunActivity extends BaseActivity {
                             public void onResponse(Object response) {
                                 Gson gson = new Gson();
                                 isLilvSuccess = true;
+                                isMoney = true;
                                 Type listType = new TypeToken<List<DcLilv>>() {
                                 }.getType();
                                 List<DcLilv> sllist = gson.fromJson(response.toString(), listType);
                                 lilvlist.addAll(sllist);
-                                isMoney=true;
                                 etMoney.setText(lilvlist.get(0).MinMoney);
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                     etLilv.setText(lilvlist.get(0).ratetitle);
@@ -308,7 +309,7 @@ public class FabiDingcunActivity extends BaseActivity {
                             @Override
                             public void onErrorResponse(Object msg) {
                                 isLilvSuccess = false;
-                                isMoney=false;
+                                isMoney = false;
                                 etMoney.setText("");
                                 etLilv.setText("");
                             }
@@ -555,9 +556,9 @@ public class FabiDingcunActivity extends BaseActivity {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        Message msg=handler.obtainMessage();
-                                        msg.what=1111;
-                                        msg.obj=rechargeid;
+                                        Message msg = handler.obtainMessage();
+                                        msg.what = 1111;
+                                        msg.obj = rechargeid;
                                         handler.sendMessage(msg);
                                     }
 
