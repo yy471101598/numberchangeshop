@@ -90,14 +90,14 @@ public class ImpVipRecharge {
                                 BitmapFactory.Options options = new BitmapFactory.Options();
                                 options.inTargetDensity = 160;
                                 options.inDensity = 160;
-                                Bitmap bitmap1 = BitmapFactory.decodeResource(ac.getResources(), R.drawable.logo, options);
+                                Bitmap bitmap1 = BitmapFactory.decodeResource(ac.getResources(), R.drawable.dayin, options);
                                 byte[] center = ESCUtil.alignCenter();
                                 byte[] nextLine = ESCUtil.nextLine(1);
                                 byte[][] content = {nextLine, nextLine, nextLine, nextLine};
                                 byte[] contentBytes = ESCUtil.byteMerger(content);
                                 byte[][] end = {nextLine, nextLine};
                                 byte[] endBytes = ESCUtil.byteMerger(content);
-                                byte[][] bitmap = {nextLine, center, ESCUtil.selectBitmap(scaleImage(bitmap1), 33)};
+                                byte[][] bitmap = {nextLine, center, ESCUtil.selectBitmap(bitmap1, 33)};
                                 byte[] headerBytes = ESCUtil.byteMerger(bitmap);
                                 bytesList.add(headerBytes);
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
@@ -108,7 +108,7 @@ public class ImpVipRecharge {
                                     bytesList.add(contentBytes);
                                 }
                                 if (!jsonObject.getString("qrcode").equals("")) {
-                                    byte[][] qr = {nextLine, center, ESCUtil.getPrintQRCode(jsonObject.getString("qrcode"), 8, 3)};
+                                    byte[][] qr = {nextLine, center, ESCUtil.getPrintQRCode(jsonObject.getString("qrcode"), 4, 3)};
                                     byte[] qrBytes = ESCUtil.byteMerger(qr);
                                     bytesList.add(qrBytes);
                                 }
