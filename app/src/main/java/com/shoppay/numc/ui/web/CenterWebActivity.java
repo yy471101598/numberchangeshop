@@ -30,6 +30,7 @@ import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.ui.BaseActivity;
+import com.shoppay.numc.wxcode.MipcaActivityCapture;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public class CenterWebActivity extends BaseActivity {
     private Activity ac;
     private String title, entitle;
     private String uri, typeid;
-    private RelativeLayout rl_no, rl_confirm;
+    private RelativeLayout rl_no, rl_confirm,rl_right;
     private EditText et_card;
     private TextView tv_name;
     private boolean isSuccess = false;
@@ -192,7 +193,15 @@ public class CenterWebActivity extends BaseActivity {
         et_card = (EditText) findViewById(R.id.et_cardnum);
         rl_no = (RelativeLayout) findViewById(R.id.rl_no);
         rl_confirm = (RelativeLayout) findViewById(R.id.rl_confirm);
+        rl_right = (RelativeLayout) findViewById(R.id.rl_right);
         tv_name = (TextView) findViewById(R.id.et_name);
+        rl_right.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                startActivityForResult(mipca, 111);
+            }
+        });
         rl_confirm.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
@@ -237,6 +246,8 @@ public class CenterWebActivity extends BaseActivity {
         }
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -260,6 +271,13 @@ public class CenterWebActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case 111:
+                if (resultCode == RESULT_OK) {
+                    et_card.setText(intent.getStringExtra("codedata"));
+                }
+                break;
+        }
         if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == this.mUploadMessage)
                 return;
