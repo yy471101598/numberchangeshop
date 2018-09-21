@@ -18,15 +18,21 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.shoppay.numc.R;
 import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.LogUtils;
+import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.ui.BaseActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * 个人中心跳转URL页面
@@ -45,18 +51,31 @@ public class CenterWebActivity extends BaseActivity {
     private Activity ac;
     private String title, entitle;
     private String uri, typeid;
-    private RelativeLayout rl_no;
+    private RelativeLayout rl_no, rl_confirm;
     private EditText et_card;
+    private TextView tv_name;
+    private boolean isSuccess = false;
+    private int vipid;
+    private String pwd = "";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    rl_no.setVisibility(View.GONE);
-                    web.setVisibility(View.VISIBLE);
+                    try {
+                        JSONObject jso = new JSONObject(msg.obj.toString());
+                        vipid = jso.getInt("userid");
+                        pwd = jso.getString("paypassword");
+                        tv_name.setText(jso.getString("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    isSuccess = true;
                     break;
                 case 2:
+                    tv_name.setText("");
+                    isSuccess = false;
                     break;
             }
         }
@@ -74,21 +93,23 @@ public class CenterWebActivity extends BaseActivity {
         typeid = getIntent().getStringExtra("typeid");
         title = getIntent().getStringExtra("title");
         entitle = getIntent().getStringExtra("entitle");
-        LogUtils.d("xxurl",uri);
+        LogUtils.d("xxurl", uri);
         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
             title_tv.setText(title);
         } else {
             title_tv.setText(entitle);
         }
 
-        if (typeid.equals("2")) {
+        if (typeid.equals("3")) {
             rl_no.setVisibility(View.VISIBLE);
             web.setVisibility(View.GONE);
         } else {
             rl_no.setVisibility(View.GONE);
             web.setVisibility(View.VISIBLE);
+            dialog.show();
+            String url = uri + "?userid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0);
+            PayUtils.webPayUtils(ac, dialog, web, url);
         }
-        PayUtils.webPayUtils(ac, web, uri);
 
 
         et_card.addTextChangedListener(new TextWatcher() {
@@ -168,8 +189,36 @@ public class CenterWebActivity extends BaseActivity {
         this.title_tv = (TextView) findViewById(R.id.tv_title);
         this.title_tv.setVisibility(View.VISIBLE);
         this.getBack = (RelativeLayout) findViewById(R.id.rl_left);
-        et_card = (EditText) findViewById(R.id.et_card);
+        et_card = (EditText) findViewById(R.id.et_cardnum);
         rl_no = (RelativeLayout) findViewById(R.id.rl_no);
+        rl_confirm = (RelativeLayout) findViewById(R.id.rl_confirm);
+        tv_name = (TextView) findViewById(R.id.et_name);
+        rl_confirm.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                if(isSuccess) {
+                    PwdDialog.pwdDialog(CenterWebActivity.this, pwd, 1, new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            rl_no.setVisibility(View.GONE);
+                            web.setVisibility(View.VISIBLE);
+                            dialog.show();
+                            String url = uri + "?loginuserid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0) + "&urerid=" + vipid;
+                            PayUtils.webPayUtils(ac, dialog, web, url);
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg) {
+
+                        }
+                    });
+                }else{
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 
 

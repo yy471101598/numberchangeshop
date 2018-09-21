@@ -29,7 +29,7 @@ import com.shoppay.numc.modle.ImpObtainDingcunZhidian;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainZDDCId;
 import com.shoppay.numc.modle.ImpObtainZDDcLilv;
-import com.shoppay.numc.modle.ImpObtainZDRGYuemoney;
+import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpObtainZhidianDcCunqi;
 import com.shoppay.numc.modle.ImpZDDingCun;
 import com.shoppay.numc.tools.ActivityStack;
@@ -368,7 +368,7 @@ public class ZhidianDingcunActivity extends BaseActivity {
                             }
                             etBingzhong.setText(response.toString());
                             dialog.show();
-                            ImpObtainZDRGYuemoney yue = new ImpObtainZDRGYuemoney();
+                            ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
                             yue.obtainCurrency(ZhidianDingcunActivity.this, vipid, currid, new InterfaceBack() {
                                 @Override
                                 public void onResponse(Object response) {
@@ -472,7 +472,7 @@ public class ZhidianDingcunActivity extends BaseActivity {
                                 }
                                 etBingzhong.setText(response.toString());
                                 dialog.show();
-                                ImpObtainZDRGYuemoney yue = new ImpObtainZDRGYuemoney();
+                                ImpObtainZDYuemoney yue = new ImpObtainZDYuemoney();
                                 yue.obtainCurrency(ZhidianDingcunActivity.this, vipid, currid, new InterfaceBack() {
                                     @Override
                                     public void onResponse(Object response) {

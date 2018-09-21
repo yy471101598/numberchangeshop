@@ -12,6 +12,7 @@ import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
+import com.shoppay.numc.tools.NewDayinTools;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
 
@@ -72,7 +73,8 @@ public class ImpFabiZhuanzhang {
                         } else {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
-                        back.onResponse("");
+                        JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
+                        NewDayinTools.dayin(jsonObject,back);
                         //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();

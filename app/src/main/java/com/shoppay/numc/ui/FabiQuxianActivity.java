@@ -35,6 +35,7 @@ import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
 import com.shoppay.numc.tools.DialogUtil;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -141,7 +142,7 @@ public class FabiQuxianActivity extends BaseActivity {
     private int vipid;
     private String pwd = "";
     private int currid;
-    private int CountryID;
+    private String CountryID;
     private int typeId=-1;
     private boolean isIDtype=false;
     private Handler handler = new Handler() {
@@ -309,10 +310,11 @@ public class FabiQuxianActivity extends BaseActivity {
                                     }
                                 }
                             }
+                            LogUtils.d("xxcid",CountryID);
                             etCountry.setText(response.toString());
                             dialog.show();
                             ImpObtainQxSxf sxf = new ImpObtainQxSxf();
-                            sxf.obtainQxSxf(FabiQuxianActivity.this, CountryID + "", new InterfaceBack() {
+                            sxf.obtainQxSxf(FabiQuxianActivity.this, CountryID, new InterfaceBack() {
                                 @Override
                                 public void onResponse(Object response) {
                                     dialog.dismiss();
@@ -455,10 +457,11 @@ public class FabiQuxianActivity extends BaseActivity {
                                     }
                                 }
                             }
+                            LogUtils.d("xxcid",CountryID);
                             etCountry.setText(response.toString());
                             dialog.show();
                             ImpObtainQxSxf sxf = new ImpObtainQxSxf();
-                            sxf.obtainQxSxf(FabiQuxianActivity.this, CountryID + "", new InterfaceBack() {
+                            sxf.obtainQxSxf(FabiQuxianActivity.this, CountryID, new InterfaceBack() {
                                 @Override
                                 public void onResponse(Object response) {
                                     dialog.dismiss();

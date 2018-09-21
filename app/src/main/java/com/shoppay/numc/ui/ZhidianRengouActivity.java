@@ -146,6 +146,7 @@ public class ZhidianRengouActivity extends BaseActivity {
     private boolean isHuilv = false;
     private List<Currency> fkCurrlist = new ArrayList<>();
     private List<ZhidianMsg> zdlist = new ArrayList<>();
+    private String jisuanSxf="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,13 +208,13 @@ public class ZhidianRengouActivity extends BaseActivity {
                 if (currid == -1) {
                     ToastUtils.showToast(ac, res.getString(R.string.chosefkcurr));
                 } else if (dhzhidian == -1) {
-                    ToastUtils.showToast(ac, res.getString(R.string.chosedhzhidian));
+                    ToastUtils.showToast(ac, res.getString(R.string.chosergzhidian));
                 } else if (!isHuilv) {
                     ToastUtils.showToast(ac, res.getString(R.string.rgflfalse));
                 } else {
                     //计算所需金额
 //                    所需金额（兑换金额* 计算汇率exchangeratetitle*（1+手续费率Poundage））
-                    double sxf = CommonUtils.add(1.0, Double.parseDouble(viprechargeEtSxf.getText().toString()));
+                    double sxf = CommonUtils.add(1.0, Double.parseDouble(jisuanSxf));
                     LogUtils.d("xxmoey", etMoney.getText().toString() + "-------" + jisuanHuilv);
                     String xu = CommonUtils.multiply(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString(), jisuanHuilv);
                     double xumoney = Double.parseDouble(CommonUtils.multiply(xu, sxf + ""));
@@ -346,7 +347,8 @@ public class ZhidianRengouActivity extends BaseActivity {
                                     try {
                                         JSONObject jso = new JSONObject(response.toString());
                                         viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
-                                        viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                        viprechargeEtSxf.setText(CommonUtils.multiply(jso.getString("Poundage"),"100")+"%");
+                                        jisuanSxf=jso.getString("Poundage");
                                         jisuanHuilv = jso.getString("subscriberate");
                                         LogUtils.d("xxjisuan", jisuanHuilv);
                                         isHuilv = true;
@@ -467,7 +469,8 @@ public class ZhidianRengouActivity extends BaseActivity {
                                                 JSONObject jso = new JSONObject(response.toString());
                                                 isHuilv = true;
                                                 viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
-                                                viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                                viprechargeEtSxf.setText(CommonUtils.multiply(jso.getString("Poundage"),"100")+"%");
+                                                jisuanSxf=jso.getString("Poundage");
                                                 jisuanHuilv = jso.getString("subscriberate");
                                                 LogUtils.d("xxjisuan", jisuanHuilv);
                                             } catch (JSONException e) {
@@ -559,8 +562,9 @@ public class ZhidianRengouActivity extends BaseActivity {
                                             JSONObject jso = new JSONObject(response.toString());
                                             isHuilv = true;
                                             viprechargeEtHuilv.setText(jso.getString("subscriberatetitle"));
-                                            viprechargeEtSxf.setText(jso.getString("Poundage"));
+                                            viprechargeEtSxf.setText(CommonUtils.multiply(jso.getString("Poundage"),"100")+"%");
                                             jisuanHuilv = jso.getString("subscriberate");
+                                            jisuanSxf=jso.getString("Poundage");
                                             //避免计算错误，每次选择清空输入金额
                                             etMoney.setText("");
                                             LogUtils.d("xxjisuan", jisuanHuilv);
@@ -607,13 +611,13 @@ public class ZhidianRengouActivity extends BaseActivity {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 } else if (etMoney.getText().toString() == null || etMoney.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputduihuannum),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.inputrengounum),
                             Toast.LENGTH_SHORT).show();
                 } else if (viprechargeEtBingzhong.getText().toString().equals(res.getString(R.string.chose))) {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.chosefkcurr),
                             Toast.LENGTH_SHORT).show();
                 } else if (viprechargeEtDhbizhong.getText().toString().equals(res.getString(R.string.chose))) {
-                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosedhzhidian),
+                    Toast.makeText(getApplicationContext(), res.getString(R.string.chosergzhidian),
                             Toast.LENGTH_SHORT).show();
                 } else if (Double.parseDouble(etMoney.getText().toString()) > Double.parseDouble(viprechargeEtYue.getText().toString())) {
                     ToastUtils.showToast(ac, res.getString(R.string.dhbigyue));
@@ -637,7 +641,7 @@ public class ZhidianRengouActivity extends BaseActivity {
                                             e.printStackTrace();
                                         }
                                         ImpZDRengou zdrg = new ImpZDRengou();
-                                        zdrg.zdRengou(ZhidianRengouActivity.this, dialog, rechargeid, vipid, pwd, currid, dhzhidian, viprechargeEtXumoney.getText().toString(), new InterfaceBack() {
+                                        zdrg.zdRengou(ZhidianRengouActivity.this, dialog, rechargeid, vipid, pwd, currid, dhzhidian, etMoney.getText().toString(), new InterfaceBack() {
                                             @Override
                                             public void onResponse(Object response) {
                                                 finish();

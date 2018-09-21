@@ -1,6 +1,7 @@
 package com.shoppay.numc.ui.web;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,7 +19,7 @@ public class PayUtils {
     private static ValueCallback<Uri> mUploadMessage;
     public static ValueCallback<Uri[]> mUploadMessageForAndroid5;
 
-    public static void webPayUtils(final Context ac,
+    public static void webPayUtils(final Context ac, final Dialog dialog,
                                    final WebView shop_web, String url) {
         WebSettings seting = shop_web.getSettings();
         seting.setJavaScriptEnabled(true);
@@ -107,6 +108,8 @@ public class PayUtils {
                 // PreferenceHelper.write(ac, "pull", "shopurl", url);
 //                tv_title.setText(view.getTitle());
                 super.onPageFinished(view, url);
+                dialog.dismiss();
+
             }
 
             @Override

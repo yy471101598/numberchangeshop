@@ -30,9 +30,9 @@
     <string name="zzcurr">转账币种</string>
     <string name="zzzhidian">转账指点</string>
     <string name="skhuming">收款户名</string>
-    <string name="curr">币种</string>
-    <string name="cunqi">存期</string>
-    <string name="lilv">利率</string>
+    <string name="curr">币&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;种</string>
+    <string name="cunqi">存&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;期</string>
+    <string name="lilv">利&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;率</string>
     <string name="cunmoney">存入金额</string>
     <string name="inputcunmoney">请输入存入金额</string>
     <string name="inputcunzhidian">请输入存入指点</string>
@@ -42,6 +42,7 @@
     <string name="zzmoney">转账金额</string>
     <string name="zzremark">转账备注</string>
     <string name="inputzzmoney">请输入转账金额</string>
+  <string name="inputzzzhidian">请输入转账指点</string>
     <string name="inputzzremark">请输入转账备注</string>
     <string name="internet">请检查网络是否可用</string>
     <string name="pwdno">密码错误</string>
@@ -65,6 +66,7 @@
     <string name="zddhfalse">指点兑换失败</string>
   <string name="zddkfalse">指点贷款失败</string>
     <string name="zdlistfalse">获取指点种类失败</string>
+  <string name="zzzdlistfalse">获取转账指点失败</string>
     <string name="yuefalse">获取账户余额失败</string>
     <string name="zdrgflfalse">获取指点认购费率失败</string>
     <string name="zddklilvfalse">获取贷款利率失败</string>
@@ -79,6 +81,7 @@
     <string name="chosecunqi">请选择存期</string>
     <string name="chosedhcurr">请选择兑换币种</string>
     <string name="chosedhzhidian">请选择兑换指点</string>
+  <string name="chosergzhidian">请选择认购指点</string>
     <string name="huilvfalse">获取兑换汇率失败</string>
     <string name="rgflfalse">获取认购费率失败</string>
     <string name="fabiduhuifalse">法币兑换失败</string>
@@ -87,6 +90,7 @@
     <string name="vipmsgfalse">请先获取正确的用户信息</string>
     <string name="inputduihuanmoney">请输入兑换金额</string>
     <string name="inputduihuannum">请输入兑换数量</string>
+  <string name="inputrengounum">请输入认购数量</string>
     <string name="zzbigyue">转账金额大于账户余额</string>
     <string name="dhbigyue">兑换金额大于账户余额</string>
     <string name="dydianebigyue">抵押点额大于账户余额</string>
@@ -113,11 +117,11 @@
     <string name="idtypefalse">获取证件类型失败</string>
     <string name="fabitxfalse">法币提现失败</string>
     <string name="dingcuntijiao">定存提交</string>
-    <string name="country">国家</string>
+    <string name="country">国&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;家</string>
     <string name="bankname">银行名称</string>
     <string name="inputbankname">请输入银行名称</string>
-    <string name="fenhang">分行</string>
-    <string name="zhihang">支行</string>
+    <string name="fenhang">分&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;行</string>
+    <string name="zhihang">支&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;行</string>
     <string name="accountname">账户名称</string>
     <string name="bankaccount">银行账号</string>
     <string name="idtype">证件类型</string>
@@ -133,8 +137,11 @@
     <string name="inputxfzhidian">请输入消费指点</string>
     <string name="confirm">确定</string>
     <string name="dhzhidian">兑换指点</string>
+  <string name="rgzhidian">认购指点</string>
     <string name="dhnum">兑换数量</string>
+  <string name="rgnum">认购数量</string>
     <string name="dhlv">兑换率</string>
+  <string name="rgfl">认购费率</string>
     <string name="dycurr">抵押币种</string>
     <string name="dyzhidian">抵押指点</string>
     <string name="dkqixian">贷款期限</string>
@@ -147,9 +154,10 @@
     <string name="chosecountry">请选择国家</string>
     <string name="inputjiaoyi">请输入交易密码</string>
     <string name="zhidian">指点</string>
+  <string name="dczhidian">定存指点</string>
     <string name="cunruzhidian">存入指点</string>
-    <string name="lipincode">礼品编号</string>
-    <string name="inputlipincode">请输入或定位礼品编号</string>
+    <string name="lipincode">商品编号</string>
+    <string name="inputlipincode">请输入或定位商品编号</string>
     <string name="dingwei">定位</string>
     <string name="duihuanallnum">兑换总数量：</string>
     <string name="duihuanallmoney">兑换总币额：</string>

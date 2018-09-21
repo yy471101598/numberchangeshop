@@ -24,9 +24,9 @@ import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
-import com.shoppay.numc.modle.ImpObtainXFZhidianList;
 import com.shoppay.numc.modle.ImpObtainZDYuemoney;
 import com.shoppay.numc.modle.ImpObtainZDZZId;
+import com.shoppay.numc.modle.ImpObtainZZZhidianList;
 import com.shoppay.numc.modle.ImpZDZhuanzhang;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
@@ -179,7 +179,7 @@ public class ZhidianZhuanzhangActivity extends BaseActivity {
     }
 
     private void obtainXFzhidian(final String type) {
-        ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
+        ImpObtainZZZhidianList currency = new ImpObtainZZZhidianList();
         currency.obtainCurrency(ac, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {

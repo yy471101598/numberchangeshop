@@ -5,7 +5,7 @@ package com.shoppay.numc.bean;
  */
 
 public class Country {
-    public int CountryID;//":086,"
+    public String CountryID;//":086,"
     public String CountryName;//":"中国","
     public String EnCountryName;//":"China
 }

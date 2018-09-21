@@ -2,33 +2,24 @@ package com.shoppay.numc.modle;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.tools.BluetoothUtil;
-import com.shoppay.numc.tools.DayinUtils;
-import com.shoppay.numc.tools.ESCUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
-import com.shoppay.numc.tools.MergeLinearArraysUtil;
+import com.shoppay.numc.tools.NewDayinTools;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -80,45 +71,7 @@ public class ImpVipRecharge {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
-                        if (jsonObject.getInt("printNumber") == 0) {
-                            back.onResponse("");
-                        } else {
-                            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                            if (bluetoothAdapter.isEnabled()) {
-                                BluetoothUtil.connectBlueTooth(MyApplication.context);
-                                List<byte[]> bytesList = new ArrayList<>();
-                                BitmapFactory.Options options = new BitmapFactory.Options();
-                                options.inTargetDensity = 160;
-                                options.inDensity = 160;
-                                Bitmap bitmap1 = BitmapFactory.decodeResource(ac.getResources(), R.drawable.dayin, options);
-                                byte[] center = ESCUtil.alignCenter();
-                                byte[] nextLine = ESCUtil.nextLine(1);
-                                byte[][] content = {nextLine, nextLine, nextLine, nextLine};
-                                byte[] contentBytes = ESCUtil.byteMerger(content);
-                                byte[][] end = {nextLine, nextLine};
-                                byte[] endBytes = ESCUtil.byteMerger(content);
-                                byte[][] bitmap = {nextLine, center, ESCUtil.selectBitmap(bitmap1, 33)};
-                                byte[] headerBytes = ESCUtil.byteMerger(bitmap);
-                                bytesList.add(headerBytes);
-                                if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                                    bytesList.add(DayinUtils.dayin(jsonObject.getString("printContent")));
-                                    bytesList.add(contentBytes);
-                                } else {
-                                    bytesList.add(DayinUtils.dayin(jsonObject.getString("printContent")));
-                                    bytesList.add(contentBytes);
-                                }
-                                if (!jsonObject.getString("qrcode").equals("")) {
-                                    byte[][] qr = {nextLine, center, ESCUtil.getPrintQRCode(jsonObject.getString("qrcode"), 4, 3)};
-                                    byte[] qrBytes = ESCUtil.byteMerger(qr);
-                                    bytesList.add(qrBytes);
-                                }
-                                bytesList.add(endBytes);
-                                BluetoothUtil.sendData(MergeLinearArraysUtil.mergeLinearArrays(bytesList), jsonObject.getInt("printNumber"));
-                                back.onResponse("");
-                            } else {
-                                back.onResponse("");
-                            }
-                        }
+                        NewDayinTools.dayin(jsonObject,back);
                     } else {
                         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                             ToastUtils.showToast(ac, jso.getString("msg"));

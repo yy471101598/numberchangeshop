@@ -12,6 +12,7 @@ import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
+import com.shoppay.numc.tools.NewDayinTools;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
 
@@ -25,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
  */
 
 public class ImpFabiTixian {
-    public void fabiTixian(final Activity ac, final Dialog dialog, int WitdrawID, int UserID, String PassWord, int Currency, int Country, String BankName, String AccountAgent, String AccountBranch,
+    public void fabiTixian(final Activity ac, final Dialog dialog, int WitdrawID, int UserID, String PassWord, int Currency, String Country, String BankName, String AccountAgent, String AccountBranch,
                            String AccountName, String AccountNumber, int IDType, String IDCard, String Mobile, String Money,
                            final InterfaceBack back) {
 
@@ -82,7 +83,8 @@ public class ImpFabiTixian {
                         } else {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
-                        back.onResponse("");
+                        JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
+                        NewDayinTools.dayin(jsonObject,back);
                         //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();

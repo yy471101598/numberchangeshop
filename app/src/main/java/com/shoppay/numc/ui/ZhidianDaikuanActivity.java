@@ -55,8 +55,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.shoppay.numc.tools.CommonUtils.multiply;
-
 /**
  * Created by songxiaotao on 2017/6/30.
  */
@@ -233,7 +231,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
 //                    double xumoney = Double.parseDouble(CommonUtils.multiply(xu, sxf + ""));
 //                    mEtMothhk.setText(CommonUtils.lasttwo(xumoney));
                     double lilv = CommonUtils.add(1.0, Double.parseDouble(jisuanHuilv));
-                    String xu = multiply(multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), lilv + ""), mortgagemoney);
+                    String xu = CommonUtils.multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), mortgagemoney);
                     mEtDkmoney.setText(CommonUtils.lasttwo(Double.parseDouble(xu)));
 
                     double mo = CommonUtils.div(Double.parseDouble(CommonUtils.multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), mortgagemoney)), Double.parseDouble(instalment), 2);
