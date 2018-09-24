@@ -234,9 +234,10 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                     String xu = CommonUtils.multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), mortgagemoney);
                     mEtDkmoney.setText(CommonUtils.lasttwo(Double.parseDouble(xu)));
 
-                    double mo = CommonUtils.div(Double.parseDouble(CommonUtils.multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), mortgagemoney)), Double.parseDouble(instalment), 2);
-                    String moth = CommonUtils.multiply(mo + "", lilv + "");
-                    mEtMothhk.setText(CommonUtils.lasttwo(Double.parseDouble(moth)));
+                    double mot = Double.parseDouble(CommonUtils.multiply(mEtMoney.getText().toString().equals("") ? "0" : mEtMoney.getText().toString(), mortgagemoney));
+                    CommonUtils.multiply(mot + "", lilv + "");
+                    double moth = CommonUtils.div(Double.parseDouble(CommonUtils.multiply(mot + "", lilv + "")), Double.parseDouble(instalment), 2);
+                    mEtMothhk.setText(CommonUtils.lasttwo(moth));
                 }
 
             }
@@ -295,7 +296,7 @@ public class ZhidianDaikuanActivity extends BaseActivity {
                                     //避免计算错误，每次选择清空输入金额
                                     mEtMoney.setText("");
                                 } catch (JSONException e) {
-                                    LogUtils.d("xxe",e.getMessage());
+                                    LogUtils.d("xxe", e.getMessage());
                                     e.printStackTrace();
                                 }
                             }

@@ -2,18 +2,25 @@ package com.shoppay.numc.modle;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.tools.BluetoothUtil;
+import com.shoppay.numc.tools.DayinUtils;
+import com.shoppay.numc.tools.ESCUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
+import com.shoppay.numc.tools.MergeLinearArraysUtil;
 import com.shoppay.numc.tools.NewDayinTools;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -21,16 +28,24 @@ import com.shoppay.numc.tools.ToastUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
+
+import static com.shoppay.numc.ui.BaseActivity.ac;
 
 /**
  * Created by songxiaotao on 2018/9/5.
  */
 
 public class ImpVipRecharge {
+    Bitmap bitmap1;
+
     public void vipRecharge(final Activity ac, final Dialog dialog, int RechargeID, int UserID, String password, int CurrencyID, int PayTypeID, String Money,
                             final InterfaceBack back) {
-
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
 //        client.setCookieStore(myCookieStore);
@@ -110,5 +125,28 @@ public class ImpVipRecharge {
         Bitmap newbm = Bitmap.createBitmap(bitmap1, 0, 0, width, height, matrix,
                 true);
         return newbm;
+    }
+
+    /**
+     * 质量压缩方法
+     *
+     * @param image
+     * @return
+     */
+    public static Bitmap compressImage(Bitmap image) {
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 90;
+
+        while (baos.toByteArray().length / 1024 > 10) { // 循环判断如果压缩后图片是否大于10kb,大于继续压缩
+            baos.reset(); // 重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;// 每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
+        return bitmap;
+
     }
 }

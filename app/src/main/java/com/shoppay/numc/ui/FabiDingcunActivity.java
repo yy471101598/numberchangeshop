@@ -221,11 +221,12 @@ public class FabiDingcunActivity extends BaseActivity {
                     double money = Double.parseDouble(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString());
                     if (money < Double.parseDouble(lilvlist.get(0).MinMoney)) {
                         isMoney = false;
+                        etLilv.setText("");
                         return;
                     }
                     for (DcLilv lilv : lilvlist) {
                         if (lilv.MaxMoney.equals("")) {
-                            if (money > Double.parseDouble(lilv.MinMoney)) {
+                            if (money >= Double.parseDouble(lilv.MinMoney)) {
                                 isMoney = true;
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                     etLilv.setText(lilv.ratetitle);
@@ -234,7 +235,7 @@ public class FabiDingcunActivity extends BaseActivity {
                                 }
                             }
                         } else {
-                            if (money > Double.parseDouble(lilv.MinMoney) && money < Double.parseDouble(lilv.MaxMoney)) {
+                            if (money >= Double.parseDouble(lilv.MinMoney) && money <= Double.parseDouble(lilv.MaxMoney)) {
                                 isMoney = true;
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                     etLilv.setText(lilv.ratetitle);

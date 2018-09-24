@@ -319,7 +319,7 @@ public class FabiQuxianActivity extends BaseActivity {
                                 public void onResponse(Object response) {
                                     dialog.dismiss();
                                     isSxf = true;
-                                    etSxf.setText(response.toString());
+                                    etSxf.setText(CommonUtils.multiply(response.toString(),"100")+"%");
                                 }
 
                                 @Override
@@ -466,7 +466,7 @@ public class FabiQuxianActivity extends BaseActivity {
                                 public void onResponse(Object response) {
                                     dialog.dismiss();
                                     isSxf = true;
-                                    etSxf.setText(response.toString());
+                                    etSxf.setText(CommonUtils.multiply(response.toString(),"100")+"%");
                                 }
 
                                 @Override

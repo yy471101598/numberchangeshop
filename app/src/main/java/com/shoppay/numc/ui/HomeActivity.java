@@ -54,93 +54,85 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HomeMsg home = (HomeMsg) adapterView.getItemAtPosition(i);
-                switch (home.Title) {
-                    case "会员充值":
-                        Intent recharge = new Intent(ac, VipRechargeActivity.class);
-                        recharge.putExtra("title",home.Title);
-                        recharge.putExtra("entitle",home.EnTitle);
-                        startActivity(recharge);
-                        break;
-                    case "法币兑换":
-                        Intent duihuan = new Intent(ac, FabiDuihuanActivity.class);
-                        duihuan.putExtra("title",home.Title);
-                        duihuan.putExtra("entitle",home.EnTitle);
-                        startActivity(duihuan);
-                        break;
-                    case "法币转帐":
-                        Intent fbzz = new Intent(ac, FabiZhuanzhangActivity.class);
-                        fbzz.putExtra("title",home.Title);
-                        fbzz.putExtra("entitle",home.EnTitle);
-                        startActivity(fbzz);
-                        break;
-                    case "法币定存":
-                        Intent dc = new Intent(ac, FabiDingcunActivity.class);
-                        dc.putExtra("title",home.Title);
-                        dc.putExtra("entitle",home.EnTitle);
-                        startActivity(dc);
-                        break;
-                    case "法币取现":
-                        Intent qx = new Intent(ac, FabiQuxianActivity.class);
-                        qx.putExtra("title",home.Title);
-                        qx.putExtra("entitle",home.EnTitle);
-                        startActivity(qx);
-                        break;
-                    case "指点消费":
-                        Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
-                        dxf.putExtra("title",home.Title);
-                        dxf.putExtra("entitle",home.EnTitle);
-                        startActivity(dxf);
-                        break;
-                    case "指点认购":
-                        Intent drg = new Intent(ac, ZhidianRengouActivity.class);
-                        drg.putExtra("title",home.Title);
-                        drg.putExtra("entitle",home.EnTitle);
-                        startActivity(drg);
-                        break;
-                    case "指点定存":
-                        Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
-                        ddc.putExtra("title",home.Title);
-                        ddc.putExtra("entitle",home.EnTitle);
-                        startActivity(ddc);
-                        break;
+                if(home.Url.equals("")) {
+                    switch (home.Code) {
+                        case "F01":
+                            Intent recharge = new Intent(ac, VipRechargeActivity.class);
+                            recharge.putExtra("title", home.Title);
+                            recharge.putExtra("entitle", home.EnTitle);
+                            startActivity(recharge);
+                            break;
+                        case "F02":
+                            Intent duihuan = new Intent(ac, FabiDuihuanActivity.class);
+                            duihuan.putExtra("title", home.Title);
+                            duihuan.putExtra("entitle", home.EnTitle);
+                            startActivity(duihuan);
+                            break;
+                        case "F03":
+                            Intent fbzz = new Intent(ac, FabiZhuanzhangActivity.class);
+                            fbzz.putExtra("title", home.Title);
+                            fbzz.putExtra("entitle", home.EnTitle);
+                            startActivity(fbzz);
+                            break;
+                        case "F04":
+                            Intent dc = new Intent(ac, FabiDingcunActivity.class);
+                            dc.putExtra("title", home.Title);
+                            dc.putExtra("entitle", home.EnTitle);
+                            startActivity(dc);
+                            break;
+                        case "F05":
+                            Intent qx = new Intent(ac, FabiQuxianActivity.class);
+                            qx.putExtra("title", home.Title);
+                            qx.putExtra("entitle", home.EnTitle);
+                            startActivity(qx);
+                            break;
+                        case "F06":
+                            Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
+                            dxf.putExtra("title", home.Title);
+                            dxf.putExtra("entitle", home.EnTitle);
+                            startActivity(dxf);
+                            break;
+                        case "F07":
+                            Intent drg = new Intent(ac, ZhidianRengouActivity.class);
+                            drg.putExtra("title", home.Title);
+                            drg.putExtra("entitle", home.EnTitle);
+                            startActivity(drg);
+                            break;
+                        case "F08":
+                            Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
+                            ddc.putExtra("title", home.Title);
+                            ddc.putExtra("entitle", home.EnTitle);
+                            startActivity(ddc);
+                            break;
 
-                    case "指点兑换":
-                        Intent ddh = new Intent(ac, ZhidianDuihuanActivity.class);
-                        ddh.putExtra("title",home.Title);
-                        ddh.putExtra("entitle",home.EnTitle);
-                        startActivity(ddh);
-                        break;
+                        case "F09":
+                            Intent ddh = new Intent(ac, ZhidianDuihuanActivity.class);
+                            ddh.putExtra("title", home.Title);
+                            ddh.putExtra("entitle", home.EnTitle);
+                            startActivity(ddh);
+                            break;
 
-                    case "指点转帐":
-                        Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
-                        dzz.putExtra("title",home.Title);
-                        dzz.putExtra("entitle",home.EnTitle);
-                        startActivity(dzz);
-                        break;
-                    case "指点贷款":
-                        Intent ddk = new Intent(ac, ZhidianDaikuanActivity.class);
-                        ddk.putExtra("title",home.Title);
-                        ddk.putExtra("entitle",home.EnTitle);
-                        startActivity(ddk);
-                        break;
-                    case "法币汇率":
-                        Intent web = new Intent(ac, CenterWebActivity.class);
-                        web.putExtra("title",home.Title);
-                        web.putExtra("entitle",home.EnTitle);
-                        web.putExtra("typeid",home.TypeID+"");
-                        web.putExtra("url",home.Url);
-                        startActivity(web);
-                        break;
-                    case "查询":
-                        Intent web1 = new Intent(ac, CenterWebActivity.class);
-                        web1.putExtra("title",home.Title);
-                        web1.putExtra("entitle",home.EnTitle);
-                        web1.putExtra("typeid",home.TypeID+"");
-                        web1.putExtra("url",home.Url);
-                        startActivity(web1);
-                        break;
+                        case "F10":
+                            Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
+                            dzz.putExtra("title", home.Title);
+                            dzz.putExtra("entitle", home.EnTitle);
+                            startActivity(dzz);
+                            break;
+                        case "F11":
+                            Intent ddk = new Intent(ac, ZhidianDaikuanActivity.class);
+                            ddk.putExtra("title", home.Title);
+                            ddk.putExtra("entitle", home.EnTitle);
+                            startActivity(ddk);
+                            break;
+                    }
+                }else{
+                    Intent web1 = new Intent(ac, CenterWebActivity.class);
+                    web1.putExtra("title", home.Title);
+                    web1.putExtra("entitle", home.EnTitle);
+                    web1.putExtra("typeid", home.TypeID + "");
+                    web1.putExtra("url", home.Url);
+                    startActivity(web1);
                 }
-
 
             }
         });

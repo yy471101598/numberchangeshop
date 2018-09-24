@@ -1,8 +1,10 @@
 package com.shoppay.numc.tools;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
@@ -28,6 +30,12 @@ public class NewDayinTools {
             } else {
                 BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (bluetoothAdapter.isEnabled()) {
+                    BluetoothDevice device = BluetoothUtil.getDevice(bluetoothAdapter);
+                    if (device == null) {
+                        Toast.makeText(MyApplication.context,"Please Make Sure Bluetooth have InnterPrinter!",
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     BluetoothUtil.connectBlueTooth(MyApplication.context);
                     List<byte[]> bytesList = new ArrayList<>();
                     BitmapFactory.Options options = new BitmapFactory.Options();

@@ -24,7 +24,7 @@ public class BluetoothUtil {
         return BluetoothAdapter.getDefaultAdapter();
     }
 
-    private static BluetoothDevice getDevice(BluetoothAdapter bluetoothAdapter) {
+    public static BluetoothDevice getDevice(BluetoothAdapter bluetoothAdapter) {
         BluetoothDevice innerprinter_device = null;
         Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
         for (BluetoothDevice device : devices) {

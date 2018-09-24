@@ -133,7 +133,7 @@ public class ZhidianDingcunActivity extends BaseActivity {
                     fbzz.zdDingcun(ZhidianDingcunActivity.this, dialog, rechargeid, vipid, pwd, currid, Integer.parseInt(cunqiId), etMoney.getText().toString(), new InterfaceBack() {
                         @Override
                         public void onResponse(Object response) {
-                            ActivityStack.create().finishActivity(ZhidianDingcunActivity.class);
+                            finish();
                         }
 
                         @Override
@@ -219,11 +219,12 @@ public class ZhidianDingcunActivity extends BaseActivity {
                     double money = Double.parseDouble(etMoney.getText().toString().equals("") ? "0" : etMoney.getText().toString());
                     if (money < Double.parseDouble(lilvlist.get(0).MinMoney)) {
                         isMoney = false;
+                        etLilv.setText("");
                         return;
                     }
                     for (DcLilv lilv : lilvlist) {
                         if (lilv.MaxMoney.equals("")) {
-                            if (money > Double.parseDouble(lilv.MinMoney)) {
+                            if (money >=Double.parseDouble(lilv.MinMoney)) {
                                 isMoney = true;
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                     etLilv.setText(lilv.ratetitle);
@@ -232,7 +233,7 @@ public class ZhidianDingcunActivity extends BaseActivity {
                                 }
                             }
                         } else {
-                            if (money > Double.parseDouble(lilv.MinMoney) && money < Double.parseDouble(lilv.MaxMoney)) {
+                            if (money >= Double.parseDouble(lilv.MinMoney) && money <= Double.parseDouble(lilv.MaxMoney)) {
                                 isMoney = true;
                                 if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                                     etLilv.setText(lilv.ratetitle);

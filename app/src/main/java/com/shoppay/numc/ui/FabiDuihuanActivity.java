@@ -285,7 +285,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                                             try {
                                                 JSONObject jso = new JSONObject(response.toString());
                                                 isHuilv = true;
-                                                viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
+                                                viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
                                                 viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                                 jisuanHuilv = jso.getString("exchangerate");
                                                 shouxufei = jso.getString("Poundage");
@@ -380,7 +380,7 @@ public class FabiDuihuanActivity extends BaseActivity {
                                         try {
                                             JSONObject jso = new JSONObject(response.toString());
                                             isHuilv = true;
-                                            viprechargeEtHuilv.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("exchangeratetitle"), "100"))) + "%");
+                                            viprechargeEtHuilv.setText(jso.getString("exchangeratetitle"));
                                             viprechargeEtSxf.setText(CommonUtils.lasttwo(Double.parseDouble(CommonUtils.multiply(jso.getString("Poundage"), "100"))) + "%");
                                             jisuanHuilv = jso.getString("exchangerate");
                                             shouxufei = jso.getString("Poundage");
