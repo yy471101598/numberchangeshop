@@ -10,7 +10,6 @@ import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.InterfaceBack;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class NewDayinTools {
                     Bitmap bitmap1 = BitmapFactory.decodeResource(ac.getResources(), R.drawable.dayin, options);
                     byte[] center = ESCUtil.alignCenter();
                     byte[] nextLine = ESCUtil.nextLine(1);
+                    byte[] left = ESCUtil.alignLeft();
                     byte[][] content = {nextLine, nextLine, nextLine, nextLine};
                     byte[] contentBytes = ESCUtil.byteMerger(content);
                     byte[][] end = {nextLine, nextLine};
@@ -52,10 +52,20 @@ public class NewDayinTools {
                     byte[] headerBytes = ESCUtil.byteMerger(bitmap);
                     bytesList.add(headerBytes);
                     if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                        bytesList.add(DayinUtils.dayin(jsonObject.getString("printContent")));
+                        for(String s:jsonObject.getString("printContent").split("\\|")){
+                            byte[] dayin=s.getBytes("gb2312");
+                            byte[][] mm ={ nextLine, left,dayin};
+                            byte[] msgbytes =ESCUtil.byteMerger(mm);
+                            bytesList.add(msgbytes);
+                        }
                         bytesList.add(contentBytes);
                     } else {
-                        bytesList.add(DayinUtils.dayin(jsonObject.getString("printContent")));
+                        for(String s:jsonObject.getString("printContent").split("\\|")){
+                            byte[] dayin=s.getBytes("gb2312");
+                            byte[][] mm ={ nextLine, left,dayin};
+                            byte[] msgbytes =ESCUtil.byteMerger(mm);
+                            bytesList.add(msgbytes);
+                        }
                         bytesList.add(contentBytes);
                     }
                     if (!jsonObject.getString("qrcode").equals("")) {
@@ -70,7 +80,7 @@ public class NewDayinTools {
                     back.onResponse("");
                 }
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

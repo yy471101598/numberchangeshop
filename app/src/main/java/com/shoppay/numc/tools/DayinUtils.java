@@ -41,7 +41,7 @@ public class DayinUtils {
             for(String s:msg.split("\\|")){
                 byte[] dayin=s.getBytes("gb2312");
                 byte[][] mm ={ nextLine, left,dayin};
-                byte[] headerBytes =ESCUtil. byteMerger(mm);
+                byte[] headerBytes =ESCUtil.byteMerger(mm);
                 bytesList.add(headerBytes);
             }
 
