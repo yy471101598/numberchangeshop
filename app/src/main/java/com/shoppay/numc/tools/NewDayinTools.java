@@ -2,6 +2,7 @@ package com.shoppay.numc.tools;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
@@ -22,21 +23,16 @@ import static com.shoppay.numc.ui.BaseActivity.ac;
  */
 
 public class NewDayinTools {
-    public static void dayin(JSONObject jsonObject, InterfaceBack back) {
+    public static void dayin(Context ac, JSONObject jsonObject, InterfaceBack back) {
         try {
             if (jsonObject.getInt("printNumber") == 0) {
                 back.onResponse("");
             } else {
                 BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (bluetoothAdapter.isEnabled()) {
-                    BluetoothDevice device = BluetoothUtil.getDevice(bluetoothAdapter);
-                    if (device == null) {
-                        Toast.makeText(MyApplication.context,"Please Make Sure Bluetooth have InnterPrinter!",
-                                Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    BluetoothUtil.connectBlueTooth(MyApplication.context);
+                    BluetoothUtil.connectBlueTooth(ac);
                     List<byte[]> bytesList = new ArrayList<>();
+                    bytesList.clear();
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inTargetDensity = 160;
                     options.inDensity = 160;
@@ -60,7 +56,7 @@ public class NewDayinTools {
                         }
                         bytesList.add(contentBytes);
                     } else {
-                        for(String s:jsonObject.getString("printContent").split("\\|")){
+                        for(String s:jsonObject.getString("enprintContent").split("\\|")){
                             byte[] dayin=s.getBytes("gb2312");
                             byte[][] mm ={ nextLine, left,dayin};
                             byte[] msgbytes =ESCUtil.byteMerger(mm);

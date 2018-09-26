@@ -1,16 +1,16 @@
 package com.shoppay.numc.ui;
 
+import android.Manifest;
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -21,25 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
-import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
-import com.shoppay.numc.VipCardActivity;
-import com.shoppay.numc.bean.Dengji;
-import com.shoppay.numc.bean.VipInfo;
-import com.shoppay.numc.bean.VipInfoMsg;
-import com.shoppay.numc.bean.VipRecharge;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.modle.ImpObtainCurrency;
-import com.shoppay.numc.modle.ImpObtainPaytype;
 import com.shoppay.numc.modle.ImpObtainRechargeId;
 import com.shoppay.numc.modle.ImpObtainVipMsg;
 import com.shoppay.numc.modle.ImpObtainYuemoney;
@@ -47,34 +33,23 @@ import com.shoppay.numc.modle.ImpVipRecharge;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.ActivityStack;
-import com.shoppay.numc.tools.BluetoothUtil;
 import com.shoppay.numc.tools.CommonUtils;
-import com.shoppay.numc.tools.DateUtils;
-import com.shoppay.numc.tools.DayinUtils;
 import com.shoppay.numc.tools.DialogUtil;
-import com.shoppay.numc.tools.ESCUtil;
-import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
-import com.shoppay.numc.tools.StringUtil;
 import com.shoppay.numc.tools.ToastUtils;
-import com.shoppay.numc.tools.UrlTools;
-import com.shoppay.numc.view.MyGridViews;
 import com.shoppay.numc.wxcode.MipcaActivityCapture;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by songxiaotao on 2017/6/30.
@@ -154,6 +129,7 @@ public class VipRechargeActivity extends BaseActivity {
     private String editString;
     private PayType paytype;
     private String title, entitle;
+    private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 0x03;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -379,8 +355,17 @@ public class VipRechargeActivity extends BaseActivity {
         rlRight.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-                Intent mipca = new Intent(ac, MipcaActivityCapture.class);
-                startActivityForResult(mipca, 111);
+                if (ContextCompat.checkSelfPermission(ac, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(ac, Manifest.permission.CAMERA)) {
+                        ToastUtils.showToast(ac, "您已经拒绝过一次");
+                    }
+                    ActivityCompat.requestPermissions(ac, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSIONS_REQUEST_CODE);
+                } else {//有权限直接调用系统相机拍照
+                    Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                    startActivityForResult(mipca, 111);
+                }
+
             }
         });
         viprechargeRlRecharge.setOnClickListener(new NoDoubleClickListener() {
@@ -446,6 +431,27 @@ public class VipRechargeActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            //调用系统相机申请拍照权限回调
+            case CAMERA_PERMISSIONS_REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent mipca = new Intent(ac, MipcaActivityCapture.class);
+                    startActivityForResult(mipca, 111);
+                } else {
+
+                    ToastUtils.showToast(this, "请允许打开相机！！");
+                }
+                break;
+
+
+            }
+        }
     }
 
     @Override

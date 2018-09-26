@@ -9,15 +9,15 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
-        android:background="@drawable/kuang"
-        android:padding="12.0dip">
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@drawable/kuang">
 
         <ImageView
             android:id="@+id/iv_item"
             android:layout_width="40.0dip"
             android:layout_height="40.0dip"
             android:layout_centerHorizontal="true"
-
             android:contentDescription="@string/app_name" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_marginTop="5.0dip"
             android:maxLines="1"
             android:textColor="@color/black"
-            android:textSize="14.0sp" />
+            android:textSize="13.0sp" />
     </RelativeLayout>
 
 </RelativeLayout>

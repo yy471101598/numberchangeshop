@@ -68,7 +68,7 @@ public class ImpZDRengou {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
-                        NewDayinTools.dayin(jsonObject,back);
+                        NewDayinTools.dayin(ac,jsonObject,back);
                         //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -21,6 +22,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshWebView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.shoppay.numc.R;
 import com.shoppay.numc.card.ReadCardOpt;
 import com.shoppay.numc.dialog.PwdDialog;
@@ -44,6 +52,7 @@ import org.json.JSONObject;
 @SuppressLint("SetJavaScriptEnabled")
 public class CenterWebActivity extends BaseActivity {
     private WebView web;
+    private SmartRefreshLayout smrefresh;
     private static final int FILECHOOSER_RESULTCODE = 333;
     protected static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 211;
     private ValueCallback<Uri> mUploadMessage;
@@ -53,7 +62,7 @@ public class CenterWebActivity extends BaseActivity {
     private Activity ac;
     private String title, entitle;
     private String uri, typeid;
-    private RelativeLayout rl_no, rl_confirm,rl_right;
+    private RelativeLayout rl_no, rl_confirm, rl_right;
     private EditText et_card;
     private TextView tv_name;
     private boolean isSuccess = false;
@@ -104,16 +113,25 @@ public class CenterWebActivity extends BaseActivity {
 
         if (typeid.equals("3")) {
             rl_no.setVisibility(View.VISIBLE);
-            web.setVisibility(View.GONE);
+            smrefresh.setVisibility(View.GONE);
         } else {
             rl_no.setVisibility(View.GONE);
-            web.setVisibility(View.VISIBLE);
+            smrefresh.setVisibility(View.VISIBLE);
             dialog.show();
             String url = uri + "?userid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0);
             PayUtils.webPayUtils(ac, dialog, web, url);
         }
-
-
+        smrefresh.setRefreshHeader(new ClassicsHeader(this));
+        smrefresh.setRefreshFooter(new ClassicsFooter(this));
+        smrefresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.d("xxre", "resh");
+                String url = uri + "?userid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0);
+                web.loadUrl(url);
+                smrefresh.finishRefresh();
+            }
+        });
         et_card.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -188,6 +206,7 @@ public class CenterWebActivity extends BaseActivity {
     private void initView() {
         // TODO Auto-generated method stub
         this.web = (WebView) findViewById(R.id.markrtweb);
+        smrefresh = (SmartRefreshLayout) findViewById(R.id.sartRefresh);
         this.title_tv = (TextView) findViewById(R.id.tv_title);
         this.title_tv.setVisibility(View.VISIBLE);
         this.getBack = (RelativeLayout) findViewById(R.id.rl_left);
@@ -206,12 +225,12 @@ public class CenterWebActivity extends BaseActivity {
         rl_confirm.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
-                if(isSuccess) {
+                if (isSuccess) {
                     PwdDialog.pwdDialog(CenterWebActivity.this, pwd, 1, new InterfaceBack() {
                         @Override
                         public void onResponse(Object response) {
                             rl_no.setVisibility(View.GONE);
-                            web.setVisibility(View.VISIBLE);
+                            smrefresh.setVisibility(View.VISIBLE);
                             dialog.show();
                             String url = uri + "?loginuserid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0) + "&urerid=" + vipid;
                             PayUtils.webPayUtils(ac, dialog, web, url);
@@ -222,7 +241,7 @@ public class CenterWebActivity extends BaseActivity {
 
                         }
                     });
-                }else{
+                } else {
                     Toast.makeText(getApplicationContext(), res.getString(R.string.inputvip),
                             Toast.LENGTH_SHORT).show();
                 }
@@ -246,7 +265,6 @@ public class CenterWebActivity extends BaseActivity {
             return false;
         }
     }
-
 
 
     @Override

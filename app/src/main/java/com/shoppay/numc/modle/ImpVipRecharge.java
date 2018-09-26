@@ -86,7 +86,7 @@ public class ImpVipRecharge {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
-                        NewDayinTools.dayin(jsonObject,back);
+                        NewDayinTools.dayin(ac,jsonObject,back);
                     } else {
                         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
                             ToastUtils.showToast(ac, jso.getString("msg"));

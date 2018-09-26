@@ -7,25 +7,41 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.shoppay.numc.MyApplication;
+import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.tools.LogUtils;
+import com.shoppay.numc.tools.NewDayinTools;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PayUtils {
     private static final int FILECHOOSER_RESULTCODE = 333;
     protected static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 211;
     private static ValueCallback<Uri> mUploadMessage;
     public static ValueCallback<Uri[]> mUploadMessageForAndroid5;
+    public static Context ac;
 
     public static void webPayUtils(final Context ac, final Dialog dialog,
                                    final WebView shop_web, String url) {
         WebSettings seting = shop_web.getSettings();
+        // 设置与Js交互的权限
         seting.setJavaScriptEnabled(true);
         seting.setAllowFileAccess(true);
         seting.setAllowContentAccess(true);
         // shop_web.setVisibility(View.INVISIBLE);
+
+        // 通过addJavascriptInterface()将Java对象映射到JS对象
+        //参数1：Javascript对象名
+        //参数2：Java对象名
+        shop_web.addJavascriptInterface(new AndroidtoJs(), "lee");//AndroidtoJS类对象映射到js的test对象
         shop_web.setWebChromeClient(new WebChromeClient() {
             // Android>=5.0调用这个方法
             @Override
@@ -136,4 +152,33 @@ public class PayUtils {
 
     }
 
+    // 继承自Object类
+    public static class AndroidtoJs extends Object {
+
+        // 定义JS需要调用的方法
+        // 被JS调用的方法必须加入@JavascriptInterface注解
+        @JavascriptInterface
+        public void funAndroid(String msg) {
+            try {
+                System.out.println(msg);
+                LogUtils.d("xxdata", msg);
+                JSONObject jso = new JSONObject(msg);
+                JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
+                NewDayinTools.dayin(MyApplication.context, jsonObject, new InterfaceBack() {
+                    @Override
+                    public void onResponse(Object response) {
+
+                    }
+
+                    @Override
+                    public void onErrorResponse(Object msg) {
+
+                    }
+                });
+            } catch (JSONException e) {
+                LogUtils.d("xxer", e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -49,7 +49,7 @@
                     android:hint="@string/inputvip"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     />
             </RelativeLayout>
 
@@ -130,7 +130,7 @@
                         android:layout_centerInParent="true"
                         android:text="@string/chose"
                         android:textColor="@color/text_30"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         />
 
                     <ImageView
@@ -222,7 +222,7 @@
                         android:layout_centerInParent="true"
                         android:text="@string/chose"
                         android:textColor="@color/text_30"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         />
 
                     <ImageView
@@ -272,7 +272,7 @@
                     android:hint="@string/inputbankname"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     />
             </RelativeLayout>
 
@@ -387,7 +387,7 @@
                     android:hint="@string/inputaccountname"
                     android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     />
             </RelativeLayout>
 
@@ -426,7 +426,7 @@
                     android:background="@null"
                     android:hint="@string/inputbankaccount"
                     android:textColor="@color/text_30"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     />
             </RelativeLayout>
 
@@ -470,7 +470,7 @@
                         android:layout_centerInParent="true"
                         android:text="@string/chose"
                         android:textColor="@color/text_30"
-                        android:textSize="15sp"
+                        android:textSize="13sp"
                         />
 
                     <ImageView
@@ -599,7 +599,7 @@
                     android:inputType="number|numberDecimal"
                     android:textColor="@color/theme_red"
                     android:textColorHint="@color/theme_red"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     />
 
                 <View
