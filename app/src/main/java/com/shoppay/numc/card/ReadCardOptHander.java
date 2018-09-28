@@ -5,8 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.EditText;
 
+import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.ui.MyApplication;
 import com.sunmi.payservice.hardware.aidl.HardwareOpt;
 import com.sunmi.payservice.hardware.aidl.ReadCardCallback;
@@ -16,27 +16,26 @@ import com.sunmi.payservice.hardware.aidl.bean.PayCardInfo;
  * sunmi P1N检卡读卡
  * 联系方式QQ：398320879
  */
-public class ReadCardOpt extends Activity {
+public class ReadCardOptHander extends Activity {
 
     private static final String TAG = "ReadCardOpt";
 
     private int time = 86400;   //读卡超时 24小时
     private String mCardNumber = ""; //通用mifare感应卡卡号和Mag磁条卡卡号
     private String mMifareCardNumber = ""; //非通用mifare感应卡卡号
-    private EditText textView;  //接受需要显示卡号的控件
     private HardwareOpt mHardwareOpt; //sunmiP1n 硬件接口操作模块
+    private InterfaceBack back;
 
-    public ReadCardOpt() {
+    public ReadCardOptHander() {
 
     }
 
     /**
      * 在需要刷卡的activity中调用该构造函数
      *
-     * @param textView 显示卡号的控件
      */
-    public ReadCardOpt(EditText textView) {
-        this.textView = textView;
+    public ReadCardOptHander(InterfaceBack back) {
+        this.back = back;
 
         mHardwareOpt = MyApplication.sHardwareOpt;
 
@@ -127,7 +126,8 @@ public class ReadCardOpt extends Activity {
                                 mCardNumber = "0" + mCardNumber;
                             }
                         }
-                        textView.setText(mCardNumber);
+                        back.onResponse(mCardNumber);
+//                        textView.setText(mCardNumber);
                     } else {
                         /***************Mag磁条卡*********************/
                         mCardNumber = payCardInfo.track2;
@@ -137,7 +137,8 @@ public class ReadCardOpt extends Activity {
 //                                mCardNumber = "0" + mCardNumber;
 //                            }
 //                        }
-                        textView.setText(mCardNumber);
+                        back.onResponse(mCardNumber);
+//                        textView.setText(mCardNumber);
                     }
                     break;
             }

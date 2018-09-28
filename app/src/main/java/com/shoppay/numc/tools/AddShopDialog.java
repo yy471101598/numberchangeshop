@@ -21,12 +21,12 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.ShopCar;
 import com.shoppay.numc.bean.SystemQuanxian;
 import com.shoppay.numc.db.DBAdapter;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.ui.MyApplication;
 
 import org.json.JSONObject;
 
@@ -42,8 +42,8 @@ import cz.msebera.android.httpclient.Header;
 public class AddShopDialog {
     public static boolean isMoney = true, isYue = false, isZhifubao = false, isYinlian = false, isQita = false, isWx = false;
     public static Dialog dialog;
-    public static Dialog jiesuanDialog(MyApplication app,final Dialog loading,final Context context,
-                                       int showingLocation, final String type,final double yfmoney, final InterfaceBack handler) {
+    public static Dialog jiesuanDialog(MyApplication app, final Dialog loading, final Context context,
+                                       int showingLocation, final String type, final double yfmoney, final InterfaceBack handler) {
         final Dialog dialog;
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_numpay, null);

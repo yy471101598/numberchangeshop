@@ -21,12 +21,12 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.SystemQuanxian;
 import com.shoppay.numc.bean.YinpianMsg;
 import com.shoppay.numc.db.DBAdapter;
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.ui.MyApplication;
 
 import org.json.JSONObject;
 

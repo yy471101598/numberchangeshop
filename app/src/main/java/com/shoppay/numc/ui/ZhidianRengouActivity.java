@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.shoppay.numc.R;
 import com.shoppay.numc.bean.ZhidianMsg;
-import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.card.ReadCardOptHander;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
@@ -74,7 +74,7 @@ public class ZhidianRengouActivity extends BaseActivity {
     @Bind(R.id.viprecharge_tv_cardnum)
     TextView viprechargeTvCardnum;
     @Bind(R.id.viprecharge_et_cardnum)
-    EditText viprechargeEtCardnum;
+    TextView viprechargeEtCardnum;
     @Bind(R.id.viprecharge_tv_name)
     TextView viprechargeTvName;
     @Bind(R.id.viprecharge_et_name)
@@ -131,12 +131,14 @@ public class ZhidianRengouActivity extends BaseActivity {
                         vipid = jso.getInt("userid");
                         pwd = jso.getString("paypassword");
                         viprechargeEtName.setText(jso.getString("name"));
+                        viprechargeEtCardnum.setText(jso.getString("bankcard"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     isSuccess = true;
                     break;
                 case 2:
+                    viprechargeEtCardnum.setText("");
                     viprechargeEtName.setText("");
                     isSuccess = false;
                     break;
@@ -171,30 +173,30 @@ public class ZhidianRengouActivity extends BaseActivity {
         initView();
         obtainRgCurr("no");
         obtainRgZhidian("no");
-        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (delayRun != null) {
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(delayRun);
-                }
-                editString = editable.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-
-                handler.postDelayed(delayRun, 800);
-            }
-        });
+//        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (delayRun != null) {
+//                    //每次editText有变化的时候，则移除上次发出的延迟线程
+//                    handler.removeCallbacks(delayRun);
+//                }
+//                editString = editable.toString();
+//
+//                //延迟800ms，如果不再输入字符，则执行该线程的run方法
+//
+//                handler.postDelayed(delayRun, 800);
+//            }
+//        });
 
 
         etMoney.addTextChangedListener(new TextWatcher() {
@@ -396,37 +398,37 @@ public class ZhidianRengouActivity extends BaseActivity {
 
     }
 
-    /**
-     * 延迟线程，看是否还有下一个字符输入
-     */
-    private Runnable delayRun = new Runnable() {
-
-        @Override
-        public void run() {
-            //在这里调用服务器的接口，获取数据
-            ontainVipInfo();
-        }
-    };
-
-    private void ontainVipInfo() {
-        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
-        vipmsg.obtainVipMsg(ZhidianRengouActivity.this, editString, new InterfaceBack() {
-            @Override
-            public void onResponse(Object response) {
-                Message msg = handler.obtainMessage();
-                msg.what = 1;
-                msg.obj = response;
-                handler.sendMessage(msg);
-            }
-
-            @Override
-            public void onErrorResponse(Object msg1) {
-                Message msg = handler.obtainMessage();
-                msg.what = 2;
-                handler.sendMessage(msg);
-            }
-        });
-    }
+//    /**
+//     * 延迟线程，看是否还有下一个字符输入
+//     */
+//    private Runnable delayRun = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            //在这里调用服务器的接口，获取数据
+//            ontainVipInfo();
+//        }
+//    };
+//
+//    private void ontainVipInfo() {
+//        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+//        vipmsg.obtainVipMsg(ZhidianRengouActivity.this, editString, new InterfaceBack() {
+//            @Override
+//            public void onResponse(Object response) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 1;
+//                msg.obj = response;
+//                handler.sendMessage(msg);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(Object msg1) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 2;
+//                handler.sendMessage(msg);
+//            }
+//        });
+//    }
 
 
     private void initView() {
@@ -714,7 +716,26 @@ public class ZhidianRengouActivity extends BaseActivity {
         switch (requestCode) {
             case 111:
                 if (resultCode == RESULT_OK) {
-                    viprechargeEtCardnum.setText(data.getStringExtra("codedata"));
+                    dialog.show();
+                    ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                    vipmsg.obtainVipMsg(ZhidianRengouActivity.this, data.getStringExtra("codedata"), new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 1;
+                            msg.obj = response;
+                            handler.sendMessage(msg);
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg1) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 2;
+                            handler.sendMessage(msg);
+                        }
+                    });
                 }
                 break;
         }
@@ -723,21 +744,50 @@ public class ZhidianRengouActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new ReadCardOpt(viprechargeEtCardnum);
+        new ReadCardOptHander(new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                dialog.show();
+                ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                vipmsg.obtainVipMsg(ZhidianRengouActivity.this, response.toString(), new InterfaceBack() {
+                    @Override
+                    public void onResponse(Object response) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 1;
+                        msg.obj = response;
+                        handler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onErrorResponse(Object msg1) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 2;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         try {
-            new ReadCardOpt().overReadCard();
+            new ReadCardOptHander().overReadCard();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         super.onStop();
-        if (delayRun != null) {
-            //每次editText有变化的时候，则移除上次发出的延迟线程
-            handler.removeCallbacks(delayRun);
-        }
+//        if (delayRun != null) {
+//            //每次editText有变化的时候，则移除上次发出的延迟线程
+//            handler.removeCallbacks(delayRun);
+//        }
     }
 
 

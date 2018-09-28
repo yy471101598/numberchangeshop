@@ -1,22 +1,25 @@
 package com.shoppay.numc.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.shoppay.numc.R;
 import com.shoppay.numc.tools.CleanMSG;
 import com.shoppay.numc.tools.ObtainSystemLanguage;
 import com.shoppay.numc.tools.PreferenceHelper;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppCompatActivity {
 
     private static final int GO_MAIN = 1000;
     private static final int GO_HOME = 2000;
+    private SimpleDraweeView img;
 
     /**
      * Handler:跳转到不同界面
@@ -44,6 +47,14 @@ public class SplashActivity extends Activity {
         // TODO 自动生成的方法存根
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        img = (SimpleDraweeView) findViewById(R.id.img_tx);
+        if (PreferenceHelper.readString(getApplicationContext(), "numc", "lagavage", "zh").equals("zh")) {
+            Uri uri = Uri.parse("res://"+getPackageName()+"/" + R.drawable.welcom);
+            img.setImageURI(uri);
+        } else {
+            Uri uri = Uri.parse("res://"+getPackageName()+"/" + R.drawable.welcom);
+            img.setImageURI(uri);
+        }
         init();
         ObtainSystemLanguage.obainLanguage(getApplicationContext());
     }

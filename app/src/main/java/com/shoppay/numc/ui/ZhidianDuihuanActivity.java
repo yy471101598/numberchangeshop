@@ -31,7 +31,7 @@ import com.shoppay.numc.R;
 import com.shoppay.numc.adapter.ZhidianDuihuanAdapter;
 import com.shoppay.numc.bean.LipinMsg;
 import com.shoppay.numc.bean.ZhidianMsg;
-import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.card.ReadCardOptHander;
 import com.shoppay.numc.db.DBAdapter;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
@@ -91,7 +91,7 @@ public class ZhidianDuihuanActivity extends BaseActivity {
     @Bind(R.id.vip_tv_card)
     TextView mVipTvCard;
     @Bind(R.id.vip_et_card)
-    EditText mVipEtCard;
+    TextView mVipEtCard;
     @Bind(R.id.vip_tv_name)
     TextView mVipTvName;
     @Bind(R.id.tv_bizhong)
@@ -127,12 +127,14 @@ public class ZhidianDuihuanActivity extends BaseActivity {
                         vipid = jso.getInt("userid");
                         pwd = jso.getString("paypassword");
                         mVipTvName.setText(jso.getString("name"));
+                        mVipEtCard.setText(jso.getString("bankcard"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     isSuccess = true;
                     break;
                 case 2:
+                    mVipEtCard.setText("");
                     mVipTvName.setText("");
                     isSuccess = false;
                     break;
@@ -179,30 +181,30 @@ public class ZhidianDuihuanActivity extends BaseActivity {
 
         adapter = new ZhidianDuihuanAdapter(ac, list);
         mListview.setAdapter(adapter);
-        mVipEtCard.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (delayRun != null) {
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(delayRun);
-                }
-                editString = editable.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-
-                handler.postDelayed(delayRun, 800);
-            }
-        });
+//        mVipEtCard.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (delayRun != null) {
+//                    //每次editText有变化的时候，则移除上次发出的延迟线程
+//                    handler.removeCallbacks(delayRun);
+//                }
+//                editString = editable.toString();
+//
+//                //延迟800ms，如果不再输入字符，则执行该线程的run方法
+//
+//                handler.postDelayed(delayRun, 800);
+//            }
+//        });
 
         mVipEtCode.addTextChangedListener(new TextWatcher() {
             @Override
@@ -244,17 +246,17 @@ public class ZhidianDuihuanActivity extends BaseActivity {
     };
 
 
-    /**
-     * 延迟线程，看是否还有下一个字符输入
-     */
-    private Runnable delayRun = new Runnable() {
-
-        @Override
-        public void run() {
-            //在这里调用服务器的接口，获取数据
-            ontainVipInfo();
-        }
-    };
+//    /**
+//     * 延迟线程，看是否还有下一个字符输入
+//     */
+//    private Runnable delayRun = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            //在这里调用服务器的接口，获取数据
+//            ontainVipInfo();
+//        }
+//    };
 
     private void obtainDuihuanMsgByCode() {
         ImpObtainZDDHShopmsg shopmsg = new ImpObtainZDDHShopmsg();
@@ -377,26 +379,26 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         });
 
     }
-
-    private void ontainVipInfo() {
-        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
-        vipmsg.obtainVipMsg(ZhidianDuihuanActivity.this, editString, new InterfaceBack() {
-            @Override
-            public void onResponse(Object response) {
-                Message msg = handler.obtainMessage();
-                msg.what = 1;
-                msg.obj = response;
-                handler.sendMessage(msg);
-            }
-
-            @Override
-            public void onErrorResponse(Object msg1) {
-                Message msg = handler.obtainMessage();
-                msg.what = 2;
-                handler.sendMessage(msg);
-            }
-        });
-    }
+//
+//    private void ontainVipInfo() {
+//        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+//        vipmsg.obtainVipMsg(ZhidianDuihuanActivity.this, editString, new InterfaceBack() {
+//            @Override
+//            public void onResponse(Object response) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 1;
+//                msg.obj = response;
+//                handler.sendMessage(msg);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(Object msg1) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 2;
+//                handler.sendMessage(msg);
+//            }
+//        });
+//    }
 
 
     private void initView() {
@@ -603,7 +605,26 @@ public class ZhidianDuihuanActivity extends BaseActivity {
         switch (requestCode) {
             case 111:
                 if (resultCode == RESULT_OK) {
-                    mVipEtCard.setText(data.getStringExtra("codedata"));
+                    dialog.show();
+                    ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                    vipmsg.obtainVipMsg(ZhidianDuihuanActivity.this, data.getStringExtra("codedata"), new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 1;
+                            msg.obj = response;
+                            handler.sendMessage(msg);
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg1) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 2;
+                            handler.sendMessage(msg);
+                        }
+                    });
                 }
                 break;
             case 222:
@@ -617,21 +638,50 @@ public class ZhidianDuihuanActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new ReadCardOpt(mVipEtCard);
+        new ReadCardOptHander(new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                dialog.show();
+                ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                vipmsg.obtainVipMsg(ZhidianDuihuanActivity.this, response.toString(), new InterfaceBack() {
+                    @Override
+                    public void onResponse(Object response) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 1;
+                        msg.obj = response;
+                        handler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onErrorResponse(Object msg1) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 2;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         try {
-            new ReadCardOpt().overReadCard();
+            new ReadCardOptHander().overReadCard();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         super.onStop();
-        if (delayRun != null) {
-            //每次editText有变化的时候，则移除上次发出的延迟线程
-            handler.removeCallbacks(delayRun);
-        }
+//        if (delayRun != null) {
+//            //每次editText有变化的时候，则移除上次发出的延迟线程
+//            handler.removeCallbacks(delayRun);
+//        }
         if (codeRun != null) {
             //每次editText有变化的时候，则移除上次发出的延迟线程
             handler.removeCallbacks(codeRun);

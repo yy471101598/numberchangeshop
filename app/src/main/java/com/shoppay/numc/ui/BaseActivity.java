@@ -2,25 +2,20 @@ package com.shoppay.numc.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.http.PermissionListener;
 import com.shoppay.numc.modle.ImpObtainCurrency;
 import com.shoppay.numc.modle.ImpObtainPaytype;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.PayType;
 import com.shoppay.numc.tools.DialogUtil;
-import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.ObtainSystemLanguage;
 import com.shoppay.numc.tools.PreferenceHelper;
 
@@ -34,8 +29,8 @@ import java.util.Locale;
  * Created by songxiaotao on 2018/1/9.
  */
 
-public abstract class BaseActivity extends Activity {
-//    private static PermissionListener mListener;
+public abstract class BaseActivity extends AppCompatActivity {
+    //    private static PermissionListener mListener;
     public Dialog dialog;
     public Resources res;
     public static Activity ac;

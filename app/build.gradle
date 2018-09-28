@@ -18,19 +18,19 @@ android {
         }
     }
 
-    tasks.whenTaskAdded { task ->
-        if (task.name.contains("lint")//如果instant run不生效，把clean这行干掉
-                ||task.name.equals("clean")//项目中有用到aidl则不可以舍弃这个任务
-                ||task.name.contains("Aidl")//用不到测试的时候就可以先关闭
-                ||task.name.contains("mockableAndroidJar")
-                ||task.name.contains("UnitTest")
-                ||task.name.contains("AndroidTest")//用不到NDK和JNI的也关闭掉
-                || task.name.contains("Ndk")
-                || task.name.contains("Jni")
-        ) {
-            task.enabled = false
-        }
-    }
+//    tasks.whenTaskAdded { task ->
+//        if (task.name.contains("lint")//如果instant run不生效，把clean这行干掉
+//                ||task.name.equals("clean")//项目中有用到aidl则不可以舍弃这个任务
+//                ||task.name.contains("Aidl")//用不到测试的时候就可以先关闭
+//                ||task.name.contains("mockableAndroidJar")
+//                ||task.name.contains("UnitTest")
+//                ||task.name.contains("AndroidTest")//用不到NDK和JNI的也关闭掉
+//                || task.name.contains("Ndk")
+//                || task.name.contains("Jni")
+//        ) {
+//            task.enabled = false
+//        }
+//    }
 }
 
 dependencies {
@@ -39,6 +39,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:design:25.0.1'
     testCompile 'junit:junit:4.12'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -55,6 +56,7 @@ dependencies {
     compile files('libs/volly-1.0.11.jar')
     compile(name: 'SunmiPayService', ext: 'aar')
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-12'
+    compile 'com.facebook.fresco:fresco:0.12.0'
 }
 repositories {
     flatDir {

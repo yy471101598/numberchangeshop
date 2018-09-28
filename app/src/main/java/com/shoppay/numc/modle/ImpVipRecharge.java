@@ -2,7 +2,6 @@ package com.shoppay.numc.modle;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -11,16 +10,11 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
-import com.shoppay.numc.tools.BluetoothUtil;
-import com.shoppay.numc.tools.DayinUtils;
-import com.shoppay.numc.tools.ESCUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
-import com.shoppay.numc.tools.MergeLinearArraysUtil;
 import com.shoppay.numc.tools.NewDayinTools;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
@@ -30,12 +24,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
-
-import static com.shoppay.numc.ui.BaseActivity.ac;
 
 /**
  * Created by songxiaotao on 2018/9/5.

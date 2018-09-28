@@ -14,10 +14,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NewDayinTools;
+import com.shoppay.numc.ui.MyApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;

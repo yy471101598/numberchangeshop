@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:background="@color/theme_red"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" >
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:id="@+id/rl_title"
+                android:background="@color/theme_red"
+                android:fitsSystemWindows="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
     <RelativeLayout
         android:id="@+id/rl_left"
         android:layout_width="60dp"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/img_left"
@@ -17,7 +19,7 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/left_back" />
+            android:background="@drawable/left_back"/>
     </RelativeLayout>
 
     <TextView
@@ -27,7 +29,7 @@
         android:layout_centerInParent="true"
         android:text="设置向导"
         android:textColor="@color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
     <RelativeLayout
         android:id="@+id/rl_right"
@@ -42,10 +44,10 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
-            android:textSize="14sp"
             android:text="@string/saomiao"
             android:textColor="@color/white"
-             />
+            android:textSize="14sp"
+            />
     </RelativeLayout>
 
 </RelativeLayout>

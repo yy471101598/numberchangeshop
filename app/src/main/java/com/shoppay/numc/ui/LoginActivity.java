@@ -8,9 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -24,7 +26,6 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.ContansUtils;
 import com.shoppay.numc.http.InterfaceBack;
@@ -34,10 +35,8 @@ import com.shoppay.numc.modle.ImpObtainPaytype;
 import com.shoppay.numc.nbean.Currency;
 import com.shoppay.numc.nbean.HomeMsg;
 import com.shoppay.numc.nbean.PayType;
-import com.shoppay.numc.tools.AESTools;
 import com.shoppay.numc.tools.ActivityStack;
 import com.shoppay.numc.tools.CommonUtils;
-import com.shoppay.numc.tools.DESTools;
 import com.shoppay.numc.tools.DialogUtil;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.MD5Util;
@@ -62,7 +61,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2017/6/30.
  */
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
     private RelativeLayout rl_login;
     private EditText et_account, et_pwd;
     private CheckBox cb;
@@ -75,6 +74,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         ac = this;
         ActivityStack.create().addActivity(ac);
@@ -124,6 +124,7 @@ public class LoginActivity extends Activity {
             }
         });
     }
+
 
     public String str2HexStr(String str) {
         byte[] bytes = str.getBytes();

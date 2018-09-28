@@ -1,16 +1,16 @@
 package com.shoppay.numc.tools;
 
 
-        import android.os.Handler;
-        import android.os.Message;
-        import android.os.RemoteException;
-        import android.util.Log;
-        import android.widget.EditText;
-        import android.widget.TextView;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.TextView;
 
-        import com.shoppay.numc.MyApplication;
-        import com.sunmi.pay.hardware.aidl.bean.CardInfo;
-        import com.sunmi.pay.hardware.aidl.readcard.ReadCardCallback;
+import com.shoppay.numc.ui.MyApplication;
+import com.sunmi.pay.hardware.aidl.bean.CardInfo;
+import com.sunmi.pay.hardware.aidl.readcard.ReadCardCallback;
 
 /**
  * pos机器卡片的操作

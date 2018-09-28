@@ -11,9 +11,8 @@ import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shoppay.numc.R;
-import com.shoppay.numc.card.ReadCardOpt;
+import com.shoppay.numc.card.ReadCardOptHander;
 import com.shoppay.numc.dialog.CurrChoseDialog;
 import com.shoppay.numc.dialog.PwdDialog;
 import com.shoppay.numc.http.InterfaceBack;
@@ -67,7 +66,7 @@ public class VipRechargeActivity extends BaseActivity {
     @Bind(R.id.viprecharge_tv_cardnum)
     TextView viprechargeTvCardnum;
     @Bind(R.id.viprecharge_et_cardnum)
-    EditText viprechargeEtCardnum;
+    TextView viprechargeEtCardnum;
     @Bind(R.id.viprecharge_tv_name)
     TextView viprechargeTvName;
     @Bind(R.id.viprecharge_et_name)
@@ -113,12 +112,14 @@ public class VipRechargeActivity extends BaseActivity {
                         vipid = jso.getInt("userid");
                         pwd = jso.getString("paypassword");
                         viprechargeEtName.setText(jso.getString("name"));
+                        viprechargeEtCardnum.setText(jso.getString("bankcard"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     isSuccess = true;
                     break;
                 case 2:
+                    viprechargeEtCardnum.setText("");
                     viprechargeEtName.setText("");
                     isSuccess = false;
                     break;
@@ -134,6 +135,7 @@ public class VipRechargeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.aactivity_viprecharge);
         ButterKnife.bind(this);
         ac = this;
@@ -149,31 +151,30 @@ public class VipRechargeActivity extends BaseActivity {
 
         handlePayType(paylist);
         initView();
-
-        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                if (delayRun != null) {
-                    //每次editText有变化的时候，则移除上次发出的延迟线程
-                    handler.removeCallbacks(delayRun);
-                }
-                editString = editable.toString();
-
-                //延迟800ms，如果不再输入字符，则执行该线程的run方法
-
-                handler.postDelayed(delayRun, 800);
-            }
-        });
+//        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                if (delayRun != null) {
+//                    //每次editText有变化的时候，则移除上次发出的延迟线程
+//                    handler.removeCallbacks(delayRun);
+//                }
+//                editString = editable.toString();
+//
+//                //延迟800ms，如果不再输入字符，则执行该线程的run方法
+//
+//                handler.postDelayed(delayRun, 800);
+//            }
+//        });
     }
 
     private void handlePayType(List<PayType> paylist) {
@@ -239,37 +240,37 @@ public class VipRechargeActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 延迟线程，看是否还有下一个字符输入
-     */
-    private Runnable delayRun = new Runnable() {
-
-        @Override
-        public void run() {
-            //在这里调用服务器的接口，获取数据
-            ontainVipInfo();
-        }
-    };
-
-    private void ontainVipInfo() {
-        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
-        vipmsg.obtainVipMsg(VipRechargeActivity.this, editString, new InterfaceBack() {
-            @Override
-            public void onResponse(Object response) {
-                Message msg = handler.obtainMessage();
-                msg.what = 1;
-                msg.obj = response;
-                handler.sendMessage(msg);
-            }
-
-            @Override
-            public void onErrorResponse(Object msg1) {
-                Message msg = handler.obtainMessage();
-                msg.what = 2;
-                handler.sendMessage(msg);
-            }
-        });
-    }
+//    /**
+//     * 延迟线程，看是否还有下一个字符输入
+//     */
+//    private Runnable delayRun = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//            //在这里调用服务器的接口，获取数据
+//            ontainVipInfo();
+//        }
+//    };
+//
+//    private void ontainVipInfo() {
+//        ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+//        vipmsg.obtainVipMsg(VipRechargeActivity.this, editString, new InterfaceBack() {
+//            @Override
+//            public void onResponse(Object response) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 1;
+//                msg.obj = response;
+//                handler.sendMessage(msg);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(Object msg1) {
+//                Message msg = handler.obtainMessage();
+//                msg.what = 2;
+//                handler.sendMessage(msg);
+//            }
+//        });
+//    }
 
 
     private void initView() {
@@ -460,7 +461,26 @@ public class VipRechargeActivity extends BaseActivity {
         switch (requestCode) {
             case 111:
                 if (resultCode == RESULT_OK) {
-                    viprechargeEtCardnum.setText(data.getStringExtra("codedata"));
+                    dialog.show();
+                    ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                    vipmsg.obtainVipMsg(VipRechargeActivity.this, data.getStringExtra("codedata"), new InterfaceBack() {
+                        @Override
+                        public void onResponse(Object response) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 1;
+                            msg.obj = response;
+                            handler.sendMessage(msg);
+                        }
+
+                        @Override
+                        public void onErrorResponse(Object msg1) {
+                            dialog.dismiss();
+                            Message msg = handler.obtainMessage();
+                            msg.what = 2;
+                            handler.sendMessage(msg);
+                        }
+                    });
                 }
                 break;
         }
@@ -469,21 +489,50 @@ public class VipRechargeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new ReadCardOpt(viprechargeEtCardnum);
+        new ReadCardOptHander(new InterfaceBack() {
+            @Override
+            public void onResponse(Object response) {
+                dialog.show();
+                ImpObtainVipMsg vipmsg = new ImpObtainVipMsg();
+                vipmsg.obtainVipMsg(VipRechargeActivity.this, response.toString(), new InterfaceBack() {
+                    @Override
+                    public void onResponse(Object response) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 1;
+                        msg.obj = response;
+                        handler.sendMessage(msg);
+                    }
+
+                    @Override
+                    public void onErrorResponse(Object msg1) {
+                        dialog.dismiss();
+                        Message msg = handler.obtainMessage();
+                        msg.what = 2;
+                        handler.sendMessage(msg);
+                    }
+                });
+            }
+
+            @Override
+            public void onErrorResponse(Object msg) {
+
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         try {
-            new ReadCardOpt().overReadCard();
+            new ReadCardOptHander().overReadCard();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         super.onStop();
-        if (delayRun != null) {
-            //每次editText有变化的时候，则移除上次发出的延迟线程
-            handler.removeCallbacks(delayRun);
-        }
+//        if (delayRun != null) {
+//            //每次editText有变化的时候，则移除上次发出的延迟线程
+//            handler.removeCallbacks(delayRun);
+//        }
     }
 
 

@@ -1,342 +1,350 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+    >
 
-        <include layout="@layout/title_twoicon_back"></include>
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
 
-            <TextView
-                android:id="@+id/tv_cardnum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/vipcard"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <EditText
-                android:id="@+id/et_cardnum"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/tv_cardnum"
-                android:background="@null"
-                android:gravity="center_vertical|right"
-                android:hint="@string/inputvip"
-                android:paddingLeft="10dp"
-                android:textColor="@color/text_30"
-                android:textSize="13sp"
-                />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/vipname"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:id="@+id/et_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/tv_name"
-                android:gravity="center_vertical|right"
-                android:paddingLeft="10dp"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_bizhong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/curr"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
+            <include layout="@layout/title_twoicon_back"></include>
 
             <RelativeLayout
-                android:id="@+id/rl_currchose"
-                android:layout_width="100dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/shap_downchose"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 >
 
                 <TextView
-                    android:id="@+id/et_bingzhong"
+                    android:id="@+id/tv_cardnum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/chose"
-                    android:textColor="@color/text_30"
-                    android:textSize="13sp"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@mipmap/button_down"
-
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/vipcard"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
                     />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_cunqi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/cunqi"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <RelativeLayout
-                android:id="@+id/rl_cunqichose"
-                android:layout_width="100dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/shap_downchose"
-                >
 
                 <TextView
-                    android:id="@+id/et_cunqi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/chose"
+                    android:id="@+id/et_cardnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/tv_cardnum"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
                     android:textColor="@color/text_30"
                     android:textSize="13sp"
                     />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@mipmap/button_down"
-
-                    />
             </RelativeLayout>
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_lilv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/lilv"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:id="@+id/et_lilv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/tv_lilv"
-                android:gravity="center_vertical|right"
-                android:paddingLeft="10dp"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            >
-
-            <TextView
-                android:id="@+id/tv_yue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/accountyue"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <TextView
-                android:id="@+id/et_yue"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="15dp"
-                android:layout_toRightOf="@id/tv_yue"
-                android:gravity="center_vertical|right"
-                android:paddingLeft="10dp"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-        </RelativeLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/viewcolor"
-            ></View>
-
-        <RelativeLayout
-            android:id="@+id/consumption_rl_money"
-            android:layout_width="match_parent"
-            android:layout_height="41dp"
-            android:background="@color/white"
-            >
-
-            <TextView
-                android:id="@+id/vip_tv_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/cunmoney"
-                android:textColor="@color/text_30"
-                android:textSize="15sp"
-                />
-
-            <EditText
-                android:id="@+id/et_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_toRightOf="@id/vip_tv_money"
-                android:background="@null"
-                android:gravity="center_vertical|right"
-                android:hint="@string/inputcunmoney"
-                android:inputType="number|numberDecimal"
-                android:textColor="@color/theme_red"
-                android:textColorHint="@color/theme_red"
-                android:textSize="13sp"
-                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/viewcolor"></View>
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/vipname"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/tv_name"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_bizhong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/curr"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/rl_currchose"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shap_downchose"
+                    >
+
+                    <TextView
+                        android:id="@+id/et_bingzhong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/chose"
+                        android:textColor="@color/text_30"
+                        android:textSize="13sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/button_down"
+
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_cunqi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/cunqi"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <RelativeLayout
+                    android:id="@+id/rl_cunqichose"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shap_downchose"
+                    >
+
+                    <TextView
+                        android:id="@+id/et_cunqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/chose"
+                        android:textColor="@color/text_30"
+                        android:textSize="13sp"
+                        />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:background="@mipmap/button_down"
+
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_lilv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/lilv"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:id="@+id/et_lilv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/tv_lilv"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                >
+
+                <TextView
+                    android:id="@+id/tv_yue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/accountyue"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <TextView
+                    android:id="@+id/et_yue"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_toRightOf="@id/tv_yue"
+                    android:gravity="center_vertical|right"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/viewcolor"
+                ></View>
+
+            <RelativeLayout
+                android:id="@+id/consumption_rl_money"
+                android:layout_width="match_parent"
+                android:layout_height="41dp"
+                android:background="@color/white"
+                >
+
+                <TextView
+                    android:id="@+id/vip_tv_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/cunmoney"
+                    android:textColor="@color/text_30"
+                    android:textSize="15sp"
+                    />
+
+                <EditText
+                    android:id="@+id/et_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toRightOf="@id/vip_tv_money"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="@string/inputcunmoney"
+                    android:inputType="number|numberDecimal"
+                    android:textColor="@color/theme_red"
+                    android:textColorHint="@color/theme_red"
+                    android:textSize="13sp"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/viewcolor"></View>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_dingcuntijiao"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/kuang_red_red"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/dingcuntijiao"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                />
         </RelativeLayout>
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl_dingcuntijiao"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/kuang_red_red"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/dingcuntijiao"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            />
     </RelativeLayout>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

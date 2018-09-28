@@ -1,13 +1,10 @@
 package com.shoppay.numc.tools;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.Toast;
 
-import com.shoppay.numc.MyApplication;
 import com.shoppay.numc.R;
 import com.shoppay.numc.http.InterfaceBack;
 
@@ -15,8 +12,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.shoppay.numc.ui.BaseActivity.ac;
 
 /**
  * Created by songxiaotao on 2018/9/21.
