@@ -49,5 +49,22 @@
             android:textSize="14sp"
             />
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_gohome"
+        android:layout_width="60dp"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        >
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/tohome"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

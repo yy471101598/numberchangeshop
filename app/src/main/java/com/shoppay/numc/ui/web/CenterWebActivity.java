@@ -58,7 +58,7 @@ public class CenterWebActivity extends BaseActivity {
     private ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> mUploadMessageForAndroid5;
     private TextView title_tv;
-    private RelativeLayout getBack;
+    private RelativeLayout getBack, goHome;
     private Activity ac;
     private String title, entitle;
     private String uri, typeid;
@@ -118,9 +118,13 @@ public class CenterWebActivity extends BaseActivity {
         if (typeid.equals("3")) {
             rl_no.setVisibility(View.VISIBLE);
             smrefresh.setVisibility(View.GONE);
+            rl_right.setVisibility(View.VISIBLE);
+            goHome.setVisibility(View.GONE);
         } else {
             rl_no.setVisibility(View.GONE);
             smrefresh.setVisibility(View.VISIBLE);
+            rl_right.setVisibility(View.GONE);
+            goHome.setVisibility(View.VISIBLE);
             dialog.show();
             JSONObject jso = new JSONObject();
             try {
@@ -219,11 +223,19 @@ public class CenterWebActivity extends BaseActivity {
         this.title_tv = (TextView) findViewById(R.id.tv_title);
         this.title_tv.setVisibility(View.VISIBLE);
         this.getBack = (RelativeLayout) findViewById(R.id.rl_left);
+        this.goHome = (RelativeLayout) findViewById(R.id.rl_gohome);
         et_card = (TextView) findViewById(R.id.et_cardnum);
         rl_no = (RelativeLayout) findViewById(R.id.rl_no);
         rl_confirm = (RelativeLayout) findViewById(R.id.rl_confirm);
         rl_right = (RelativeLayout) findViewById(R.id.rl_right);
         tv_name = (TextView) findViewById(R.id.et_name);
+
+        goHome.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View view) {
+                finish();
+            }
+        });
         rl_right.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View view) {
@@ -248,6 +260,8 @@ public class CenterWebActivity extends BaseActivity {
                         public void onResponse(Object response) {
                             rl_no.setVisibility(View.GONE);
                             smrefresh.setVisibility(View.VISIBLE);
+                            rl_right.setVisibility(View.GONE);
+                            goHome.setVisibility(View.VISIBLE);
                             dialog.show();
 
                             JSONObject jso = new JSONObject();
