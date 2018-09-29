@@ -54,7 +54,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HomeMsg home = (HomeMsg) adapterView.getItemAtPosition(i);
-                if(home.Url.equals("")) {
+                if (home.Url.equals("")) {
                     switch (home.Code) {
                         case "F01":
                             Intent recharge = new Intent(ac, VipRechargeActivity.class);
@@ -125,7 +125,7 @@ public class HomeActivity extends BaseActivity {
                             startActivity(ddk);
                             break;
                     }
-                }else{
+                } else {
                     Intent web1 = new Intent(ac, CenterWebActivity.class);
                     web1.putExtra("title", home.Title);
                     web1.putExtra("entitle", home.EnTitle);
@@ -144,7 +144,7 @@ public class HomeActivity extends BaseActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(disMetrics);
         int width = disMetrics.widthPixels;
         int height = disMetrics.heightPixels;
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.banner);//link the drable image
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.banner);//link the drable image
         SysUtil.setImageBackground(bitmap, img, width, dip2px(ac, 230));
     }
 

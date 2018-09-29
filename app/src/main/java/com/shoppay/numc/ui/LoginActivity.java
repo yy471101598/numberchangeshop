@@ -164,7 +164,7 @@ public class LoginActivity extends AppCompatActivity {
         this.getWindowManager().getDefaultDisplay().getMetrics(disMetrics);
         int width = disMetrics.widthPixels;
         int height = disMetrics.heightPixels;
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.banner);//link the drable image
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.banner1);//link the drable image
         SysUtil.setImageBackground(bitmap, img, width, dip2px(ac, 170));
     }
 

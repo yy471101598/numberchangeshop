@@ -49,10 +49,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         img = (SimpleDraweeView) findViewById(R.id.img_tx);
         if (PreferenceHelper.readString(getApplicationContext(), "numc", "lagavage", "zh").equals("zh")) {
-            Uri uri = Uri.parse("res://"+getPackageName()+"/" + R.drawable.welcom);
+            Uri uri = Uri.parse("res://" + getPackageName() + "/" + R.mipmap.welcome);
             img.setImageURI(uri);
         } else {
-            Uri uri = Uri.parse("res://"+getPackageName()+"/" + R.drawable.welcom);
+            Uri uri = Uri.parse("res://" + getPackageName() + "/" + R.mipmap.welcome);
             img.setImageURI(uri);
         }
         init();
