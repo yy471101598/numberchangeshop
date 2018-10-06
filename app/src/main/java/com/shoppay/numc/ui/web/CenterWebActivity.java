@@ -26,6 +26,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.shoppay.numc.R;
 import com.shoppay.numc.card.ReadCardOptHander;
@@ -39,6 +40,7 @@ import com.shoppay.numc.tools.NoDoubleClickListener;
 import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.tools.ToastUtils;
 import com.shoppay.numc.ui.BaseActivity;
+import com.shoppay.numc.ui.MyApplication;
 import com.shoppay.numc.wxcode.MipcaActivityCapture;
 
 import org.json.JSONException;
@@ -114,7 +116,6 @@ public class CenterWebActivity extends BaseActivity {
         } else {
             title_tv.setText(entitle);
         }
-
         if (typeid.equals("3")) {
             rl_no.setVisibility(View.VISIBLE);
             smrefresh.setVisibility(View.GONE);
@@ -133,6 +134,7 @@ public class CenterWebActivity extends BaseActivity {
                 e.printStackTrace();
             }
             url = uri + "?loginuserid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0) + "&language=" + PreferenceHelper.readString(ac, "numc", "lagavage", "zh") + "&HMAC=" + MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase();
+            PreferenceHelper.write(MyApplication.context, "numchange", "weburl", url);
             PayUtils.webPayUtils(ac, dialog, web, url);
         }
         smrefresh.setRefreshHeader(new ClassicsHeader(this));
@@ -141,8 +143,15 @@ public class CenterWebActivity extends BaseActivity {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 LogUtils.d("xxre", "resh");
+                String url = PreferenceHelper.readString(MyApplication.context, "numchange", "weburl", "");
                 web.loadUrl(url);
                 smrefresh.finishRefresh();
+            }
+        });
+        smrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                smrefresh.finishLoadMore();
             }
         });
 //        et_card.addTextChangedListener(new TextWatcher() {
@@ -272,6 +281,7 @@ public class CenterWebActivity extends BaseActivity {
                                 e.printStackTrace();
                             }
                             url = uri + "?userid=" + vipid + "&loginuserid=" + PreferenceHelper.readInt(ac, "shoppay", "userid", 0) + "&language=" + PreferenceHelper.readString(ac, "numc", "lagavage", "zh") + "&HMAC=" + MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase();
+                            PreferenceHelper.write(MyApplication.context, "numchange", "weburl", url);
                             PayUtils.webPayUtils(ac, dialog, web, url);
                         }
 
@@ -297,7 +307,7 @@ public class CenterWebActivity extends BaseActivity {
             if (web.canGoBack()) {
                 web.goBack();
             } else {
-                ActivityStack.create().finishActivity(ac);
+                finish();
             }
             return true;
         } else {

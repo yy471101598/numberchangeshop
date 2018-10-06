@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 import com.shoppay.numc.http.InterfaceBack;
 import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.tools.NewDayinTools;
+import com.shoppay.numc.tools.PreferenceHelper;
 import com.shoppay.numc.ui.MyApplication;
 
 import org.json.JSONException;
@@ -27,7 +28,6 @@ public class PayUtils {
     protected static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 211;
     private static ValueCallback<Uri> mUploadMessage;
     public static ValueCallback<Uri[]> mUploadMessageForAndroid5;
-    public static Context ac;
 
     public static void webPayUtils(final Context ac, final Dialog dialog,
                                    final WebView shop_web, String url) {
@@ -131,6 +131,7 @@ public class PayUtils {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.d("url", url);
+                PreferenceHelper.write(MyApplication.context,"numchange","weburl",url);
                 if (url.startsWith("tel:")) {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse(url));
