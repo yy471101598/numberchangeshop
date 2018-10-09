@@ -161,7 +161,7 @@
     <string name="inputlipincode">请输入或定位商品编号</string>
     <string name="dingwei">定位</string>
     <string name="duihuanallnum">兑换总数量：</string>
-    <string name="duihuanallmoney">兑换总币额：</string>
+    <string name="duihuanallmoney">兑换总指点额：</string>
     <string name="lipinlistfalse">获取可兑换礼品失败</string>
     <string name="choselipin">请选择兑换礼品</string>
     <string name="lipinnumbigkucun">礼品数量大于礼品库存</string>
