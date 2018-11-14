@@ -110,15 +110,15 @@
                 android:background="@color/viewcolor"></View>
         </LinearLayout>
     </RelativeLayout>
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+ <!--   <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/sartRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent">-->
     <WebView
         android:id="@+id/markrtweb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
     </WebView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+<!--    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 </LinearLayout>

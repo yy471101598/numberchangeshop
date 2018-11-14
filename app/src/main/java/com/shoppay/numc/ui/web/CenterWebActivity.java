@@ -54,7 +54,7 @@ import org.json.JSONObject;
 @SuppressLint("SetJavaScriptEnabled")
 public class CenterWebActivity extends BaseActivity {
     private WebView web;
-    private SmartRefreshLayout smrefresh;
+//    private SmartRefreshLayout smrefresh;
     private static final int FILECHOOSER_RESULTCODE = 333;
     protected static final int FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 211;
     private ValueCallback<Uri> mUploadMessage;
@@ -118,12 +118,14 @@ public class CenterWebActivity extends BaseActivity {
         }
         if (typeid.equals("3")) {
             rl_no.setVisibility(View.VISIBLE);
-            smrefresh.setVisibility(View.GONE);
+            web.setVisibility(View.GONE);
+//            smrefresh.setVisibility(View.GONE);
             rl_right.setVisibility(View.VISIBLE);
             goHome.setVisibility(View.GONE);
         } else {
             rl_no.setVisibility(View.GONE);
-            smrefresh.setVisibility(View.VISIBLE);
+//            smrefresh.setVisibility(View.VISIBLE);
+            web.setVisibility(View.VISIBLE);
             rl_right.setVisibility(View.GONE);
             goHome.setVisibility(View.VISIBLE);
             dialog.show();
@@ -137,23 +139,23 @@ public class CenterWebActivity extends BaseActivity {
             PreferenceHelper.write(MyApplication.context, "numchange", "weburl", url);
             PayUtils.webPayUtils(ac, dialog, web, url);
         }
-        smrefresh.setRefreshHeader(new ClassicsHeader(this));
-        smrefresh.setRefreshFooter(new ClassicsFooter(this));
-        smrefresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.d("xxre", "resh");
-                String url = PreferenceHelper.readString(MyApplication.context, "numchange", "weburl", "");
-                web.loadUrl(url);
-                smrefresh.finishRefresh();
-            }
-        });
-        smrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                smrefresh.finishLoadMore();
-            }
-        });
+//        smrefresh.setRefreshHeader(new ClassicsHeader(this));
+//        smrefresh.setRefreshFooter(new ClassicsFooter(this));
+//        smrefresh.setOnRefreshListener(new OnRefreshListener() {
+//            @Override
+//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+//                LogUtils.d("xxre", "resh");
+//                String url = PreferenceHelper.readString(MyApplication.context, "numchange", "weburl", "");
+//                web.loadUrl(url);
+//                smrefresh.finishRefresh();
+//            }
+//        });
+//        smrefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+//                smrefresh.finishLoadMore();
+//            }
+//        });
 //        et_card.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -228,7 +230,7 @@ public class CenterWebActivity extends BaseActivity {
     private void initView() {
         // TODO Auto-generated method stub
         this.web = (WebView) findViewById(R.id.markrtweb);
-        smrefresh = (SmartRefreshLayout) findViewById(R.id.sartRefresh);
+//        smrefresh = (SmartRefreshLayout) findViewById(R.id.sartRefresh);
         this.title_tv = (TextView) findViewById(R.id.tv_title);
         this.title_tv.setVisibility(View.VISIBLE);
         this.getBack = (RelativeLayout) findViewById(R.id.rl_left);
@@ -268,7 +270,8 @@ public class CenterWebActivity extends BaseActivity {
                         @Override
                         public void onResponse(Object response) {
                             rl_no.setVisibility(View.GONE);
-                            smrefresh.setVisibility(View.VISIBLE);
+                            web.setVisibility(View.VISIBLE);
+//                            smrefresh.setVisibility(View.VISIBLE);
                             rl_right.setVisibility(View.GONE);
                             goHome.setVisibility(View.VISIBLE);
                             dialog.show();
