@@ -149,6 +149,7 @@ public class VipRechargeActivity extends BaseActivity {
             tvTitle.setText(entitle);
         }
 
+
         handlePayType(paylist);
         initView();
 //        viprechargeEtCardnum.addTextChangedListener(new TextWatcher() {

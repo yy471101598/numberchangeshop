@@ -135,26 +135,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadError(String s) {
         AsyncHttpClient client = new AsyncHttpClient();
-        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
-        client.setCookieStore(myCookieStore);
+//        final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
+//        client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
         params.put("error", s);
 
-        Log.d("xx", s);
-        client.post(PreferenceHelper.readString(ac, "shoppay", "yuming", "123") + "?Source=3&Method=logError", params, new AsyncHttpResponseHandler() {
+        LogUtils.d("xxErr", s);
+        client.post(ContansUtils.BASE_URL + "pos/CollectError.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("xxLogS", "sd");
                 try {
                     file.delete();
-                    Log.d("xxLogS", new String(responseBody, "UTF-8"));
+                    LogUtils.d("xxLogS", new String(responseBody, "UTF-8"));
                 } catch (Exception e) {
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("xxLogE", error.getMessage());
+                LogUtils.d("xxLogE", error.getMessage());
             }
         });
     }
