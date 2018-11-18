@@ -19,6 +19,7 @@ import java.util.List;
 
 public class NewDayinTools {
     public static void dayin(Context ac, JSONObject jsonObject, InterfaceBack back) {
+        LogUtils.d("xxdayin", "dayinstart");
         try {
             if (jsonObject.getInt("printNumber") == 0) {
                 back.onResponse("");
@@ -31,6 +32,7 @@ public class NewDayinTools {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inTargetDensity = 160;
                     options.inDensity = 160;
+                    options.inPreferredConfig = Bitmap.Config.RGB_565;
                     Bitmap bitmap1 = BitmapFactory.decodeResource(ac.getResources(), R.drawable.dayin, options);
                     byte[] center = ESCUtil.alignCenter();
                     byte[] nextLine = ESCUtil.nextLine(1);
@@ -43,18 +45,18 @@ public class NewDayinTools {
                     byte[] headerBytes = ESCUtil.byteMerger(bitmap);
                     bytesList.add(headerBytes);
                     if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-                        for(String s:jsonObject.getString("printContent").split("\\|")){
-                            byte[] dayin=s.getBytes("gb2312");
-                            byte[][] mm ={ nextLine, left,dayin};
-                            byte[] msgbytes =ESCUtil.byteMerger(mm);
+                        for (String s : jsonObject.getString("printContent").split("\\|")) {
+                            byte[] dayin = s.getBytes("gb2312");
+                            byte[][] mm = {nextLine, left, dayin};
+                            byte[] msgbytes = ESCUtil.byteMerger(mm);
                             bytesList.add(msgbytes);
                         }
                         bytesList.add(contentBytes);
                     } else {
-                        for(String s:jsonObject.getString("enprintContent").split("\\|")){
-                            byte[] dayin=s.getBytes("gb2312");
-                            byte[][] mm ={ nextLine, left,dayin};
-                            byte[] msgbytes =ESCUtil.byteMerger(mm);
+                        for (String s : jsonObject.getString("enprintContent").split("\\|")) {
+                            byte[] dayin = s.getBytes("gb2312");
+                            byte[][] mm = {nextLine, left, dayin};
+                            byte[] msgbytes = ESCUtil.byteMerger(mm);
                             bytesList.add(msgbytes);
                         }
                         bytesList.add(contentBytes);
@@ -66,6 +68,10 @@ public class NewDayinTools {
                     }
                     bytesList.add(endBytes);
                     BluetoothUtil.sendData(MergeLinearArraysUtil.mergeLinearArrays(bytesList), jsonObject.getInt("printNumber"));
+                    if (bitmap1 != null && !bitmap1.isRecycled()) {
+                        bitmap1 = null;
+                    }
+                    LogUtils.d("xxdayin", "dayinend");
                     back.onResponse("");
                 } else {
                     back.onResponse("");

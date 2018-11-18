@@ -7,6 +7,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.shoppay.numc.http.InterfaceBack;
+import com.shoppay.numc.tools.LogUtils;
 import com.shoppay.numc.ui.MyApplication;
 import com.sunmi.payservice.hardware.aidl.HardwareOpt;
 import com.sunmi.payservice.hardware.aidl.ReadCardCallback;
@@ -32,7 +33,6 @@ public class ReadCardOptHander extends Activity {
 
     /**
      * 在需要刷卡的activity中调用该构造函数
-     *
      */
     public ReadCardOptHander(InterfaceBack back) {
         this.back = back;
@@ -101,6 +101,7 @@ public class ReadCardOptHander extends Activity {
             switch (msg.what) {
                 case 0x01:
                     PayCardInfo payCardInfo = (PayCardInfo) msg.obj;
+                    LogUtils.d("xx", payCardInfo.toString());
                     if (payCardInfo.cardType == 8) {
                         /***************Mifare 感应卡***********************/
                         String uuid = payCardInfo.uuid;
@@ -137,7 +138,11 @@ public class ReadCardOptHander extends Activity {
 //                                mCardNumber = "0" + mCardNumber;
 //                            }
 //                        }
-                        back.onResponse(mCardNumber);
+                        if (null == mCardNumber) {
+                            back.onResponse("");
+                        } else {
+                            back.onResponse(mCardNumber);
+                        }
 //                        textView.setText(mCardNumber);
                     }
                     break;

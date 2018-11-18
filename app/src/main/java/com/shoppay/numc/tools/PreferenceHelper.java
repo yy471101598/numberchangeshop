@@ -3,6 +3,7 @@ package com.shoppay.numc.tools;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 
 public class PreferenceHelper {
     /**
@@ -45,7 +46,6 @@ public class PreferenceHelper {
         editor.putString(k, v);
         editor.commit();
     }
-
     public static int readInt(Context context, String fileName, String k) {
         SharedPreferences preference = context.getSharedPreferences(fileName,
                 Context.MODE_MULTI_PROCESS);

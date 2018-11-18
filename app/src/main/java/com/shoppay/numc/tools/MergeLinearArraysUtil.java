@@ -46,6 +46,7 @@ public class MergeLinearArraysUtil {
             mArrayLength += list.get(j).length;
         }
 
+        LogUtils.d("xxmerge",mArrayLength+"");
         return mReturnArray;
     }
 }

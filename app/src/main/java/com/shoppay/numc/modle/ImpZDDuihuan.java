@@ -65,6 +65,7 @@ public class ImpZDDuihuan {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
+                        LogUtils.d("xxdayin","dayinstart");
                         NewDayinTools.dayin(ac,jsonObject,back);
                         //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
