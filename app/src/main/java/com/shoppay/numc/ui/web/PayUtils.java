@@ -161,8 +161,6 @@ public class PayUtils {
         @JavascriptInterface
         public void funAndroid(String msg) {
             try {
-                System.out.println(msg);
-                LogUtils.d("xxdata", msg);
                 JSONObject jso = new JSONObject(msg);
                 JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
                 NewDayinTools.dayin(MyApplication.context, jsonObject, new InterfaceBack() {

@@ -19,7 +19,6 @@ import java.util.List;
 
 public class NewDayinTools {
     public static void dayin(Context ac, JSONObject jsonObject, InterfaceBack back) {
-        LogUtils.d("xxdayin", "dayinstart");
         try {
             if (jsonObject.getInt("printNumber") == 0) {
                 back.onResponse("");
@@ -71,7 +70,6 @@ public class NewDayinTools {
                     if (bitmap1 != null && !bitmap1.isRecycled()) {
                         bitmap1 = null;
                     }
-                    LogUtils.d("xxdayin", "dayinend");
                     back.onResponse("");
                 } else {
                     back.onResponse("");
