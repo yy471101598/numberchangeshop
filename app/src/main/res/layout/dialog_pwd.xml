@@ -46,13 +46,13 @@
              />
 
      </RelativeLayout>
-<com.shoppay.numc.view.MyGridViews
+<com.shoppay.numcgshop.view.MyGridViews
     android:id="@+id/gridview_num"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="15dp"
     android:numColumns="3"
-    android:scrollbars="none"></com.shoppay.numc.view.MyGridViews>
+    android:scrollbars="none"></com.shoppay.numcgshop.view.MyGridViews>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="40dp"

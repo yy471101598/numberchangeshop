@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.1"
     defaultConfig {
-        applicationId "com.shoppay.numc"
+        applicationId "com.shoppay.numcgshop"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 13
