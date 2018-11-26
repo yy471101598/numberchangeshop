@@ -1,6 +1,7 @@
 package com.shoppay.numcgshop.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class HomeshopAdapter extends BaseAdapter {
                     .findViewById(R.id.iv_item);
             vh.tv_name = (TextView) convertView
                     .findViewById(R.id.tv_item);
-            vh.rl_bg=convertView.findViewById(R.id.rl_bg);
+            vh.rl_bg = convertView.findViewById(R.id.rl_bg);
             convertView.setTag(vh);
         } else {
             vh = (ViewHolder) convertView.getTag();
@@ -72,6 +73,7 @@ public class HomeshopAdapter extends BaseAdapter {
             vh.tv_name.setText(home.EnTitle);
         }
         vh.iv_img.setBackgroundResource(obtainIconId(home.Icon));
+        vh.rl_bg.setBackgroundColor(Color.parseColor(home.BgColor));
         return convertView;
     }
 
@@ -168,7 +170,21 @@ public class HomeshopAdapter extends BaseAdapter {
             case "icon_30.png":
                 iconId = R.mipmap.icon_30;
                 break;
-
+            case "sicon_01":
+                iconId = R.mipmap.sicon_01;
+                break;
+            case "sicon_02":
+                iconId = R.mipmap.sicon_02;
+                break;
+            case "sicon_03":
+                iconId = R.mipmap.sicon_03;
+                break;
+            case "sicon_04":
+                iconId = R.mipmap.sicon_04;
+                break;
+            case "sicon_05":
+                iconId = R.mipmap.sicon_05;
+                break;
         }
         return iconId;
     }

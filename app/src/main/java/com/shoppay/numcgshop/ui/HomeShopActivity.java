@@ -3,7 +3,9 @@ package com.shoppay.numcgshop.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.shoppay.numcgshop.R;
 import com.shoppay.numcgshop.adapter.HomeshopAdapter;
+import com.shoppay.numcgshop.bean.Home;
 import com.shoppay.numcgshop.nbean.HomeMsg;
 import com.shoppay.numcgshop.tools.ActivityStack;
 import com.shoppay.numcgshop.tools.DialogUtil;
+import com.shoppay.numcgshop.tools.LogUtils;
 import com.shoppay.numcgshop.tools.PreferenceHelper;
 import com.shoppay.numcgshop.ui.web.CenterWebActivity;
 import com.shoppay.numcgshop.view.HeaderGridView;
@@ -56,86 +61,99 @@ public class HomeShopActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HomeMsg home = (HomeMsg) adapterView.getItemAtPosition(i);
-                if (home.Url.equals("")) {
-                    switch (home.Code) {
-                        case "F01":
-                            Intent recharge = new Intent(ac, VipRechargeActivity.class);
-                            recharge.putExtra("title", home.Title);
-                            recharge.putExtra("entitle", home.EnTitle);
-                            startActivity(recharge);
-                            break;
-                        case "F02":
-                            Intent duihuan = new Intent(ac, FabiDuihuanActivity.class);
-                            duihuan.putExtra("title", home.Title);
-                            duihuan.putExtra("entitle", home.EnTitle);
-                            startActivity(duihuan);
-                            break;
-                        case "F03":
-                            Intent fbzz = new Intent(ac, FabiZhuanzhangActivity.class);
-                            fbzz.putExtra("title", home.Title);
-                            fbzz.putExtra("entitle", home.EnTitle);
-                            startActivity(fbzz);
-                            break;
-                        case "F04":
-                            Intent dc = new Intent(ac, FabiDingcunActivity.class);
-                            dc.putExtra("title", home.Title);
-                            dc.putExtra("entitle", home.EnTitle);
-                            startActivity(dc);
-                            break;
-                        case "F05":
-                            Intent qx = new Intent(ac, FabiQuxianActivity.class);
-                            qx.putExtra("title", home.Title);
-                            qx.putExtra("entitle", home.EnTitle);
-                            startActivity(qx);
-                            break;
-                        case "F06":
-                            Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
-                            dxf.putExtra("title", home.Title);
-                            dxf.putExtra("entitle", home.EnTitle);
-                            startActivity(dxf);
-                            break;
-                        case "F07":
-                            Intent drg = new Intent(ac, ZhidianRengouActivity.class);
-                            drg.putExtra("title", home.Title);
-                            drg.putExtra("entitle", home.EnTitle);
-                            startActivity(drg);
-                            break;
-                        case "F08":
-                            Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
-                            ddc.putExtra("title", home.Title);
-                            ddc.putExtra("entitle", home.EnTitle);
-                            startActivity(ddc);
-                            break;
+                if (null != home) {
+                    if (home.Url.equals("")) {
+                        switch (home.Code) {
+                            case "F13":
+                                Intent dxf1 = new Intent(ac, ZhidianXiaofeiActivity.class);
+                                dxf1.putExtra("title", home.Title);
+                                dxf1.putExtra("entitle", home.EnTitle);
+                                startActivity(dxf1);
+                                break;
+                            case "F14":
+                                Intent drg1 = new Intent(ac, ZhidianRengouActivity.class);
+                                drg1.putExtra("title", home.Title);
+                                drg1.putExtra("entitle", home.EnTitle);
+                                startActivity(drg1);
+                                break;
+                            case "F01":
+                                Intent recharge = new Intent(ac, VipRechargeActivity.class);
+                                recharge.putExtra("title", home.Title);
+                                recharge.putExtra("entitle", home.EnTitle);
+                                startActivity(recharge);
+                                break;
+                            case "F02":
+                                Intent duihuan = new Intent(ac, FabiDuihuanActivity.class);
+                                duihuan.putExtra("title", home.Title);
+                                duihuan.putExtra("entitle", home.EnTitle);
+                                startActivity(duihuan);
+                                break;
+                            case "F03":
+                                Intent fbzz = new Intent(ac, FabiZhuanzhangActivity.class);
+                                fbzz.putExtra("title", home.Title);
+                                fbzz.putExtra("entitle", home.EnTitle);
+                                startActivity(fbzz);
+                                break;
+                            case "F04":
+                                Intent dc = new Intent(ac, FabiDingcunActivity.class);
+                                dc.putExtra("title", home.Title);
+                                dc.putExtra("entitle", home.EnTitle);
+                                startActivity(dc);
+                                break;
+                            case "F05":
+                                Intent qx = new Intent(ac, FabiQuxianActivity.class);
+                                qx.putExtra("title", home.Title);
+                                qx.putExtra("entitle", home.EnTitle);
+                                startActivity(qx);
+                                break;
+                            case "F06":
+                                Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
+                                dxf.putExtra("title", home.Title);
+                                dxf.putExtra("entitle", home.EnTitle);
+                                startActivity(dxf);
+                                break;
+                            case "F07":
+                                Intent drg = new Intent(ac, ZhidianRengouActivity.class);
+                                drg.putExtra("title", home.Title);
+                                drg.putExtra("entitle", home.EnTitle);
+                                startActivity(drg);
+                                break;
+                            case "F08":
+                                Intent ddc = new Intent(ac, ZhidianDingcunActivity.class);
+                                ddc.putExtra("title", home.Title);
+                                ddc.putExtra("entitle", home.EnTitle);
+                                startActivity(ddc);
+                                break;
 
-                        case "F09":
-                            Intent ddh = new Intent(ac, ZhidianDuihuanActivity.class);
-                            ddh.putExtra("title", home.Title);
-                            ddh.putExtra("entitle", home.EnTitle);
-                            startActivity(ddh);
-                            break;
+                            case "F09":
+                                Intent ddh = new Intent(ac, ZhidianDuihuanActivity.class);
+                                ddh.putExtra("title", home.Title);
+                                ddh.putExtra("entitle", home.EnTitle);
+                                startActivity(ddh);
+                                break;
 
-                        case "F10":
-                            Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
-                            dzz.putExtra("title", home.Title);
-                            dzz.putExtra("entitle", home.EnTitle);
-                            startActivity(dzz);
-                            break;
-                        case "F11":
-                            Intent ddk = new Intent(ac, ZhidianDaikuanActivity.class);
-                            ddk.putExtra("title", home.Title);
-                            ddk.putExtra("entitle", home.EnTitle);
-                            startActivity(ddk);
-                            break;
+                            case "F10":
+                                Intent dzz = new Intent(ac, ZhidianZhuanzhangActivity.class);
+                                dzz.putExtra("title", home.Title);
+                                dzz.putExtra("entitle", home.EnTitle);
+                                startActivity(dzz);
+                                break;
+                            case "F11":
+                                Intent ddk = new Intent(ac, ZhidianDaikuanActivity.class);
+                                ddk.putExtra("title", home.Title);
+                                ddk.putExtra("entitle", home.EnTitle);
+                                startActivity(ddk);
+                                break;
+                        }
+                    } else {
+                        Intent web1 = new Intent(ac, CenterWebActivity.class);
+                        web1.putExtra("title", home.Title);
+                        web1.putExtra("entitle", home.EnTitle);
+                        web1.putExtra("typeid", home.TypeID + "");
+                        web1.putExtra("url", home.Url);
+                        startActivity(web1);
                     }
-                } else {
-                    Intent web1 = new Intent(ac, CenterWebActivity.class);
-                    web1.putExtra("title", home.Title);
-                    web1.putExtra("entitle", home.EnTitle);
-                    web1.putExtra("typeid", home.TypeID + "");
-                    web1.putExtra("url", home.Url);
-                    startActivity(web1);
                 }
-
             }
         });
 
@@ -148,10 +166,22 @@ public class HomeShopActivity extends BaseActivity {
         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
             tv_name.setText(list.get(0).Title);
         } else {
-           tv_name.setText(list.get(0).EnTitle);
+            tv_name.setText(list.get(0).EnTitle);
         }
         img_icon.setBackgroundResource(obtainIconId(list.get(0).Icon));
+        rl_bg.setBackgroundColor(Color.parseColor(list.get(0).BgColor));
+        final HomeMsg home = list.get(0);
+        rl_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
+                dxf.putExtra("title", home.Title);
+                dxf.putExtra("entitle", home.EnTitle);
+                startActivity(dxf);
+            }
+        });
     }
+
     public int obtainIconId(String icon) {
         int iconId = R.mipmap.icon_01;
         switch (icon.toLowerCase()) {
@@ -245,7 +275,18 @@ public class HomeShopActivity extends BaseActivity {
             case "icon_30.png":
                 iconId = R.mipmap.icon_30;
                 break;
-
+            case "sicon_02":
+                iconId = R.mipmap.sicon_02;
+                break;
+            case "sicon_03":
+                iconId = R.mipmap.sicon_03;
+                break;
+            case "sicon_04":
+                iconId = R.mipmap.sicon_04;
+                break;
+            case "sicon_05":
+                iconId = R.mipmap.sicon_05;
+                break;
         }
         return iconId;
     }
