@@ -9,7 +9,7 @@
     <string name="kucun">stock</string>
     <string name="dhbie">Total Point</string>
     <string name="saomiao">scan</string>
-    <string name="duihuan">Exchange</string>
+    <string name="duihuan" translatable="false">Exchange</string>
     <string name="rengoutj">submit subscription</string>
     <string name="recharge">Recharge</string>
     <string name="shoukuan">Receivables</string>
@@ -164,4 +164,14 @@
     <string name="lipinlistfalse">Failure to obtain exchange merchandise</string>
     <string name="choselipin">Please choose the exchanged commodity</string>
     <string name="lipinnumbigkucun">The quantity of goods exchanged is larger than that of goods</string>
+
+    <string name="xiaofeitype">消费类型</string>
+    <string name="xiaofeimoney">消费金额</string>
+    <string name="inputxfmoney">请输入消费金额</string>
+    <string name="comfirmpay">确认支付</string>
+    <string name="chosexftype">请选择消费类型</string>
+    <string name="chosexfzhima">请选择消费指码</string>
+    <string name="xftypeno_chose">获取消费类型失败,请返回重试</string>
+    <string name="xiaofeizhima">消费指码</string>
+    <string name="xfmoneybigyue">消费金额大于账户余额</string>
 </resources>

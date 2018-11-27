@@ -25,9 +25,9 @@ import cz.msebera.android.httpclient.Header;
  * Created by songxiaotao on 2018/9/5.
  */
 
-public class ImpZDXiaofei {
-    public void zdXiaofei(final Activity ac, final Dialog dialog, int ConsumeID, int UserID, String PassWord, int StockCode,String Money,
-                            final InterfaceBack back) {
+public class ImpZDXiaofeiShop {
+    public void zdXiaofei(final Activity ac, final Dialog dialog, int ConsumeID, int UserID, String PassWord, int PayType, int StockCode, String Money,
+                          final InterfaceBack back) {
 
         AsyncHttpClient client = new AsyncHttpClient();
 //        final PersistentCookieStore myCookieStore = new PersistentCookieStore(ac);
@@ -36,15 +36,16 @@ public class ImpZDXiaofei {
         params.put("ConsumeID", ConsumeID);
         params.put("UserID", UserID);
         params.put("PassWord", PassWord);
-//        PayType string	//0为指点，其他直接调用币种编号
+        params.put("PayType", PayType);//0为指点，其他直接调用币种编号
         params.put("StockCode", StockCode);
-        params.put("LoginUserID",  PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
+        params.put("LoginUserID", PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
         params.put("Money", Money);
         JSONObject jso = new JSONObject();
         try {
             jso.put("UserID", UserID);
-            jso.put("LoginUserID",PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
+            jso.put("LoginUserID", PreferenceHelper.readInt(ac, "shoppay", "userid", 0));
             jso.put("ConsumeID", ConsumeID);
+            jso.put("PayType", PayType);
             jso.put("StockCode", StockCode);
             jso.put("Money", Money);
         } catch (JSONException e) {
@@ -53,7 +54,7 @@ public class ImpZDXiaofei {
         LogUtils.d("xxjson", jso.toString());
         params.put("HMAC", MD5Util.md5(jso.toString().toLowerCase() + "bankbosscc").toUpperCase());
         LogUtils.d("xxmap", params.toString());
-        client.post(ContansUtils.BASE_URL + "pos/Consume.ashx", params, new AsyncHttpResponseHandler() {
+        client.post(ContansUtils.BASE_URL + "pos/Shop/Consume.ashx", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 dialog.dismiss();
@@ -67,7 +68,7 @@ public class ImpZDXiaofei {
                             ToastUtils.showToast(ac, jso.getString("enmsg"));
                         }
                         JSONObject jsonObject = (JSONObject) jso.getJSONArray("print").get(0);
-                        NewDayinTools.dayin(ac,jsonObject,back);
+                        NewDayinTools.dayin(ac, jsonObject, back);
                         //打印
 //                                            if (jsonObject.getInt("printNumber") == 0) {
 //                                                finish();

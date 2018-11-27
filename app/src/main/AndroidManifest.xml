@@ -70,6 +70,21 @@
             android:screenOrientation="portrait"
             />
         <activity
+            android:name="com.shoppay.numcgshop.ui.ZhidianXiaofeiShopActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name="com.shoppay.numcgshop.ui.ZhimaXiaofeiActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name="com.shoppay.numcgshop.ui.ZhidianRengouShopActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            />
+        <activity
             android:name="com.shoppay.numcgshop.ui.FabiQuxianActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

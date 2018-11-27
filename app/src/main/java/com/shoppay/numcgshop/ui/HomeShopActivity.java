@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.shoppay.numcgshop.R;
 import com.shoppay.numcgshop.adapter.HomeshopAdapter;
-import com.shoppay.numcgshop.bean.Home;
 import com.shoppay.numcgshop.nbean.HomeMsg;
 import com.shoppay.numcgshop.tools.ActivityStack;
 import com.shoppay.numcgshop.tools.DialogUtil;
-import com.shoppay.numcgshop.tools.LogUtils;
 import com.shoppay.numcgshop.tools.PreferenceHelper;
 import com.shoppay.numcgshop.ui.web.CenterWebActivity;
 import com.shoppay.numcgshop.view.HeaderGridView;
@@ -65,13 +61,13 @@ public class HomeShopActivity extends BaseActivity {
                     if (home.Url.equals("")) {
                         switch (home.Code) {
                             case "F13":
-                                Intent dxf1 = new Intent(ac, ZhidianXiaofeiActivity.class);
+                                Intent dxf1 = new Intent(ac, ZhimaXiaofeiActivity.class);
                                 dxf1.putExtra("title", home.Title);
                                 dxf1.putExtra("entitle", home.EnTitle);
                                 startActivity(dxf1);
                                 break;
                             case "F14":
-                                Intent drg1 = new Intent(ac, ZhidianRengouActivity.class);
+                                Intent drg1 = new Intent(ac, ZhidianRengouShopActivity.class);
                                 drg1.putExtra("title", home.Title);
                                 drg1.putExtra("entitle", home.EnTitle);
                                 startActivity(drg1);
@@ -174,7 +170,7 @@ public class HomeShopActivity extends BaseActivity {
         rl_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent dxf = new Intent(ac, ZhidianXiaofeiActivity.class);
+                Intent dxf = new Intent(ac, ZhidianXiaofeiShopActivity.class);
                 dxf.putExtra("title", home.Title);
                 dxf.putExtra("entitle", home.EnTitle);
                 startActivity(dxf);

@@ -16,6 +16,7 @@ import com.shoppay.numcgshop.modle.ImpObtainPaytype;
 import com.shoppay.numcgshop.nbean.Currency;
 import com.shoppay.numcgshop.nbean.PayType;
 import com.shoppay.numcgshop.tools.DialogUtil;
+import com.shoppay.numcgshop.tools.LogUtils;
 import com.shoppay.numcgshop.tools.ObtainSystemLanguage;
 import com.shoppay.numcgshop.tools.PreferenceHelper;
 
@@ -79,6 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }.getType();
                     List<Currency> sllist = gson.fromJson(response.toString(), listType);
                     currlist.addAll(sllist);
+                    LogUtils.d("xxcurrlist",new Gson().toJson(currlist));
                 }
 
                 @Override

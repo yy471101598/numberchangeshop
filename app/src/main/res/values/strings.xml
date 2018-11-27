@@ -6,12 +6,12 @@
     <string name="giteettt">gitttt</string>
     <string name="laguage">语言</string>
 
-  <string name="lipinkucun">该礼品的最大库存量为</string>
+    <string name="lipinkucun">该礼品的最大库存量为</string>
     <string name="kucun">库存：</string>
     <string name="dhbie">所需币额：</string>
     <string name="saomiao">扫描</string>
-    <string name="duihuan">兑换</string>
-  <string name="rengoutj">认购提交</string>
+    <string name="duihuan" translatable="false">兑换</string>
+    <string name="rengoutj">认购提交</string>
     <string name="recharge">充值</string>
     <string name="shoukuan">收款</string>
     <string name="zhuanzhang">转账</string>
@@ -43,7 +43,7 @@
     <string name="zzmoney">转账金额</string>
     <string name="zzremark">转账备注</string>
     <string name="inputzzmoney">请输入转账金额</string>
-  <string name="inputzzzhidian">请输入转账指点</string>
+    <string name="inputzzzhidian">请输入转账指点</string>
     <string name="inputzzremark">请输入转账备注</string>
     <string name="internet">请检查网络是否可用</string>
     <string name="pwdno">密码错误</string>
@@ -65,9 +65,9 @@
     <string name="zdxffalse">指点消费失败</string>
     <string name="zdrgfalse">指点认购失败</string>
     <string name="zddhfalse">指点兑换失败</string>
-  <string name="zddkfalse">指点贷款失败</string>
+    <string name="zddkfalse">指点贷款失败</string>
     <string name="zdlistfalse">获取指点种类失败</string>
-  <string name="zzzdlistfalse">获取转账指点失败</string>
+    <string name="zzzdlistfalse">获取转账指点失败</string>
     <string name="yuefalse">获取账户余额失败</string>
     <string name="zdrgflfalse">获取指点认购费率失败</string>
     <string name="zddklilvfalse">获取贷款利率失败</string>
@@ -82,16 +82,16 @@
     <string name="chosecunqi">请选择存期</string>
     <string name="chosedhcurr">请选择兑换币种</string>
     <string name="chosedhzhidian">请选择兑换指点</string>
-  <string name="chosergzhidian">请选择认购指点</string>
+    <string name="chosergzhidian">请选择认购指点</string>
     <string name="huilvfalse">获取兑换汇率失败</string>
     <string name="rgflfalse">获取认购费率失败</string>
     <string name="fabiduhuifalse">法币兑换失败</string>
     <string name="fabidingcunfalse">法币定存失败</string>
-  <string name="zhidiandingcunfalse">指点定存失败</string>
+    <string name="zhidiandingcunfalse">指点定存失败</string>
     <string name="vipmsgfalse">请先获取正确的用户信息</string>
     <string name="inputduihuanmoney">请输入兑换金额</string>
     <string name="inputduihuannum">请输入兑换数量</string>
-  <string name="inputrengounum">请输入认购数量</string>
+    <string name="inputrengounum">请输入认购数量</string>
     <string name="zzbigyue">转账金额大于账户余额</string>
     <string name="dhbigyue">兑换金额大于账户余额</string>
     <string name="dydianebigyue">抵押点额大于账户余额</string>
@@ -109,7 +109,7 @@
     <string name="dhshopmsgfalse">获取兑换商品信息失败</string>
     <string name="qxcodefalse">获取取现编号失败</string>
     <string name="fabizzfalse">法币转账失败</string>
-  <string name="zhidianzzfalse">指点转账失败</string>
+    <string name="zhidianzzfalse">指点转账失败</string>
     <string name="lilvfalse">获取利率失败，请稍后</string>
     <string name="smalldcmoney">小于最小定存金额</string>
     <string name="smalldzhidian">小于最小定存指点</string>
@@ -138,11 +138,11 @@
     <string name="inputxfzhidian">请输入消费指点</string>
     <string name="confirm">确定</string>
     <string name="dhzhidian">兑换指点</string>
-  <string name="rgzhidian">认购指点</string>
+    <string name="rgzhidian">认购指点</string>
     <string name="dhnum">兑换数量</string>
-  <string name="rgnum">认购数量</string>
+    <string name="rgnum">认购数量</string>
     <string name="dhlv">兑换率</string>
-  <string name="rgfl">认购费率</string>
+    <string name="rgfl">认购费率</string>
     <string name="dycurr">抵押币种</string>
     <string name="dyzhidian">抵押指点</string>
     <string name="dkqixian">贷款期限</string>
@@ -155,7 +155,7 @@
     <string name="chosecountry">请选择国家</string>
     <string name="inputjiaoyi">请输入交易密码</string>
     <string name="zhidian">指点</string>
-  <string name="dczhidian">定存指点</string>
+    <string name="dczhidian">定存指点</string>
     <string name="cunruzhidian">存入指点</string>
     <string name="lipincode">商品编号</string>
     <string name="inputlipincode">请输入或定位商品编号</string>
@@ -164,5 +164,14 @@
     <string name="duihuanallmoney">兑换总指点额：</string>
     <string name="lipinlistfalse">获取可兑换礼品失败</string>
     <string name="choselipin">请选择兑换礼品</string>
-  <string name="lipinnumbigkucun">礼品数量大于礼品库存</string>
+    <string name="lipinnumbigkucun">礼品数量大于礼品库存</string>
+    <string name="xiaofeitype">消费类型</string>
+    <string name="xiaofeimoney">消费金额</string>
+    <string name="inputxfmoney">请输入消费金额</string>
+    <string name="comfirmpay">确认支付</string>
+    <string name="chosexftype">请选择消费类型</string>
+    <string name="chosexfzhima">请选择消费指码</string>
+    <string name="xftypeno_chose">获取消费类型失败,请返回重试</string>
+    <string name="xiaofeizhima">消费指码</string>
+    <string name="xfmoneybigyue">消费金额大于账户余额</string>
 </resources>
