@@ -28,6 +28,7 @@ import com.shoppay.numcgshop.dialog.PwdDialog;
 import com.shoppay.numcgshop.http.InterfaceBack;
 import com.shoppay.numcgshop.modle.ImpObtainVipMsg;
 import com.shoppay.numcgshop.modle.ImpObtainXFZhidianList;
+import com.shoppay.numcgshop.modle.ImpObtainXFZhimaList;
 import com.shoppay.numcgshop.modle.ImpObtainZDXiaofeiId;
 import com.shoppay.numcgshop.modle.ImpObtainZDYuemoney;
 import com.shoppay.numcgshop.modle.ImpZDXiaofei;
@@ -126,6 +127,7 @@ public class ZhimaXiaofeiActivity extends BaseActivity {
     private String title, entitle;
     private List<ZhidianMsg> zdlist = new ArrayList<>();
     private static final int CAMERA_PERMISSIONS_REQUEST_CODE = 0x03;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,7 +173,7 @@ public class ZhimaXiaofeiActivity extends BaseActivity {
     }
 
     private void obtainXFzhidian(final String type) {
-        ImpObtainXFZhidianList currency = new ImpObtainXFZhidianList();
+        ImpObtainXFZhimaList currency = new ImpObtainXFZhimaList();
         currency.obtainCurrency(ac, new InterfaceBack() {
             @Override
             public void onResponse(Object response) {
@@ -239,7 +241,7 @@ public class ZhimaXiaofeiActivity extends BaseActivity {
                 if (type.equals("no")) {
 
                 } else {
-                    Toast.makeText(ac, ac.getResources().getString(R.string.zdlistfalse), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ac, ac.getResources().getString(R.string.zmlistfalse), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -435,6 +437,7 @@ public class ZhimaXiaofeiActivity extends BaseActivity {
             }
         });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -455,6 +458,7 @@ public class ZhimaXiaofeiActivity extends BaseActivity {
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

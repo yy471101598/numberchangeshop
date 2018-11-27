@@ -294,12 +294,12 @@ public class ZhidianXiaofeiShopActivity extends BaseActivity {
             protected void onNoDoubleClick(View view) {
                 if (isSuccess) {
                     if (currlist.size() > 0) {
-                        paytypelist.addAll(currlist);
                         Currency c=new Currency();
                         c.CurrencyID=0;
-                        c.CurrencyName="指点";
-                        c.EnCurrencyName="Point";
+                        c.CurrencyName="数字资产";
+                        c.EnCurrencyName=getResources().getString(R.string.numzican);
                         paytypelist.add(c);
+                        paytypelist.addAll(currlist);
                         String[] tft = new String[paytypelist.size()];
                         for (int i = 0; i < paytypelist.size(); i++) {
                             if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {

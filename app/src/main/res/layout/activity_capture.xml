@@ -2,17 +2,17 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-<include layout="@layout/title_oneicon_back"></include>
+<include layout="@layout/title_oneicon_backshop"></include>
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_marginTop="45dp"
         >
 
         <SurfaceView
             android:id="@+id/preview_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginTop="45dp"
             android:layout_gravity="center" />
 
         <com.shoppay.numcgshop.zxing.view.ViewfinderView

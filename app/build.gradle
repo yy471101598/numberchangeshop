@@ -7,8 +7,8 @@ android {
         applicationId "com.shoppay.numcgshop"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 13
-        versionName "1.3"
+        versionCode 10
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,7 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 //    tasks.whenTaskAdded { task ->
 //        if (task.name.contains("lint")//如果instant run不生效，把clean这行干掉
 //                ||task.name.equals("clean")//项目中有用到aidl则不可以舍弃这个任务

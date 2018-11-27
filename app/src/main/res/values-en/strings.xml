@@ -174,4 +174,6 @@
     <string name="xftypeno_chose">获取消费类型失败,请返回重试</string>
     <string name="xiaofeizhima">消费指码</string>
     <string name="xfmoneybigyue">消费金额大于账户余额</string>
+    <string name="numzican">数字资产</string>
+    <string name="zmlistfalse">获取消费指码失败</string>
 </resources>
