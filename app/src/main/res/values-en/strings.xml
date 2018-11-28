@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Digital changer</string>
+    <string name="app_name">Digital exchange machine merchant version</string>
     <string name="version">1.1</string>
     <string name="scan_text">The two-dimensional code / bar code can be automatically scanned in the box</string>
     <string name="gitee">git</string>
@@ -164,16 +164,15 @@
     <string name="lipinlistfalse">Failure to obtain exchange merchandise</string>
     <string name="choselipin">Please choose the exchanged commodity</string>
     <string name="lipinnumbigkucun">The quantity of goods exchanged is larger than that of goods</string>
-
-    <string name="xiaofeitype">消费类型</string>
-    <string name="xiaofeimoney">消费金额</string>
-    <string name="inputxfmoney">请输入消费金额</string>
-    <string name="comfirmpay">确认支付</string>
-    <string name="chosexftype">请选择消费类型</string>
-    <string name="chosexfzhima">请选择消费指码</string>
-    <string name="xftypeno_chose">获取消费类型失败,请返回重试</string>
-    <string name="xiaofeizhima">消费指码</string>
-    <string name="xfmoneybigyue">消费金额大于账户余额</string>
-    <string name="numzican">数字资产</string>
-    <string name="zmlistfalse">获取消费指码失败</string>
+    <string name="xiaofeitype">Consume Type</string>
+    <string name="xiaofeimoney">Consume Money</string>
+    <string name="inputxfmoney">Input consume money</string>
+    <string name="comfirmpay">Submit</string>
+    <string name="chosexftype">select</string>
+    <string name="chosexfzhima">select</string>
+    <string name="xftypeno_chose">Failed to get consumption type, please go back and try again</string>
+    <string name="xiaofeizhima">Consume Chip</string>
+    <string name="xfmoneybigyue">Consumption amount is greater than account balance</string>
+    <string name="numzican">Digital assets</string>
+    <string name="zmlistfalse">Failure to obtain consumer chips</string>
 </resources>

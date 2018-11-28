@@ -112,7 +112,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/kuang_red_red">
+        android:background="@drawable/kuang_blue_blue">
 
         <TextView
             android:layout_width="wrap_content"

@@ -19,11 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="20dp"
-            android:background="@drawable/kuang_red_red">
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/kuang_blue_blue">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -110,15 +110,15 @@
                 android:background="@color/viewcolor"></View>
         </LinearLayout>
     </RelativeLayout>
- <!--   <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/sartRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">-->
+    <!--   <com.scwang.smartrefresh.layout.SmartRefreshLayout
+           android:id="@+id/sartRefresh"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">-->
     <WebView
         android:id="@+id/markrtweb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
     </WebView>
-<!--    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+    <!--    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 </LinearLayout>

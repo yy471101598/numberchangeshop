@@ -271,16 +271,19 @@ public class HomeShopActivity extends BaseActivity {
             case "icon_30.png":
                 iconId = R.mipmap.icon_30;
                 break;
-            case "sicon_02":
+            case "sicon_01.png":
+                iconId = R.mipmap.sicon_01;
+                break;
+            case "sicon_02.png":
                 iconId = R.mipmap.sicon_02;
                 break;
-            case "sicon_03":
+            case "sicon_03.png":
                 iconId = R.mipmap.sicon_03;
                 break;
-            case "sicon_04":
+            case "sicon_04.png":
                 iconId = R.mipmap.sicon_04;
                 break;
-            case "sicon_05":
+            case "sicon_05.png":
                 iconId = R.mipmap.sicon_05;
                 break;
         }

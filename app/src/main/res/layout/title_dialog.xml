@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="取消"
-            android:textColor="@color/theme_red"
+            android:textColor="@color/theme_blue"
             android:textSize="15sp"
             />
     </RelativeLayout>
@@ -25,15 +25,15 @@
     <RelativeLayout
         android:id="@+id/rl_confirm"
         android:layout_width="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="确定"
-            android:textColor="@color/theme_red"
+            android:textColor="@color/theme_blue"
             android:textSize="15sp"
             />
     </RelativeLayout>
