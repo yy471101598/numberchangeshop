@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ac = this;
         ActivityStack.create().addActivity(ac);
+        ContansUtils.BASE_URL = "http://mc.bankboss.net/";
         initView();
         if (PreferenceHelper.readBoolean(ac, "shoppay", "remember", false)) {
             cb.setChecked(true);
@@ -294,7 +295,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 dialog.dismiss();
-                Toast.makeText(ac, getResources().getString(R.string.loginfalse), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ac, getResources().getString(R.string.loginfalse), Toast.LENGTH_SHORT).show();
+                ContansUtils.BASE_URL = "http://cnmc.bankboss.net/";
+                login();
             }
         });
     }

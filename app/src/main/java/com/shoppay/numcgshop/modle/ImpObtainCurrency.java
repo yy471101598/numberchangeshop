@@ -41,7 +41,7 @@ public class ImpObtainCurrency {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 back.onErrorResponse("");
-                Toast.makeText(ac, ac.getResources().getString(R.string.currno), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ac, ac.getResources().getString(R.string.currno), Toast.LENGTH_SHORT).show();
             }
         });
     }
