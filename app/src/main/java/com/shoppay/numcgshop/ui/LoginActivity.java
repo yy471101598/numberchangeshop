@@ -236,6 +236,7 @@ public class LoginActivity extends AppCompatActivity {
         final PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
         client.setCookieStore(myCookieStore);
         RequestParams params = new RequestParams();
+        //13552825726 123456
         params.put("UserName", et_account.getText().toString());
         params.put("PassWord", et_pwd.getText().toString());
         JSONObject jso = new JSONObject();
