@@ -271,6 +271,8 @@ public class LoginActivity extends AppCompatActivity {
                                 }.getType();
                                 List<HomeMsg> sllist = gson.fromJson(response.toString(), listType);
                                 Intent intent = new Intent(ac, HomeShopActivity.class);
+                                intent.putExtra("home",sllist.get(0));
+                                sllist.remove(0);
                                 intent.putExtra("list", (Serializable) sllist);
                                 startActivity(intent);
                                 finish();

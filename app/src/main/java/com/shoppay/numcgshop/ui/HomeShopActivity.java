@@ -36,7 +36,7 @@ public class HomeShopActivity extends BaseActivity {
     private Activity ac;
     private Dialog dialog;
     private long firstTime = 0;
-
+    private HomeMsg homeMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,9 @@ public class HomeShopActivity extends BaseActivity {
         dialog = DialogUtil.loadingDialog(ac, 1);
         gridViews = (HeaderGridView) findViewById(R.id.gridview);
         list = (List<HomeMsg>) getIntent().getSerializableExtra("list");
-
+        homeMsg = (HomeMsg) getIntent().getSerializableExtra("home");
         View view = LayoutInflater.from(ac).inflate(R.layout.header_home, null);
-        addHeaderMsg(view, list);
+        addHeaderMsg(view, homeMsg);
         gridViews.addHeaderView(view);
         list.remove(0);
         adapter = new HomeshopAdapter(ac, list);
@@ -155,29 +155,27 @@ public class HomeShopActivity extends BaseActivity {
 
     }
 
-    private void addHeaderMsg(View view, List<HomeMsg> list) {
+    private void addHeaderMsg(View view, final HomeMsg homeMsg) {
         RelativeLayout rl_bg = view.findViewById(R.id.rl_headerbg);
         ImageView img_icon = view.findViewById(R.id.iv_item);
         TextView tv_name = view.findViewById(R.id.tv_item);
         if (PreferenceHelper.readString(ac, "numc", "lagavage", "zh").equals("zh")) {
-            tv_name.setText(list.get(0).Title);
+            tv_name.setText(homeMsg.Title);
         } else {
-            tv_name.setText(list.get(0).EnTitle);
+            tv_name.setText(homeMsg.EnTitle);
         }
-        img_icon.setBackgroundResource(obtainIconId(list.get(0).Icon));
-        rl_bg.setBackgroundColor(Color.parseColor(list.get(0).BgColor));
-        final HomeMsg home = list.get(0);
+        img_icon.setBackgroundResource(obtainIconId(homeMsg.Icon));
+        rl_bg.setBackgroundColor(Color.parseColor(homeMsg.BgColor));
         rl_bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent dxf = new Intent(ac, ZhidianXiaofeiShopActivity.class);
-                dxf.putExtra("title", home.Title);
-                dxf.putExtra("entitle", home.EnTitle);
+                dxf.putExtra("title", homeMsg.Title);
+                dxf.putExtra("entitle", homeMsg.EnTitle);
                 startActivity(dxf);
             }
         });
     }
-
     public int obtainIconId(String icon) {
         int iconId = R.mipmap.icon_01;
         switch (icon.toLowerCase()) {
